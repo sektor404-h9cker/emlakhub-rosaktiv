@@ -962,8 +962,15 @@ export default function PremiumLanding() {
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-5 sm:px-8 mt-8 pt-8 border-t border-slate-200 text-[12px] text-slate-400">
-          © 2026 Digital Emlak Hub · RosAktiv Hub.{" "}
-          {ru ? "Все права защищены." : "Bütün hüquqlar qorunur."}
+          <p>
+            © 2026 Digital Emlak Hub · RosAktiv Hub.{" "}
+            {ru ? "Все права защищены." : "Bütün hüquqlar qorunur."}
+          </p>
+          <p className="mt-2 text-slate-500">
+            {ru
+              ? "Основатель — Camal Huseynov · Digital Emlak Hub"
+              : "Təsisçi — Camal Huseynov · Digital Emlak Hub"}
+          </p>
         </div>
       </footer>
     </div>

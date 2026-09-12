@@ -7,6 +7,7 @@ import { Manrope, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/landing/SmoothScroll";
 import Providers from "@/components/Providers";
+import JsonLd from "@/components/seo/JsonLd";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -20,51 +21,90 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
+const SITE = "https://emlakhub.net";
+const OG_IMAGE = `${SITE}/landing/porsche-hero.jpg`;
+
 export const metadata = {
-  metadataBase: new URL("https://emlakhub.net"),
+  metadataBase: new URL(SITE),
   title: {
-    default: "Digital Emlak Hub - B2B терминал госаукционов",
+    default: "Digital Emlak Hub — B2B-терминал госаукционов Азербайджана",
     template: "%s · Digital Emlak Hub",
   },
   description:
-    "Аналитическая B2B-платформа для инвесторов: маржа, due diligence и рыночная оценка лотов на государственных аукционах. Digital Emlak Hub (Азербайджан). RosAktiv Hub для России - в разработке, скоро доступен.",
+    "Digital Emlak Hub — закрытый B2B-терминал для инвесторов: скрытые риски, оценка ремонта и чистая маржа по лотам государственных аукционов до ставки. Азербайджан. RosAktiv Hub для России — скоро.",
+  applicationName: "Digital Emlak Hub",
+  authors: [{ name: "Camal Huseynov", url: SITE }],
+  creator: "Camal Huseynov",
+  publisher: "Digital Emlak Hub",
+  category: "business",
   keywords: [
-    "госаукционы",
-    "инвестиции в недвижимость",
     "Digital Emlak Hub",
+    "госаукционы Азербайджан",
+    "herrac.gov.az аналитика",
+    "инвестиции в недвижимость Баку",
+    "государственные торги авто",
+    "B2B терминал аукционов",
+    "unit economics лота",
+    "due diligence аукцион",
     "RosAktiv Hub",
-    "B2B аналитика",
-    "due diligence",
-    "unit economics",
+    "Camal Huseynov",
   ],
   openGraph: {
     type: "website",
-    locale: "ru_RU",
-    alternateLocale: ["az_AZ"],
-    url: "https://emlakhub.net",
+    locale: "az_AZ",
+    alternateLocale: ["ru_RU", "en_US"],
+    url: SITE,
     siteName: "Digital Emlak Hub",
-    title: "Digital Emlak Hub - прозрачность государственных торгов",
+    title: "Digital Emlak Hub — решение до ставки на госаукционах",
     description:
-      "Закрытый аналитический терминал для капитала. RosAktiv Hub для России - скоро.",
+      "Риски, смета и чистая маржа до участия. Закрытый терминал для профессионального капитала. Основатель — Camal Huseynov.",
+    images: [
+      {
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: "Digital Emlak Hub — аналитика лотов госаукционов",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Digital Emlak Hub - B2B терминал госаукционов",
+    title: "Digital Emlak Hub — B2B-терминал госаукционов",
     description:
-      "Маржа, прозрачность и аналитика лотов. RosAktiv Hub - в разработке для России.",
+      "Маржа и риски до ставки. Азербайджан в работе · RosAktiv Hub для России — скоро.",
+    images: [OG_IMAGE],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
   alternates: {
-    canonical: "/",
+    canonical: SITE,
+    languages: {
+      az: SITE,
+      ru: SITE,
+      "x-default": SITE,
+    },
+  },
+  verification: {
+    // Добавь токен из Google Search Console, когда подключим:
+    // google: "YOUR_TOKEN",
   },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="ru">
+    <html lang="az">
+      <head>
+        <JsonLd />
+      </head>
       <body className={`${manrope.variable} ${playfair.variable} font-sans antialiased`}>
         <Providers>
           <SmoothScroll />
