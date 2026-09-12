@@ -1,0 +1,424 @@
+/*
+  ============================================================================
+  EMLAK HUB — дизайн-система · Quiet Luxury
+  Display: Playfair Display · UI: Manrope
+  ============================================================================
+*/
+
+@import "tailwindcss";
+
+:root {
+  --background: #f6f7f9;
+  --foreground: #141414;
+
+  --eh-graphite: #0b0d10;
+  --eh-midnight: #0a1628;
+  --eh-titanium: #9aa3ad;
+  --eh-gold: #b8956c;
+  --eh-gold-soft: rgba(184, 149, 108, 0.12);
+  --eh-border: rgba(20, 20, 20, 0.08);
+  --eh-shadow: 0 2px 8px rgba(20, 20, 20, 0.04), 0 18px 48px -24px rgba(20, 20, 20, 0.18);
+  --eh-shadow-hover: 0 4px 16px rgba(20, 20, 20, 0.06), 0 32px 64px -28px rgba(20, 20, 20, 0.28);
+  --eh-lift: translateY(-3px);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-manrope);
+  --font-serif: var(--font-playfair);
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  background: #eef0f3;
+  color: var(--foreground);
+  font-family: var(--font-manrope), system-ui, sans-serif;
+  letter-spacing: -0.011em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: #141414;
+  color: #fbfaf7;
+}
+
+.font-serif {
+  font-family: var(--font-playfair), Georgia, "Times New Roman", serif;
+  letter-spacing: -0.02em;
+}
+
+.font-mono-num {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* ─── Premium surfaces ─── */
+.eh-card {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(214, 207, 195, 0.75);
+  border-radius: 1.25rem;
+  box-shadow: var(--eh-shadow);
+  backdrop-filter: blur(12px);
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.4s ease;
+}
+
+.eh-card:hover {
+  transform: var(--eh-lift);
+  box-shadow: var(--eh-shadow-hover);
+  border-color: rgba(20, 20, 20, 0.12);
+}
+
+.eh-card-static {
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(214, 207, 195, 0.75);
+  border-radius: 1.25rem;
+  box-shadow: var(--eh-shadow);
+  backdrop-filter: blur(10px);
+}
+
+.eh-btn {
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.eh-btn:hover {
+  transform: translateY(-1.5px);
+}
+
+.eh-btn-primary {
+  box-shadow: 0 10px 28px -12px rgba(20, 20, 20, 0.45);
+}
+
+.eh-btn-primary:hover {
+  box-shadow: 0 16px 36px -12px rgba(20, 20, 20, 0.55);
+}
+
+.eh-link {
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.eh-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  opacity: 0.35;
+}
+
+.eh-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Тонкая инженерная сетка — холодный slate */
+.bg-grid-premium {
+  background-size: 64px 64px;
+  background-image:
+    linear-gradient(to right, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+}
+
+.bg-grid-hero {
+  background-size: 72px 72px;
+  background-image:
+    linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+  -webkit-mask-image: radial-gradient(ellipse 85% 70% at 55% 35%, #000 15%, transparent 72%);
+  mask-image: radial-gradient(ellipse 85% 70% at 55% 35%, #000 15%, transparent 72%);
+}
+
+.bg-dots-premium {
+  background-image: radial-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.texture-fade {
+  -webkit-mask-image: radial-gradient(ellipse 75% 60% at 50% 40%, #000 35%, transparent 100%);
+  mask-image: radial-gradient(ellipse 75% 60% at 50% 40%, #000 35%, transparent 100%);
+}
+
+/* ─── Atmosphere washes — светлый холодный камень ─── */
+.eh-grain {
+  isolation: isolate;
+}
+
+.eh-grain::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.028;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+/*
+  Hero: холодный свет + лёгкий champagne акцент (не беж).
+  Ближе к Stripe / institutional light.
+*/
+.eh-wash-silk {
+  background:
+    radial-gradient(ellipse 65% 50% at 90% 5%, rgba(186, 166, 138, 0.18), transparent 55%),
+    radial-gradient(ellipse 55% 45% at 8% 85%, rgba(148, 163, 184, 0.22), transparent 55%),
+    radial-gradient(ellipse 80% 55% at 50% -5%, rgba(255, 255, 255, 0.95), transparent 55%),
+    linear-gradient(165deg, #f8f9fb 0%, #f1f3f6 45%, #e8ebf0 100%);
+}
+
+.eh-wash-pearl {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255, 255, 255, 0.95), transparent 55%),
+    linear-gradient(180deg, #f2f4f7 0%, #eaedf2 100%);
+}
+
+.eh-wash-mist {
+  background:
+    radial-gradient(ellipse 60% 45% at 95% 20%, rgba(186, 166, 138, 0.1), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 5% 90%, rgba(148, 163, 184, 0.14), transparent 50%),
+    linear-gradient(180deg, #eaedf2 0%, #f4f6f8 100%);
+}
+
+.eh-wash-ink {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 0%, rgba(184, 149, 108, 0.16), transparent 50%),
+    radial-gradient(ellipse 60% 50% at 100% 100%, rgba(40, 60, 90, 0.4), transparent 55%),
+    linear-gradient(165deg, #080a0e 0%, #11161f 52%, #0a0d12 100%);
+}
+
+.eh-wash-cta {
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 0%, rgba(186, 166, 138, 0.16), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 80% 100%, rgba(148, 163, 184, 0.16), transparent 50%),
+    linear-gradient(180deg, #eef1f5 0%, #e4e8ee 100%);
+}
+
+.eh-orb {
+  pointer-events: none;
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  will-change: transform, opacity;
+}
+
+/* Display: легче, спокойнее, институционально */
+.eh-display {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.028em;
+  color: #0f172a;
+  max-width: min(100%, 16ch);
+  font-size: clamp(1.75rem, 7vw, 2.65rem);
+}
+
+@media (min-width: 640px) {
+  .eh-display {
+    max-width: min(100%, 18ch);
+    font-size: clamp(2.35rem, 5.2vw, 3.45rem);
+    line-height: 1.08;
+    letter-spacing: -0.032em;
+  }
+}
+
+@media (min-width: 1024px) {
+  .eh-display {
+    max-width: 14.5ch;
+    font-size: clamp(3rem, 3.9vw, 4.15rem);
+    line-height: 1.06;
+    letter-spacing: -0.036em;
+  }
+}
+
+.eh-display-ru {
+  max-width: 100%;
+  letter-spacing: -0.022em;
+}
+
+@media (min-width: 640px) {
+  .eh-display-ru {
+    max-width: min(100%, 22ch);
+  }
+}
+
+@media (min-width: 1024px) {
+  .eh-display-ru {
+    max-width: 18ch;
+    font-size: clamp(2.65rem, 3.4vw, 3.65rem);
+  }
+}
+
+.eh-display-muted {
+  color: #64748b;
+}
+
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-ticker {
+  animation: ticker 50s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-ticker {
+    animation: none;
+  }
+
+  .eh-card:hover,
+  .eh-btn:hover {
+    transform: none;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f4f2ed;
+}
+::-webkit-scrollbar-thumb {
+  background: #c9c4ba;
+  border-radius: 999px;
+  border: 2px solid #f4f2ed;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a29a;
+}
+
+/* =============================================================================
+   OLED TERMINAL — Digital Emlak Hub (SpaceX / quiet luxury dark)
+   Используется на /login, /register, /dashboard, /admin/*
+   ============================================================================= */
+
+.eh-terminal {
+  color-scheme: dark;
+}
+
+.eh-term-input {
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.65rem 0.85rem;
+  color: #e8eaed;
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.eh-term-input::placeholder {
+  color: #4b5563;
+}
+
+.eh-term-input:focus {
+  border-color: rgba(59, 130, 246, 0.55);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.eh-term-btn-primary {
+  border-radius: 0.75rem;
+  background: #2563eb;
+  padding: 0.7rem 1rem;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.eh-term-btn-primary:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.eh-term-btn-ghost {
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  padding: 0.45rem 0.75rem;
+  font-size: 12px;
+  color: #9aa3ad;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.eh-term-btn-ghost:hover {
+  border-color: rgba(59, 130, 246, 0.4);
+  color: #93c5fd;
+  background: rgba(37, 99, 235, 0.08);
+}
+
+.eh-term-range {
+  appearance: none;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  outline: none;
+}
+
+.eh-term-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: #3b82f6;
+  border: 2px solid #050505;
+  cursor: pointer;
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.5);
+}
+
+.eh-terminal ::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+.eh-terminal ::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border: 2px solid #0a0a0a;
+}
+
