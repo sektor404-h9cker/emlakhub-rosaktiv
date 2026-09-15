@@ -145,28 +145,27 @@ export default function InvestorDashboard() {
       <section className="overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0a0c12]">
         <div className="flex flex-col gap-3 border-b border-white/[0.06] p-3 sm:flex-row sm:items-center sm:p-4">
           <div className="relative min-w-0 flex-1">
-            <Search
-              size={16}
-              className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#64748b]"
-            />
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center border-r border-white/[0.08]">
+              <Search size={17} strokeWidth={2.2} className="text-[#93c5fd]" />
+            </div>
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={t.search}
-              className="eh-term-input h-11 w-full rounded-xl border-white/10 bg-[#05070b] pl-10 pr-10 text-[14px]"
+              className="eh-term-input h-12 w-full rounded-xl border-white/10 bg-[#05070b] pl-[3.25rem] pr-11 text-[14px] placeholder:text-[#64748b]"
             />
             {query ? (
               <button
                 type="button"
                 onClick={() => setQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#64748b] hover:text-white"
+                className="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-lg text-[#94a3b8] hover:bg-white/[0.06] hover:text-white"
                 aria-label="clear"
               >
-                <X size={14} />
+                <X size={15} />
               </button>
             ) : null}
           </div>
-          <div className="flex rounded-xl border border-white/10 bg-white/[0.02] p-1">
+          <div className="flex shrink-0 rounded-xl border border-white/10 bg-[#05070b] p-1">
             {[
               { key: "all", label: t.marketAll },
               { key: "auto", label: t.marketAuto },
@@ -177,9 +176,9 @@ export default function InvestorDashboard() {
                 type="button"
                 onClick={() => setMarket(m.key)}
                 className={[
-                  "rounded-lg px-3 py-2 text-[12px] font-medium transition",
+                  "rounded-lg px-3.5 py-2.5 text-[12px] font-medium transition",
                   market === m.key
-                    ? "bg-[#2563eb] text-white"
+                    ? "bg-[#2563eb] text-white shadow-[0_8px_20px_-10px_rgba(37,99,235,0.9)]"
                     : "text-[#94a3b8] hover:text-white",
                 ].join(" ")}
               >

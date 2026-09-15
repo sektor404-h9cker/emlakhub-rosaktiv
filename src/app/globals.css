@@ -807,7 +807,7 @@ body {
 
 .eh-modal-scroll {
   scrollbar-width: thin;
-  scrollbar-color: rgba(100, 116, 139, 0.55) transparent;
+  scrollbar-color: #2a2a2a #0a0a0a;
 }
 
 .eh-modal-scroll::-webkit-scrollbar {
@@ -815,16 +815,43 @@ body {
 }
 
 .eh-modal-scroll::-webkit-scrollbar-track {
-  background: transparent;
+  background: #0a0a0a;
 }
 
 .eh-modal-scroll::-webkit-scrollbar-thumb {
-  background: rgba(100, 116, 139, 0.45);
+  background: #2a2a2a;
   border-radius: 999px;
+  border: 1px solid #0a0a0a;
 }
 
 .eh-modal-scroll::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.65);
+  background: #3f3f46;
+}
+
+/* Тёмный скролл внутри OLED-терминала (иначе глобальный «белый» cream) */
+.eh-terminal,
+.eh-terminal * {
+  scrollbar-width: thin;
+  scrollbar-color: #2a2a2a #0a0a0a;
+}
+
+.eh-terminal ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.eh-terminal ::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+.eh-terminal ::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 999px;
+  border: 2px solid #0a0a0a;
+}
+
+.eh-terminal ::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
 }
 
 .eh-modal-fade-top {
