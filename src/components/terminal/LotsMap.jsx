@@ -120,20 +120,35 @@ export default function LotsMap({
 
     mapRef.current = map;
 
-    // Контейнер absolute — без invalidateSize маркеры «уезжают»
+    let alive = true;
+    const timers = [];
+
+    // Контейнер absolute — без invalidateSize маркеры «уезжают».
+    // Strict Mode / unmount: не трогаем карту после remove (иначе _leaflet_pos).
     const fixSize = () => {
-      map.invalidateSize({ animate: false });
+      if (!alive || mapRef.current !== map) return;
+      if (!map.getContainer?.()?.isConnected) return;
+      if (!map._mapPane) return;
+      try {
+        map.invalidateSize({ animate: false });
+      } catch {
+        /* ignore mid-teardown */
+      }
     };
-    requestAnimationFrame(() => {
+
+    const raf = requestAnimationFrame(() => {
       fixSize();
-      setTimeout(fixSize, 80);
-      setTimeout(fixSize, 320);
+      timers.push(setTimeout(fixSize, 80));
+      timers.push(setTimeout(fixSize, 320));
     });
 
     const ro = new ResizeObserver(() => fixSize());
     ro.observe(hostRef.current);
 
     return () => {
+      alive = false;
+      cancelAnimationFrame(raf);
+      timers.forEach(clearTimeout);
       ro.disconnect();
       map.remove();
       mapRef.current = null;
@@ -158,8 +173,13 @@ export default function LotsMap({
     const entry = markersRef.current.get(selectedId);
     if (!entry) return;
     const map = mapRef.current;
-    map.invalidateSize({ animate: false });
-    map.panTo(entry.marker.getLatLng(), { animate: true, duration: 0.35 });
+    if (!map.getContainer?.()?.isConnected || !map._mapPane) return;
+    try {
+      map.invalidateSize({ animate: false });
+      map.panTo(entry.marker.getLatLng(), { animate: true, duration: 0.35 });
+    } catch {
+      /* ignore */
+    }
   }, [panKey, selectedId]);
 
   return (
