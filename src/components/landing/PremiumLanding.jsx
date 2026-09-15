@@ -390,24 +390,23 @@ export default function PremiumLanding() {
 
   return (
     <LandingDealProvider>
-    <div className="eh-grain relative min-h-screen text-slate-800 selection:bg-slate-900 selection:text-[#fbfaf7]">
-      {/* ── NAV ── */}
-      <nav className="fixed inset-x-0 top-0 z-50 border-b border-slate-200/80 bg-[#f8f9fb]/80 backdrop-blur-2xl">
+      <>
+      {/* Nav вне grain — иначе на тёмных секциях «пропадает» из‑за stacking context */}
+      <nav className="fixed inset-x-0 top-0 z-[100] border-b border-slate-200/90 bg-white/95 shadow-[0_1px_0_rgba(15,23,42,0.04)] backdrop-blur-xl">
         <div className="relative mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:h-16 sm:px-8">
           <Link href="/" className="group relative z-10 flex min-w-0 items-center">
             <BrandLockup size={34} stacked className="sm:gap-3" />
           </Link>
 
-          {/* Центр: Платформа / Безопасность / Международно */}
           <div className="pointer-events-none absolute inset-0 hidden items-center justify-center lg:flex">
             <div className="pointer-events-auto flex items-center gap-9">
-              <a href="#platform" className="eh-link text-[13px] font-medium text-slate-600 hover:text-slate-900">
+              <a href="#platform" className="eh-link text-[13px] font-medium text-slate-700 hover:text-slate-900">
                 {t.nav.platform}
               </a>
-              <a href="#security" className="eh-link text-[13px] font-medium text-slate-600 hover:text-slate-900">
+              <a href="#security" className="eh-link text-[13px] font-medium text-slate-700 hover:text-slate-900">
                 {t.nav.security}
               </a>
-              <a href="#global" className="eh-link text-[13px] font-medium text-slate-600 hover:text-slate-900">
+              <a href="#global" className="eh-link text-[13px] font-medium text-slate-700 hover:text-slate-900">
                 {t.nav.global}
               </a>
             </div>
@@ -427,7 +426,7 @@ export default function PremiumLanding() {
 
           <button
             type="button"
-            className="relative z-10 p-2 text-slate-600 lg:hidden"
+            className="relative z-10 p-2 text-slate-700 lg:hidden"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="menu"
           >
@@ -441,22 +440,22 @@ export default function PremiumLanding() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden border-t border-slate-200 bg-white/95 backdrop-blur-md overflow-hidden"
+              className="overflow-hidden border-t border-slate-200 bg-white lg:hidden"
             >
-              <div className="p-6 flex flex-col gap-4">
-                <a href="#platform" className="text-[15px] font-medium" onClick={() => setMobileOpen(false)}>
+              <div className="flex flex-col gap-4 p-6">
+                <a href="#platform" className="text-[15px] font-medium text-slate-800" onClick={() => setMobileOpen(false)}>
                   {t.nav.platform}
                 </a>
-                <a href="#security" className="text-[15px] font-medium" onClick={() => setMobileOpen(false)}>
+                <a href="#security" className="text-[15px] font-medium text-slate-800" onClick={() => setMobileOpen(false)}>
                   {t.nav.security}
                 </a>
-                <a href="#global" className="text-[15px] font-medium" onClick={() => setMobileOpen(false)}>
+                <a href="#global" className="text-[15px] font-medium text-slate-800" onClick={() => setMobileOpen(false)}>
                   {t.nav.global}
                 </a>
                 <LanguageSwitch variant="light" />
                 <Link
                   href={entryHref}
-                  className="py-3 rounded-lg bg-slate-900 text-white text-center font-semibold"
+                  className="rounded-lg bg-slate-900 py-3 text-center font-semibold text-white"
                   onClick={() => setMobileOpen(false)}
                 >
                   {t.nav.login}
@@ -467,6 +466,7 @@ export default function PremiumLanding() {
         </AnimatePresence>
       </nav>
 
+    <div className="eh-grain relative min-h-screen text-slate-800 selection:bg-slate-900 selection:text-[#fbfaf7]">
       {/* ── HERO: свет + сетка + глубина ── */}
       <section className="eh-wash-silk relative flex min-h-[100dvh] flex-col overflow-hidden pt-14 sm:pt-16">
         <div aria-hidden className="bg-grid-hero pointer-events-none absolute inset-0 opacity-90" />
@@ -652,27 +652,27 @@ export default function PremiumLanding() {
         <div className="eh-orb absolute -right-20 top-10 h-72 w-72 bg-slate-400/20" aria-hidden />
         <div className="eh-orb absolute -left-16 bottom-0 h-64 w-64 bg-slate-400/15" aria-hidden />
         <div className="bg-grid-premium texture-fade pointer-events-none absolute inset-0 opacity-35" aria-hidden />
-        <div className="relative max-w-7xl mx-auto px-5 sm:px-8">
-          <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-slate-900 tracking-tight">
+        <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+          <motion.div {...fadeUp} className="mx-auto mb-16 max-w-2xl text-center">
+            <h2 className="font-serif text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
               {ru ? "Почему нам можно доверять" : "Niyə bizə etibar etmək olar"}
             </h2>
-            <p className="mt-4 text-slate-600 text-[16px] leading-relaxed">
+            <p className="mt-4 text-[16px] leading-relaxed text-slate-600">
               {ru
                 ? "Три простые вещи, которые важны, прежде чем вкладывать деньги в лот."
                 : "Lota pul qoymadan əvvəl vacib olan üç sadə məqam."}
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid gap-6 md:grid-cols-3">
             {t.pillars.map((p, i) => (
               <motion.div key={p.title} {...fadeUp} transition={{ ...fadeUp.transition, delay: i * 0.1 }}>
-                <GlassCard className="p-8 h-full hover:shadow-[0_30px_80px_-30px_rgba(15,23,42,0.18)] transition-shadow duration-500">
-                  <div className="w-11 h-11 rounded-xl bg-slate-100 flex items-center justify-center text-slate-700 mb-6">
+                <GlassCard className="h-full p-8 transition-shadow duration-500 hover:shadow-[0_30px_80px_-30px_rgba(15,23,42,0.18)]">
+                  <div className="mb-6 flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
                     <p.icon size={20} strokeWidth={1.8} />
                   </div>
-                  <h3 className="font-serif text-xl font-semibold text-slate-900 mb-3">{p.title}</h3>
-                  <p className="text-[14px] text-slate-600 leading-relaxed">{p.desc}</p>
+                  <h3 className="mb-3 font-serif text-xl font-semibold text-slate-900">{p.title}</h3>
+                  <p className="text-[14px] leading-relaxed text-slate-600">{p.desc}</p>
                 </GlassCard>
               </motion.div>
             ))}
@@ -680,21 +680,33 @@ export default function PremiumLanding() {
         </div>
       </section>
 
-      <section id="security" className="eh-wash-ink relative overflow-hidden py-16 text-white sm:py-24 lg:py-32">
-        <div className="eh-orb absolute -left-10 top-0 h-80 w-80 bg-slate-400/25" aria-hidden />
-        <div className="eh-orb absolute -right-10 bottom-0 h-96 w-96 bg-sky-900/40" aria-hidden />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-[0.12]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(232,220,198,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(232,220,198,0.15) 1px, transparent 1px)",
-            backgroundSize: "64px 64px",
-            maskImage: "radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%)",
-          }}
-        />
-        <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
-          <div className="grid items-end gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-20">
+      <section
+        id="security"
+        className="eh-security relative w-full pb-20 pt-24 text-white sm:pb-28 sm:pt-28 lg:pb-36 lg:pt-32"
+      >
+        <div className="eh-security-fx" aria-hidden>
+          <div className="eh-security-aurora" />
+          <div className="eh-security-sheen" />
+          <div className="eh-security-sheen-secondary" />
+          <div className="eh-security-grid" />
+          {!reduce ? (
+            <>
+              <motion.div
+                className="eh-orb absolute -left-[10%] top-[10%] h-[22rem] w-[22rem] bg-[#b8956c]/25 sm:h-[28rem] sm:w-[28rem]"
+                animate={{ opacity: [0.35, 0.55, 0.35], x: [0, 24, 0], y: [0, -12, 0] }}
+                transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <motion.div
+                className="eh-orb absolute -right-[8%] bottom-[5%] h-[24rem] w-[24rem] bg-sky-700/30 sm:h-[32rem] sm:w-[32rem]"
+                animate={{ opacity: [0.3, 0.5, 0.3], x: [0, -20, 0] }}
+                transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+              />
+            </>
+          ) : null}
+        </div>
+
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10">
+          <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-20">
             <motion.div {...fadeUp}>
               <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.22em] text-[#e8dcc6]/70">
                 {ru ? "Безопасность данных" : "Məlumat təhlükəsizliyi"}
@@ -721,7 +733,7 @@ export default function PremiumLanding() {
               </p>
             </motion.div>
 
-            <motion.div {...fadeUp} className="space-y-4">
+            <motion.div {...fadeUp} className="space-y-3">
               {(ru
                 ? [
                     {
@@ -757,10 +769,14 @@ export default function PremiumLanding() {
                       d: "Giriş, təkliflər və portfel üçüncü şəxslərə ötürülmür.",
                     },
                   ]
-              ).map((row) => (
-                <div
+              ).map((row, i) => (
+                <motion.div
                   key={row.k}
-                  className="flex gap-4 rounded-xl border border-white/[0.08] bg-white/[0.03] px-5 py-4"
+                  initial={reduce ? false : { opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.08 * i, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                  className="eh-security-card flex gap-4 rounded-xl px-5 py-4"
                 >
                   <span className="font-mono text-[11px] tabular-nums text-[#e8dcc6]/60">
                     {row.k}
@@ -771,7 +787,7 @@ export default function PremiumLanding() {
                     </div>
                     <p className="mt-1 text-[13px] leading-relaxed text-white/45">{row.d}</p>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </motion.div>
           </div>
@@ -779,8 +795,9 @@ export default function PremiumLanding() {
       </section>
 
       {/* Интерактивный кейс — ближе к концу воронки */}
-      <section id="economics" className="eh-wash-mist relative overflow-hidden py-16 sm:py-24 lg:py-32">
-        <div className="eh-orb absolute right-10 top-20 h-64 w-64 bg-slate-400/15" aria-hidden />
+      <section id="economics" className="eh-afterglow eh-wash-mist relative overflow-hidden py-16 sm:py-24 lg:py-32">
+        <div className="eh-orb absolute right-10 top-20 h-72 w-72 bg-[#b8956c]/16" aria-hidden />
+        <div className="eh-orb absolute -left-10 bottom-0 h-64 w-64 bg-slate-400/18" aria-hidden />
         <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
           <motion.div {...fadeUp} className="mb-12 max-w-2xl">
             <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.22em] text-slate-500">
@@ -802,8 +819,9 @@ export default function PremiumLanding() {
       </section>
 
       {/* Сравнение портал + слой — компактно после кейса */}
-      <section className="eh-wash-pearl relative overflow-hidden py-16 sm:py-20 lg:py-24">
-        <div className="eh-orb absolute left-1/2 top-0 h-56 w-56 -translate-x-1/2 bg-white/50" aria-hidden />
+      <section className="eh-afterglow eh-wash-pearl relative overflow-hidden py-16 sm:py-20 lg:py-24">
+        <div className="eh-orb absolute left-1/2 top-0 h-56 w-56 -translate-x-1/2 bg-white/60" aria-hidden />
+        <div className="eh-orb absolute right-[12%] bottom-[-10%] h-48 w-48 bg-[#b8956c]/10" aria-hidden />
         <div className="relative mx-auto max-w-5xl px-5 sm:px-8">
           <motion.div {...fadeUp} className="mx-auto mb-10 max-w-2xl text-center">
             <h3 className="font-serif text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
@@ -812,10 +830,10 @@ export default function PremiumLanding() {
             <p className="mt-3 text-slate-600">{t.comparison.sub}</p>
           </motion.div>
 
-          <div className="relative grid gap-6 md:grid-cols-2">
+          <div className="relative grid gap-5 md:grid-cols-2 md:gap-6">
             <motion.div {...fadeUp}>
               <GlassCard className="h-full p-8">
-                <h3 className="font-serif text-lg font-semibold text-slate-900 mb-1">
+                <h3 className="mb-1 font-serif text-lg font-semibold text-slate-900">
                   {t.comparison.official.title}
                 </h3>
                 <p className="mb-6 text-[11px] font-medium uppercase tracking-[0.16em] text-slate-400">
@@ -833,17 +851,17 @@ export default function PremiumLanding() {
             </motion.div>
 
             <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.08 }}>
-              <GlassCard className="h-full border-slate-300 bg-slate-50/50 p-8">
-                <h3 className="font-serif text-lg font-semibold text-slate-900 mb-1">
+              <GlassCard className="h-full border-slate-900/10 bg-gradient-to-b from-white to-slate-50/80 p-8 shadow-[0_24px_60px_-36px_rgba(15,23,42,0.28)]">
+                <h3 className="mb-1 font-serif text-lg font-semibold text-slate-900">
                   {t.comparison.hub.title}
                 </h3>
-                <p className="mb-6 text-[11px] font-medium uppercase tracking-[0.16em] text-slate-500">
+                <p className="mb-6 text-[11px] font-medium uppercase tracking-[0.16em] text-[#9a7b55]">
                   {ru ? "Что добавляем мы" : "Biz nə əlavə edirik"}
                 </p>
                 <ul className="space-y-3">
                   {t.comparison.hub.items.map((item) => (
                     <li key={item} className="flex items-start gap-3 text-[14px] text-slate-700">
-                      <CheckCircle2 size={16} className="mt-0.5 shrink-0 text-slate-700" />
+                      <CheckCircle2 size={16} className="mt-0.5 shrink-0 text-slate-800" />
                       {item}
                     </li>
                   ))}
@@ -855,43 +873,43 @@ export default function PremiumLanding() {
       </section>
 
       {/* ── GLOBAL / ROSAKTIV ── */}
-      <section id="global" className="eh-wash-mist relative overflow-hidden py-16 sm:py-24 lg:py-32">
-        <div className="eh-orb absolute -left-20 top-24 h-72 w-72 bg-slate-400/18" aria-hidden />
-        <div className="eh-orb absolute -right-16 bottom-10 h-80 w-80 bg-slate-500/10" aria-hidden />
-        <div className="bg-dots-premium texture-fade pointer-events-none absolute inset-0 opacity-45" aria-hidden />
-        <div className="relative max-w-7xl mx-auto px-5 sm:px-8">
-          <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-slate-900 tracking-tight">
+      <section id="global" className="eh-afterglow eh-wash-mist relative overflow-hidden py-16 sm:py-24 lg:py-32">
+        <div className="eh-orb absolute -left-20 top-24 h-72 w-72 bg-[#b8956c]/14" aria-hidden />
+        <div className="eh-orb absolute -right-16 bottom-10 h-80 w-80 bg-slate-500/12" aria-hidden />
+        <div className="bg-dots-premium texture-fade pointer-events-none absolute inset-0 opacity-40" aria-hidden />
+        <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+          <motion.div {...fadeUp} className="mx-auto mb-16 max-w-2xl text-center">
+            <h2 className="font-serif text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
               {ru ? "Где уже работаем и куда идём" : "Harada işləyirik və hara gedirik"}
             </h2>
-            <p className="mt-4 text-slate-600 text-[16px] leading-relaxed">
+            <p className="mt-4 text-[16px] leading-relaxed text-slate-600">
               {ru
                 ? "Одна идея — две страны. Данные Азербайджана и России не смешиваются."
                 : "Bir ideya — iki ölkə. Azərbaycan və Rusiya məlumatları qarışmır."}
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <div className="mx-auto grid max-w-4xl gap-5 md:grid-cols-2 md:gap-6">
             <motion.div {...fadeUp}>
               <GlassCard className="p-8">
-                <div className="flex items-center gap-3 mb-4">
+                <div className="mb-4 flex items-center gap-3">
                   <span className="text-2xl" aria-hidden>
                     🇦🇿
                   </span>
                   <div>
                     <h3 className="font-serif text-xl font-semibold text-slate-900">Digital Emlak Hub</h3>
-                    <p className="text-[12px] text-slate-500 font-mono">emlakhub.net</p>
+                    <p className="font-mono text-[12px] text-slate-500">emlakhub.net</p>
                   </div>
                 </div>
-                <p className="text-[14px] text-slate-600 leading-relaxed">
+                <p className="text-[14px] leading-relaxed text-slate-600">
                   {ru
                     ? "Сервис для инвесторов в Азербайджане: авто и недвижимость с государственных аукционов — с понятной оценкой до ставки."
                     : "Azərbaycanda investorlar üçün xidmət: dövlət hərraclarından avto və daşınmaz əmlak — təklifdən əvvəl aydın qiymətləndirmə ilə."}
                 </p>
                 <div className="mt-4 flex items-center gap-2 text-[12px] font-medium text-emerald-700">
                   <span className="relative flex h-1.5 w-1.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-50" />
-                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-600" />
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-50" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-600" />
                   </span>
                   {ru ? "Уже работает · открыт для заявок" : "Artıq işləyir · müraciət üçün açıq"}
                 </div>
@@ -899,27 +917,27 @@ export default function PremiumLanding() {
             </motion.div>
 
             <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.08 }}>
-              <GlassCard className="p-8 border-amber-200/70 bg-amber-50/20">
-                <div className="flex items-center gap-3 mb-4">
+              <GlassCard className="border-amber-200/80 bg-gradient-to-b from-amber-50/40 to-white p-8">
+                <div className="mb-4 flex items-center gap-3">
                   <span className="text-2xl" aria-hidden>
                     🇷🇺
                   </span>
                   <div>
                     <h3 className="font-serif text-xl font-semibold text-slate-900">RosAktiv Hub</h3>
-                    <p className="text-[12px] text-slate-500 font-mono">
+                    <p className="font-mono text-[12px] text-slate-500">
                       {ru ? "для России · скоро" : "Rusiya üçün · tezliklə"}
                     </p>
                   </div>
                 </div>
-                <p className="text-[14px] text-slate-600 leading-relaxed">
+                <p className="text-[14px] leading-relaxed text-slate-600">
                   {ru
                     ? "Та же идея для России: госаукционы авто и недвижимости с понятной оценкой. Сейчас готовим — скоро откроем доступ."
                     : "Eyni ideya Rusiya üçün: dövlət hərraclarından avto və daşınmaz əmlak, aydın qiymətləndirmə ilə. İndi hazırlanır — tezliklə giriş açılacaq."}
                 </p>
                 <div className="mt-4 flex items-center gap-2 text-[12px] font-medium text-amber-800">
                   <span className="relative flex h-1.5 w-1.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-50" />
-                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-600" />
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-500 opacity-50" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-amber-600" />
                   </span>
                   {ru ? "Скоро откроем" : "Tezliklə açılacaq"}
                 </div>
@@ -929,18 +947,18 @@ export default function PremiumLanding() {
         </div>
       </section>
 
-      <section className="eh-wash-cta relative overflow-hidden py-16 sm:py-24 lg:py-32">
-        <div className="eh-orb absolute left-[20%] top-10 h-64 w-64 bg-slate-400/30" aria-hidden />
-        <div className="eh-orb absolute right-[15%] bottom-0 h-72 w-72 bg-slate-700/10" aria-hidden />
+      <section className="eh-afterglow eh-wash-cta relative overflow-hidden py-20 sm:py-28 lg:py-36">
+        <div className="eh-orb absolute left-[18%] top-8 h-72 w-72 bg-[#b8956c]/22" aria-hidden />
+        <div className="eh-orb absolute right-[12%] bottom-0 h-80 w-80 bg-slate-600/10" aria-hidden />
         <div className="relative mx-auto max-w-3xl px-5 text-center sm:px-8">
           <motion.div {...fadeUp}>
-            <h2 className="font-serif text-3xl sm:text-[2.75rem] font-semibold text-slate-900 tracking-tight">
+            <h2 className="font-serif text-3xl font-semibold tracking-tight text-slate-900 sm:text-[2.75rem]">
               {t.cta.title}
             </h2>
-            <p className="mt-4 text-slate-600 text-[16px]">{t.cta.sub}</p>
+            <p className="mx-auto mt-4 max-w-xl text-[16px] leading-relaxed text-slate-600">{t.cta.sub}</p>
             <Link
               href={entryHref}
-              className="mt-10 inline-flex items-center gap-2 px-8 py-4 rounded-lg bg-slate-900 text-white text-[15px] font-semibold hover:bg-slate-800 transition shadow-xl shadow-slate-900/10"
+              className="eh-btn eh-btn-primary mt-10 inline-flex items-center gap-2 rounded-full bg-slate-900 px-9 py-4 text-[15px] font-semibold text-white shadow-[0_20px_50px_-20px_rgba(15,23,42,0.45)] transition hover:bg-slate-800"
             >
               {t.cta.btn}
               <ChevronRight size={18} />
@@ -978,6 +996,7 @@ export default function PremiumLanding() {
         </div>
       </footer>
     </div>
+      </>
     </LandingDealProvider>
   );
 }

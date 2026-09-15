@@ -15,15 +15,27 @@ import {
   TrendingUp,
   AlertTriangle,
   Search,
+  Bookmark,
+  GitCompare,
 } from "lucide-react";
 import { DEMO_LOTS, lotTitle, lotType } from "@/data/demoLots";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 import { getTerminalDict } from "@/lib/i18n/terminalDict";
+import { useTerminalPanel } from "@/context/TerminalPanelContext";
 import LotDetailModal from "./LotDetailModal";
+import SectionGuide from "./SectionGuide";
 
 export default function InvestorDashboard() {
   const { locale } = useLocale();
   const t = getTerminalDict(locale);
+  const {
+    isWatched,
+    toggleWatch,
+    isCompared,
+    toggleCompare,
+    onboardingDone,
+    startTour,
+  } = useTerminalPanel();
 
   const [market, setMarket] = useState("all");
   const [query, setQuery] = useState("");
@@ -50,6 +62,21 @@ export default function InvestorDashboard() {
 
   return (
     <div className="mx-auto max-w-[1280px] space-y-5">
+      <SectionGuide section="dashboard" />
+
+      {!onboardingDone ? (
+        <div className="rounded-2xl border border-amber-500/25 bg-amber-500/[0.07] px-4 py-3 text-[13px] leading-relaxed text-[#fde68a]">
+          {t.welcomeBanner}{" "}
+          <button
+            type="button"
+            onClick={startTour}
+            className="font-semibold text-white underline underline-offset-2"
+          >
+            {t.tourRestart}
+          </button>
+        </div>
+      ) : null}
+
       {/* Status pills */}
       <div className="flex flex-wrap gap-2">
         <Pill>{t.beta}</Pill>
@@ -137,48 +164,83 @@ export default function InvestorDashboard() {
       ) : (
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
           {filtered.map((lot) => (
-            <button
+            <div
               key={lot.id}
-              type="button"
-              onClick={() => setActiveLotId(lot.id)}
-              className="group overflow-hidden rounded-2xl border border-white/10 bg-[#0a0c12] text-left transition hover:border-[#2563eb]/40 hover:shadow-[0_20px_50px_-28px_rgba(37,99,235,0.55)]"
+              className="group overflow-hidden rounded-2xl border border-white/10 bg-[#0a0c12] transition hover:border-[#2563eb]/40 hover:shadow-[0_20px_50px_-28px_rgba(37,99,235,0.55)]"
             >
-              <div className="relative aspect-[16/10] overflow-hidden bg-[#111]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={lot.photo}
-                  alt={lotTitle(lot, locale)}
-                  className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
-                />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-3 pt-10">
-                  <div className="font-mono text-[10px] tracking-wide text-[#93c5fd]">
-                    {lot.registryNo || lot.id}
-                  </div>
-                </div>
-              </div>
-              <div className="p-3.5">
-                <div className="text-[11px] uppercase tracking-[0.12em] text-[#64748b]">
-                  {lotType(lot, locale)}
-                </div>
-                <div className="mt-1 truncate text-[14px] font-medium text-white">
-                  {lotTitle(lot, locale)}
-                </div>
-                <div className="mt-3 flex items-center justify-between gap-2">
-                  <div>
-                    <div className="text-[10px] text-[#64748b]">{t.score}</div>
-                    <div className="font-mono text-[15px] tabular-nums text-white">
-                      {lot.score}
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-[10px] text-[#64748b]">{t.profit}</div>
-                    <div className="font-mono text-[15px] tabular-nums text-emerald-400">
-                      +₼ {lot.expectedProfit.toLocaleString("en-US")}
+              <button
+                type="button"
+                onClick={() => setActiveLotId(lot.id)}
+                className="w-full text-left"
+              >
+                <div className="relative aspect-[16/10] overflow-hidden bg-[#111]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={lot.photo}
+                    alt={lotTitle(lot, locale)}
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-3 pt-10">
+                    <div className="font-mono text-[10px] tracking-wide text-[#93c5fd]">
+                      {lot.registryNo || lot.id}
                     </div>
                   </div>
                 </div>
+                <div className="p-3.5 pb-2">
+                  <div className="text-[11px] uppercase tracking-[0.12em] text-[#64748b]">
+                    {lotType(lot, locale)}
+                  </div>
+                  <div className="mt-1 truncate text-[14px] font-medium text-white">
+                    {lotTitle(lot, locale)}
+                  </div>
+                  <div className="mt-3 flex items-center justify-between gap-2">
+                    <div>
+                      <div className="text-[10px] text-[#64748b]">{t.score}</div>
+                      <div className="font-mono text-[15px] tabular-nums text-white">
+                        {lot.score}
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-[10px] text-[#64748b]">{t.profit}</div>
+                      <div className="font-mono text-[15px] tabular-nums text-emerald-400">
+                        +₼ {lot.expectedProfit.toLocaleString("en-US")}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </button>
+              <div className="flex gap-2 border-t border-white/[0.06] px-3 py-2.5">
+                <button
+                  type="button"
+                  onClick={() => toggleWatch(lot.id)}
+                  className={[
+                    "flex flex-1 items-center justify-center gap-1.5 rounded-lg py-1.5 text-[11px] transition",
+                    isWatched(lot.id)
+                      ? "bg-amber-500/15 text-amber-300"
+                      : "bg-white/[0.03] text-[#94a3b8] hover:text-white",
+                  ].join(" ")}
+                >
+                  <Bookmark
+                    size={13}
+                    className={isWatched(lot.id) ? "fill-current" : ""}
+                  />
+                  {t.navWatchlist}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => toggleCompare(lot.id)}
+                  className={[
+                    "flex flex-1 items-center justify-center gap-1.5 rounded-lg py-1.5 text-[11px] transition",
+                    isCompared(lot.id)
+                      ? "bg-[#2563eb]/20 text-[#93c5fd]"
+                      : "bg-white/[0.03] text-[#94a3b8] hover:text-white",
+                  ].join(" ")}
+                >
+                  <GitCompare size={13} />
+                  {isCompared(lot.id) ? t.inCompare : t.addToCompare}
+                </button>
               </div>
-            </button>
+            </div>
           ))}
         </div>
       )}

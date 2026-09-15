@@ -1,22 +1,16 @@
 /**
  * =============================================================================
- * КАРТА ТЕРМИНАЛА — Digital Emlak Hub (интерфейс по макету)
+ * КАРТА ТЕРМИНАЛА — Digital Emlak Hub
  * =============================================================================
  *
- * Навигация (отдельные страницы):
- *   /dashboard      Аналитический терминал — сетка лотов + модалка
- *   /academy        Академия
- *   /support        Эксперт-чат
- *   /how-it-works   Как работает
- *   /admin/*        Админ (users / finance / support)
+ * Гид: кнопка «Пройти гид» / первый вход → GuidedTour
+ * Профиль: /profile (клик по карточке слева)
+ * На каждом экране: блок «Зачем / Что сделать сейчас»
  *
- * Ключевые файлы:
- *   components/terminal/TerminalShell.jsx   — лого, профиль, nav, AZ/RU
- *   components/terminal/InvestorDashboard.jsx — KPI + карточки лотов
- *   components/terminal/LotDetailModal.jsx    — модалка лота
- *   components/terminal/NotificationsModal.jsx
- *   data/demoLots.js                        — демо «спарсенных» лотов
- *   lib/i18n/terminalDict.js                — словарь терминала
+ * Навигация инвестора:
+ *   Рынок     /dashboard /map /watchlist /compare
+ *   Сделки    /portfolio /documents /alerts
+ *   Обучение  /academy /support /how-it-works /profile
  *
  * Вход: /login → admin@emlakhub.net / EmlakHub2026!
  * =============================================================================

@@ -116,8 +116,8 @@ export default function PremiumFAQ({ locale = "az" }) {
   const items = ru ? FAQ_RU : FAQ_AZ;
 
   return (
-    <section className="eh-wash-pearl relative overflow-hidden border-t border-slate-200/70 py-16 sm:py-24 lg:py-32">
-      <div className="eh-orb absolute left-[30%] top-0 h-56 w-56 bg-slate-400/15" aria-hidden />
+    <section className="eh-afterglow eh-wash-pearl relative overflow-hidden border-t border-slate-200/70 py-16 sm:py-24 lg:py-32">
+      <div className="eh-orb absolute left-[30%] top-0 h-56 w-56 bg-[#b8956c]/10" aria-hidden />
       <div className="relative mx-auto max-w-3xl px-5 sm:px-8">
         <div className="mb-14 text-center">
           <h2 className="font-serif text-3xl font-semibold leading-tight tracking-tight text-slate-900 sm:text-[42px]">

@@ -175,6 +175,26 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
+  /** Локальное обновление профиля (демо + отображаемое имя) */
+  const updateLocalProfile = useCallback((patch) => {
+    setProfile((prev) => {
+      if (!prev) return prev;
+      const next = { ...prev, ...patch };
+      setUser((u) => {
+        if (!u) return u;
+        const nu = {
+          ...u,
+          displayName: patch.displayName ?? u.displayName,
+        };
+        if (u.isDemo) {
+          writeDemoSession({ user: nu, profile: next });
+        }
+        return nu;
+      });
+      return next;
+    });
+  }, []);
+
   const value = useMemo(
     () => ({
       user,
@@ -190,8 +210,9 @@ export function AuthProvider({ children }) {
       login,
       register,
       logout,
+      updateLocalProfile,
     }),
-    [user, profile, loading, error, login, register, logout]
+    [user, profile, loading, error, login, register, logout, updateLocalProfile]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

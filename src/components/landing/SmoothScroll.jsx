@@ -44,7 +44,7 @@ export default function SmoothScroll() {
       const el = document.getElementById(id);
       if (!el) return;
       e.preventDefault();
-      lenis.scrollTo(el, { offset: -80 });
+      lenis.scrollTo(el, { offset: id === "security" ? 0 : -72 });
     };
     document.addEventListener("click", onClick);
 

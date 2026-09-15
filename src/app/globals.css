@@ -36,6 +36,7 @@ body {
 
 html {
   scroll-behavior: auto;
+  overflow-x: hidden;
 }
 
 html.lenis,
@@ -182,6 +183,7 @@ body {
 /* ─── Atmosphere washes — светлый холодный камень ─── */
 .eh-grain {
   isolation: isolate;
+  width: 100%;
 }
 
 .eh-grain::before {
@@ -226,6 +228,235 @@ body {
     radial-gradient(ellipse 80% 60% at 20% 0%, rgba(184, 149, 108, 0.16), transparent 50%),
     radial-gradient(ellipse 60% 50% at 100% 100%, rgba(40, 60, 90, 0.4), transparent 55%),
     linear-gradient(165deg, #080a0e 0%, #11161f 52%, #0a0d12 100%);
+}
+
+/* Security: edge-to-edge + мягкое переливание */
+@property --eh-shine {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.eh-security {
+  position: relative;
+  display: block;
+  width: 100%;
+  color: #fff;
+  scroll-margin-top: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 15% 20%, rgba(184, 149, 108, 0.16), transparent 55%),
+    radial-gradient(ellipse 55% 50% at 90% 80%, rgba(40, 80, 130, 0.3), transparent 55%),
+    linear-gradient(165deg, #06080c 0%, #0c1118 48%, #070a0f 100%);
+  /* Full-bleed по бокам без белых полей */
+  box-shadow: 0 0 0 100vmax #06080c;
+  clip-path: inset(0 -100vmax);
+}
+
+.eh-security-fx {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Нижние секции — лёгкая атмосфера, без «карточного» блеска */
+.eh-afterglow {
+  position: relative;
+}
+
+.eh-afterglow::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 55% 40% at 85% 0%, rgba(184, 149, 108, 0.08), transparent 55%),
+    radial-gradient(ellipse 45% 35% at 10% 100%, rgba(148, 163, 184, 0.1), transparent 50%);
+  z-index: 0;
+}
+
+.eh-afterglow > * {
+  position: relative;
+  z-index: 1;
+}
+
+.eh-security-aurora {
+  pointer-events: none;
+  position: absolute;
+  inset: -30%;
+  background:
+    radial-gradient(ellipse 42% 38% at 20% 35%, rgba(212, 184, 140, 0.38), transparent 58%),
+    radial-gradient(ellipse 38% 42% at 78% 28%, rgba(72, 140, 210, 0.32), transparent 60%),
+    radial-gradient(ellipse 48% 36% at 48% 88%, rgba(100, 120, 180, 0.22), transparent 62%),
+    radial-gradient(ellipse 32% 32% at 68% 55%, rgba(232, 220, 198, 0.16), transparent 58%);
+  filter: blur(12px);
+  animation: eh-aurora-drift 16s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.eh-security-sheen {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    118deg,
+    transparent 0%,
+    transparent 36%,
+    rgba(232, 220, 198, 0.14) 46%,
+    rgba(170, 200, 235, 0.12) 50%,
+    rgba(232, 220, 198, 0.1) 54%,
+    transparent 64%,
+    transparent 100%
+  );
+  background-size: 260% 100%;
+  animation: eh-sheen-flow 8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  mix-blend-mode: soft-light;
+}
+
+.eh-security-sheen-secondary {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    155deg,
+    transparent 0%,
+    transparent 42%,
+    rgba(120, 170, 220, 0.08) 50%,
+    transparent 58%,
+    transparent 100%
+  );
+  background-size: 200% 200%;
+  animation: eh-sheen-diag 14s ease-in-out infinite;
+  mix-blend-mode: screen;
+  opacity: 0.7;
+}
+
+.eh-security-grid {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  background-image:
+    linear-gradient(rgba(232, 220, 198, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232, 220, 198, 0.14) 1px, transparent 1px);
+  background-size: 72px 72px;
+  -webkit-mask-image: radial-gradient(ellipse 78% 68% at 50% 42%, #000 8%, transparent 74%);
+  mask-image: radial-gradient(ellipse 78% 68% at 50% 42%, #000 8%, transparent 74%);
+}
+
+.eh-security-card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(180deg, rgba(18, 22, 30, 0.92), rgba(12, 15, 22, 0.88)) padding-box,
+    conic-gradient(
+        from var(--eh-shine),
+        rgba(232, 220, 198, 0.55),
+        rgba(255, 255, 255, 0.06) 18%,
+        rgba(120, 170, 220, 0.45) 36%,
+        rgba(255, 255, 255, 0.05) 55%,
+        rgba(212, 184, 140, 0.5) 72%,
+        rgba(255, 255, 255, 0.06) 88%,
+        rgba(232, 220, 198, 0.55)
+      )
+      border-box;
+  backdrop-filter: blur(10px);
+  animation: eh-border-shine 7s linear infinite;
+  transition: background 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.eh-security-card::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 28%,
+    rgba(232, 220, 198, 0.12) 47%,
+    rgba(148, 180, 220, 0.1) 52%,
+    transparent 72%
+  );
+  background-size: 240% 100%;
+  opacity: 0.45;
+  animation: eh-sheen-flow 6.5s ease-in-out infinite;
+}
+
+.eh-security-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.eh-security-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.55);
+}
+
+.eh-security-card:hover::before {
+  opacity: 0.85;
+}
+
+@keyframes eh-aurora-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.8;
+  }
+  33% {
+    transform: translate3d(5%, -4%, 0) scale(1.08);
+    opacity: 1;
+  }
+  66% {
+    transform: translate3d(-4%, 5%, 0) scale(1.04);
+    opacity: 0.88;
+  }
+}
+
+@keyframes eh-sheen-flow {
+  0% {
+    background-position: 130% 0;
+  }
+  100% {
+    background-position: -130% 0;
+  }
+}
+
+@keyframes eh-sheen-diag {
+  0%,
+  100% {
+    background-position: 0% 0%;
+    opacity: 0.45;
+  }
+  50% {
+    background-position: 100% 100%;
+    opacity: 0.85;
+  }
+}
+
+@keyframes eh-border-shine {
+  to {
+    --eh-shine: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eh-security-aurora,
+  .eh-security-sheen,
+  .eh-security-sheen-secondary,
+  .eh-security-card,
+  .eh-security-card::before,
+  .eh-auth-aurora,
+  .eh-auth-sheen,
+  .eh-auth-sheen-secondary {
+    animation: none;
+  }
+
+  .eh-security-card:hover {
+    transform: none;
+  }
 }
 
 .eh-wash-cta {
@@ -342,6 +573,141 @@ body {
   color-scheme: dark;
 }
 
+/* Leaflet lot map */
+.eh-lots-map .leaflet-container {
+  background: #070b12;
+  font: inherit;
+}
+
+.eh-lots-map .leaflet-tile-pane {
+  /* Dark OLED look from free OSM tiles — без API-ключа */
+  filter: invert(0.9) hue-rotate(180deg) brightness(0.95) contrast(1.05) saturate(0.55);
+}
+
+.eh-lots-map .leaflet-control-attribution {
+  background: rgba(5, 7, 11, 0.72) !important;
+  color: #64748b;
+  font-size: 10px;
+  backdrop-filter: blur(6px);
+}
+
+.eh-lots-map .leaflet-control-attribution a {
+  color: #94a3b8;
+}
+
+.eh-lots-map .leaflet-control-zoom a {
+  background: rgba(10, 12, 18, 0.92) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #e2e8f0 !important;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+}
+
+.eh-lots-map .leaflet-control-zoom a:hover {
+  background: rgba(37, 99, 235, 0.35) !important;
+  color: #fff !important;
+}
+
+.eh-lot-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.eh-map-tooltip {
+  background: rgba(10, 12, 18, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 8px !important;
+  color: #e2e8f0 !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45) !important;
+  font-size: 12px !important;
+  padding: 6px 10px !important;
+}
+
+.eh-map-tooltip.leaflet-tooltip-top::before {
+  border-top-color: rgba(10, 12, 18, 0.95) !important;
+}
+
+/* Auth (/login, /register): aurora + переливание */
+.eh-auth {
+  background:
+    radial-gradient(ellipse 75% 55% at 50% -8%, rgba(212, 184, 140, 0.2), transparent 58%),
+    radial-gradient(ellipse 50% 40% at 100% 80%, rgba(72, 140, 210, 0.12), transparent 55%),
+    linear-gradient(165deg, #05070b 0%, #0a0d14 50%, #06080c 100%);
+}
+
+.eh-auth-fx {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.eh-auth-aurora {
+  pointer-events: none;
+  position: absolute;
+  inset: -30%;
+  background:
+    radial-gradient(ellipse 42% 38% at 20% 32%, rgba(212, 184, 140, 0.45), transparent 58%),
+    radial-gradient(ellipse 38% 42% at 78% 24%, rgba(72, 140, 210, 0.38), transparent 60%),
+    radial-gradient(ellipse 48% 36% at 48% 88%, rgba(100, 120, 180, 0.28), transparent 62%),
+    radial-gradient(ellipse 32% 32% at 68% 55%, rgba(232, 220, 198, 0.2), transparent 58%);
+  filter: blur(12px);
+  animation: eh-aurora-drift 16s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.eh-auth-sheen {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    118deg,
+    transparent 0%,
+    transparent 36%,
+    rgba(232, 220, 198, 0.18) 46%,
+    rgba(170, 200, 235, 0.16) 50%,
+    rgba(232, 220, 198, 0.14) 54%,
+    transparent 64%,
+    transparent 100%
+  );
+  background-size: 260% 100%;
+  animation: eh-sheen-flow 8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  mix-blend-mode: soft-light;
+}
+
+.eh-auth-sheen-secondary {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    155deg,
+    transparent 0%,
+    transparent 42%,
+    rgba(120, 170, 220, 0.12) 50%,
+    transparent 58%,
+    transparent 100%
+  );
+  background-size: 200% 200%;
+  animation: eh-sheen-diag 14s ease-in-out infinite;
+  mix-blend-mode: screen;
+  opacity: 0.85;
+}
+
+.eh-auth-grid {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  background-image:
+    linear-gradient(rgba(232, 220, 198, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232, 220, 198, 0.14) 1px, transparent 1px);
+  background-size: 72px 72px;
+  -webkit-mask-image: radial-gradient(ellipse 78% 68% at 50% 42%, #000 8%, transparent 74%);
+  mask-image: radial-gradient(ellipse 78% 68% at 50% 42%, #000 8%, transparent 74%);
+}
+
 .eh-term-input {
   width: 100%;
   border-radius: 0.5rem;
@@ -351,6 +717,27 @@ body {
   color: #e8eaed;
   outline: none;
   transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.eh-panel-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  border-radius: 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.45rem 0.7rem;
+  font-size: 11px;
+  font-weight: 500;
+  color: #94a3b8;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.eh-panel-btn:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .eh-term-input::placeholder {

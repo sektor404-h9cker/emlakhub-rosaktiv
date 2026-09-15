@@ -2,7 +2,8 @@
  * =============================================================================
  * DEMO LOTS — имитация спарсенных лотов (интерфейс до реального парсера)
  * =============================================================================
- * Поля как у продакшн-карты: реестр, тип, скоринг, цены, Vision-дефекты, NLP.
+ * Поля как у продакшн-карты: реестр, тип, скоринг, цены, Vision-дефекты, NLP,
+ * гео (карта), город/район.
  * =============================================================================
  */
 
@@ -37,6 +38,12 @@ export const DEMO_LOTS = [
     aiSummaryAz: "Bazar qiyməti start qiymətindən yüksəkdir. Kuzov riskləri məhduddur.",
     aiSummaryRu: "Рыночная цена выше стартовой. Кузовные риски ограничены.",
     redFlags: false,
+    cityAz: "Bakı",
+    cityRu: "Баку",
+    districtAz: "Nəsimi",
+    districtRu: "Насими",
+    lat: 40.385,
+    lng: 49.835,
   },
   {
     id: "AUTO-GLS",
@@ -63,6 +70,12 @@ export const DEMO_LOTS = [
     aiSummaryAz: "Analoji lotlarla müqayisədə start qiyməti əlverişlidir. Qırmızı bayraq yoxdur.",
     aiSummaryRu: "Стартовая цена выгодна относительно аналогов. Красных флагов нет.",
     redFlags: false,
+    cityAz: "Bakı",
+    cityRu: "Баку",
+    districtAz: "Xətai",
+    districtRu: "Хатаи",
+    lat: 40.378,
+    lng: 49.872,
   },
   {
     id: "AUTO-320",
@@ -92,6 +105,12 @@ export const DEMO_LOTS = [
     aiSummaryAz: "Təmir ehtiyatı marjanı azaldır — stavkanı ehtiyatla seçin.",
     aiSummaryRu: "Резерв на ремонт снижает маржу — ставку выбирайте осторожно.",
     redFlags: false,
+    cityAz: "Sumqayıt",
+    cityRu: "Сумгаит",
+    districtAz: "Mərkəz",
+    districtRu: "Центр",
+    lat: 40.589,
+    lng: 49.669,
   },
   {
     id: "AUTO-RR",
@@ -121,6 +140,12 @@ export const DEMO_LOTS = [
     aiSummaryAz: "Hüquqi risk yüksəkdir — ekspert yoxlaması tövsiyə olunur.",
     aiSummaryRu: "Юридический риск высокий — рекомендуется экспертная проверка.",
     redFlags: true,
+    cityAz: "Bakı",
+    cityRu: "Баку",
+    districtAz: "Binəqədi",
+    districtRu: "Бинагади",
+    lat: 40.432,
+    lng: 49.812,
   },
   {
     id: "EST-NAR-3",
@@ -152,6 +177,12 @@ export const DEMO_LOTS = [
     aiSummaryAz: "Lokasiya güclüdür; hüquqi yüklər marjanı sıxır.",
     aiSummaryRu: "Локация сильная; юридические обременения сжимают маржу.",
     redFlags: true,
+    cityAz: "Bakı",
+    cityRu: "Баку",
+    districtAz: "Nərimanov",
+    districtRu: "Нариманов",
+    lat: 40.402,
+    lng: 49.868,
   },
   {
     id: "EST-YAS-2",
@@ -181,6 +212,12 @@ export const DEMO_LOTS = [
     aiSummaryAz: "Stabil giriş səviyyəsi; marja orta.",
     aiSummaryRu: "Стабильный входной уровень; маржа средняя.",
     redFlags: false,
+    cityAz: "Bakı",
+    cityRu: "Баку",
+    districtAz: "Yasamal",
+    districtRu: "Ясамал",
+    lat: 40.389,
+    lng: 49.808,
   },
   {
     id: "EST-HOUSE-1",
@@ -210,6 +247,12 @@ export const DEMO_LOTS = [
     aiSummaryAz: "Yüksək potensial; təmir büdcəsini rezervə alın.",
     aiSummaryRu: "Высокий потенциал; заложите бюджет на ремонт.",
     redFlags: false,
+    cityAz: "Bakı",
+    cityRu: "Баку",
+    districtAz: "Xəzər",
+    districtRu: "Хазар",
+    lat: 40.372,
+    lng: 50.005,
   },
   {
     id: "EST-OFF-1",
@@ -239,6 +282,12 @@ export const DEMO_LOTS = [
     aiSummaryAz: "Kommersiya axını yaxşıdır; likvidlik orta.",
     aiSummaryRu: "Коммерческий поток хороший; ликвидность средняя.",
     redFlags: false,
+    cityAz: "Bakı",
+    cityRu: "Баку",
+    districtAz: "Nəsimi",
+    districtRu: "Насими",
+    lat: 40.380,
+    lng: 49.848,
   },
 ];
 
@@ -253,4 +302,16 @@ export function lotType(lot, locale) {
 
 export function lotAiSummary(lot, locale) {
   return locale === "az" ? lot.aiSummaryAz : lot.aiSummaryRu;
+}
+
+export function lotCity(lot, locale) {
+  return locale === "az" ? lot.cityAz : lot.cityRu;
+}
+
+export function lotDistrict(lot, locale) {
+  return locale === "az" ? lot.districtAz : lot.districtRu;
+}
+
+export function getLotById(id) {
+  return DEMO_LOTS.find((l) => l.id === id) || null;
 }

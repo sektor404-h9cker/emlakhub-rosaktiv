@@ -8,7 +8,7 @@
  * =============================================================================
  */
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   X,
@@ -20,10 +20,14 @@ import {
   Scale,
   Gavel,
   Flag,
+  GitCompare,
+  Briefcase,
 } from "lucide-react";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 import { getTerminalDict } from "@/lib/i18n/terminalDict";
+import { useTerminalPanel } from "@/context/TerminalPanelContext";
 import { lotAiSummary, lotTitle } from "@/data/demoLots";
+import { HERRAC_URL } from "@/lib/constants";
 import VisionOverlay from "./VisionOverlay";
 
 const STAGES = [
@@ -37,20 +41,27 @@ const STAGES = [
 export default function LotDetailModal({ lot, open, onClose }) {
   const { locale } = useLocale();
   const t = getTerminalDict(locale);
+  const {
+    isWatched,
+    toggleWatch,
+    isCompared,
+    toggleCompare,
+    addDealFromLot,
+  } = useTerminalPanel();
   const [stage, setStage] = useState("explore");
-  const [showCalc, setShowCalc] = useState(false);
+  const [showCalc, setShowCalc] = useState(true);
 
   const market = lot?.marketPrice || 0;
   const start = lot?.startPrice || Math.round(market * 0.85);
-  const fees = lot?.fees || Math.round(start * 0.03);
-  const repair = lot?.repairCost || 0;
   const [bid, setBid] = useState(start);
+  const [repairAdj, setRepairAdj] = useState(lot?.repairCost || 0);
 
   useEffect(() => {
     if (lot) {
       setBid(lot.startPrice || Math.round((lot.marketPrice || 0) * 0.85));
+      setRepairAdj(lot.repairCost || 0);
       setStage("explore");
-      setShowCalc(false);
+      setShowCalc(true);
     }
   }, [lot?.id]);
 
@@ -65,13 +76,20 @@ export default function LotDetailModal({ lot, open, onClose }) {
     };
   }, [open, onClose]);
 
-  const profit = useMemo(
-    () => market - bid - repair - fees,
-    [market, bid, repair, fees]
-  );
   const deposit = Math.round(bid * 0.1);
+  const feeLive = Math.round(bid * 0.03);
+  const profit = market - bid - repairAdj - feeLive;
+
+  const applyScenario = (kind) => {
+    if (kind === "safe") setBid(Math.round(start * 0.92));
+    else if (kind === "agg") setBid(Math.min(market, Math.round(start * 1.08)));
+    else setBid(start);
+  };
 
   if (!lot) return null;
+
+  const watched = isWatched(lot.id);
+  const compared = isCompared(lot.id);
 
   return (
     <AnimatePresence>
@@ -170,14 +188,12 @@ export default function LotDetailModal({ lot, open, onClose }) {
                     />
                     <Row
                       label={t.auctionFee}
-                      value={`−₼ ${fees.toLocaleString("en-US")}`}
+                      value={`−₼ ${feeLive.toLocaleString("en-US")}`}
                     />
-                    {repair > 0 ? (
-                      <Row
-                        label={locale === "az" ? "Təmir" : "Ремонт"}
-                        value={`−₼ ${repair.toLocaleString("en-US")}`}
-                      />
-                    ) : null}
+                    <Row
+                      label={t.repairLabel}
+                      value={`−₼ ${repairAdj.toLocaleString("en-US")}`}
+                    />
                     <div className="flex items-center justify-between border-t border-white/10 pt-2">
                       <span className="text-[#94a3b8]">{t.predictedProfit}</span>
                       <span
@@ -192,22 +208,60 @@ export default function LotDetailModal({ lot, open, onClose }) {
                   </div>
 
                   {showCalc ? (
-                    <div className="mt-4 border-t border-white/10 pt-3">
-                      <div className="mb-2 flex justify-between text-[11px] text-[#64748b]">
-                        <span>{locale === "az" ? "Stavka" : "Ставка"}</span>
-                        <span className="font-mono text-white">
-                          ₼ {bid.toLocaleString("en-US")}
-                        </span>
+                    <div className="mt-4 space-y-3 border-t border-white/10 pt-3">
+                      <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#64748b]">
+                        {t.offerCalc}
                       </div>
-                      <input
-                        type="range"
-                        min={Math.round(start * 0.7)}
-                        max={market}
-                        step={100}
-                        value={bid}
-                        onChange={(e) => setBid(Number(e.target.value))}
-                        className="eh-term-range w-full"
-                      />
+                      <div className="flex flex-wrap gap-1.5">
+                        {[
+                          { id: "safe", label: t.scenarioSafe },
+                          { id: "base", label: t.scenarioBase },
+                          { id: "agg", label: t.scenarioAgg },
+                        ].map((s) => (
+                          <button
+                            key={s.id}
+                            type="button"
+                            onClick={() => applyScenario(s.id)}
+                            className="rounded-lg border border-white/10 px-2 py-1 text-[10px] font-medium text-[#94a3b8] hover:border-[#2563eb]/50 hover:text-white"
+                          >
+                            {s.label}
+                          </button>
+                        ))}
+                      </div>
+                      <div>
+                        <div className="mb-1.5 flex justify-between text-[11px] text-[#64748b]">
+                          <span>{t.bidLabel}</span>
+                          <span className="font-mono text-white">
+                            ₼ {bid.toLocaleString("en-US")}
+                          </span>
+                        </div>
+                        <input
+                          type="range"
+                          min={Math.round(start * 0.7)}
+                          max={market}
+                          step={100}
+                          value={bid}
+                          onChange={(e) => setBid(Number(e.target.value))}
+                          className="eh-term-range w-full"
+                        />
+                      </div>
+                      <div>
+                        <div className="mb-1.5 flex justify-between text-[11px] text-[#64748b]">
+                          <span>{t.repairLabel}</span>
+                          <span className="font-mono text-white">
+                            ₼ {repairAdj.toLocaleString("en-US")}
+                          </span>
+                        </div>
+                        <input
+                          type="range"
+                          min={0}
+                          max={Math.max((lot.repairCost || 0) * 2, 5000)}
+                          step={100}
+                          value={repairAdj}
+                          onChange={(e) => setRepairAdj(Number(e.target.value))}
+                          className="eh-term-range w-full"
+                        />
+                      </div>
                     </div>
                   ) : null}
                 </div>
@@ -225,12 +279,38 @@ export default function LotDetailModal({ lot, open, onClose }) {
                     {lotTitle(lot, locale)}
                   </h2>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap justify-end gap-2">
                   <button
                     type="button"
-                    className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 text-[#94a3b8] hover:text-white"
+                    onClick={() => toggleWatch(lot.id)}
+                    className={[
+                      "flex h-9 w-9 items-center justify-center rounded-xl border border-white/10",
+                      watched ? "text-amber-400" : "text-[#94a3b8] hover:text-white",
+                    ].join(" ")}
+                    title={t.navWatchlist}
                   >
-                    <Bookmark size={16} />
+                    <Bookmark size={16} className={watched ? "fill-current" : ""} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => toggleCompare(lot.id)}
+                    className={[
+                      "flex h-9 items-center gap-1.5 rounded-xl border px-2.5 text-[11px]",
+                      compared
+                        ? "border-[#2563eb]/50 bg-[#2563eb]/15 text-[#93c5fd]"
+                        : "border-white/10 text-[#94a3b8] hover:text-white",
+                    ].join(" ")}
+                  >
+                    <GitCompare size={14} />
+                    {compared ? t.inCompare : t.addToCompare}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => addDealFromLot(lot.id, bid)}
+                    className="flex h-9 items-center gap-1.5 rounded-xl border border-white/10 px-2.5 text-[11px] text-[#94a3b8] hover:text-white"
+                  >
+                    <Briefcase size={14} />
+                    {t.addToPortfolio}
                   </button>
                   <button
                     type="button"
@@ -324,13 +404,20 @@ export default function LotDetailModal({ lot, open, onClose }) {
                 </div>
               ) : null}
 
-              <button
-                type="button"
-                className="mt-auto flex w-full items-center justify-center gap-2 rounded-2xl bg-[#2563eb] px-4 py-3.5 text-[14px] font-semibold text-white shadow-[0_16px_40px_-16px_rgba(37,99,235,0.9)] transition hover:bg-[#1d4ed8]"
-              >
-                {t.checklist}
-                <ExternalLink size={15} />
-              </button>
+              <div className="mt-auto space-y-2 pt-4">
+                <p className="text-center text-[11px] leading-relaxed text-[#64748b]">
+                  {t.herracDisclaimer}
+                </p>
+                <a
+                  href={HERRAC_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#2563eb] px-4 py-3.5 text-[14px] font-semibold text-white shadow-[0_16px_40px_-16px_rgba(37,99,235,0.9)] transition hover:bg-[#1d4ed8]"
+                >
+                  {t.openOnHerrac}
+                  <ExternalLink size={15} />
+                </a>
+              </div>
             </div>
           </motion.div>
         </motion.div>
