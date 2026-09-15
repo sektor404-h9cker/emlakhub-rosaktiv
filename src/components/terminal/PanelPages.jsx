@@ -47,11 +47,24 @@ function PageHeader({ title, hint }) {
   );
 }
 
-function EmptyState({ children }) {
+function EmptyState({ title, hint, href, cta }) {
   return (
-    <p className="rounded-2xl border border-dashed border-white/10 bg-white/[0.02] px-4 py-14 text-center text-[13px] text-[#64748b]">
-      {children}
-    </p>
+    <div className="rounded-2xl border border-dashed border-white/10 bg-gradient-to-b from-[#0d1524]/80 to-[#0a0c12] px-6 py-14 text-center">
+      <p className="text-[15px] font-medium text-white">{title}</p>
+      {hint ? (
+        <p className="mx-auto mt-2 max-w-md text-[13px] leading-relaxed text-[#64748b]">
+          {hint}
+        </p>
+      ) : null}
+      {href && cta ? (
+        <Link
+          href={href}
+          className="mt-5 inline-flex items-center justify-center rounded-xl bg-[#2563eb] px-4 py-2.5 text-[13px] font-semibold text-white shadow-[0_12px_28px_-14px_rgba(37,99,235,0.85)] transition hover:bg-[#1d4ed8]"
+        >
+          {cta}
+        </Link>
+      ) : null}
+    </div>
   );
 }
 
@@ -99,12 +112,12 @@ export function WatchlistPage() {
       <SectionGuide section="watchlist" />
       <PageHeader title={t.watchTitle} hint={t.watchHint} />
       {lots.length === 0 ? (
-        <EmptyState>
-          {t.watchEmpty}{" "}
-          <Link href="/dashboard" className="text-[#60a5fa] hover:underline">
-            → {t.navTerminal}
-          </Link>
-        </EmptyState>
+        <EmptyState
+          title={t.watchEmpty}
+          hint={t.watchEmptyHint}
+          href="/dashboard"
+          cta={t.watchEmptyCta}
+        />
       ) : (
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
           {lots.map((lot) => (
@@ -229,12 +242,12 @@ export function ComparePage() {
       </div>
 
       {lots.length < 2 ? (
-        <EmptyState>
-          {t.compareEmpty}{" "}
-          <Link href="/dashboard" className="text-[#60a5fa] hover:underline">
-            → {t.navTerminal}
-          </Link>
-        </EmptyState>
+        <EmptyState
+          title={t.compareEmpty}
+          hint={t.compareEmptyHint}
+          href="/dashboard"
+          cta={t.compareEmptyCta}
+        />
       ) : (
         <div className="overflow-x-auto rounded-2xl border border-white/10 bg-[#0a0c12]">
           <table className="w-full min-w-[640px] text-left text-[13px]">
@@ -391,8 +404,16 @@ export function PortfolioPage() {
 
             <div className="flex flex-1 flex-col gap-2.5 p-2.5">
               {byStage[stage.id].length === 0 ? (
-                <div className="rounded-xl border border-dashed border-white/10 px-3 py-8 text-center text-[12px] text-[#475569]">
-                  {t.portfolioEmptyCol}
+                <div className="rounded-xl border border-dashed border-white/10 px-3 py-6 text-center">
+                  <p className="text-[12px] text-[#475569]">{t.portfolioEmptyCol}</p>
+                  {stage.id === "explore" ? (
+                    <Link
+                      href="/dashboard"
+                      className="mt-2 inline-block text-[11px] font-medium text-[#93c5fd] hover:text-white"
+                    >
+                      {t.portfolioEmptyCta} →
+                    </Link>
+                  ) : null}
                 </div>
               ) : (
                 byStage[stage.id].map((deal) => {
@@ -535,20 +556,16 @@ export function MapPage() {
         <div className="flex max-h-[420px] flex-col rounded-2xl border border-white/10 bg-[#0a0c12] lg:max-h-none">
           <div className="border-b border-white/[0.06] px-4 py-3">
             <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#64748b]">
-              {focusLot
-                ? t.openLot
-                : locale === "az"
-                  ? "Lot seçin"
-                  : "Выберите лот"}
+              {focusLot ? t.openLot : t.mapPickLot}
             </div>
             <div className="mt-2 flex gap-3 text-[11px] text-[#64748b]">
               <span className="inline-flex items-center gap-1.5">
                 <span className="h-2 w-2 rounded-full bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.7)]" />
-                Auto
+                {t.mapLegendAuto}
               </span>
               <span className="inline-flex items-center gap-1.5">
                 <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.7)]" />
-                Estate
+                {t.mapLegendEstate}
               </span>
               <span className="ml-auto font-mono tabular-nums text-[#475569]">
                 {DEMO_LOTS.length}

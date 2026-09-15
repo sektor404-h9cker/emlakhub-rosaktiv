@@ -30,6 +30,8 @@ import { useTerminalPanel } from "@/context/TerminalPanelContext";
 import { lotAiSummary, lotTitle } from "@/data/demoLots";
 import { HERRAC_URL } from "@/lib/constants";
 import VisionOverlay from "./VisionOverlay";
+import TermHint from "./TermHint";
+import HerracNextSteps from "./HerracNextSteps";
 
 const STAGES = [
   { id: "explore", icon: Search, labelKey: "stageExplore" },
@@ -133,6 +135,10 @@ export default function LotDetailModal({ lot, open, onClose }) {
                   className="h-full w-full object-cover"
                 />
                 <VisionOverlay defects={lot.defects || []} />
+                <div className="absolute bottom-2 left-2 z-20 inline-flex items-center rounded-lg bg-black/70 px-2 py-1 text-[10px] font-medium text-[#e8d5b0] backdrop-blur-sm">
+                  Vision
+                  <TermHint text={t.tipVision} />
+                </div>
               </div>
 
               <div className="space-y-3 overflow-auto p-4">
@@ -154,19 +160,26 @@ export default function LotDetailModal({ lot, open, onClose }) {
                     </div>
                   </div>
                   <div className="mt-3 flex items-end justify-between border-t border-white/5 pt-3">
-                    <span className="text-[11px] text-[#64748b]">{t.opportunityScore}</span>
+                    <span className="inline-flex items-center text-[11px] text-[#64748b]">
+                      {t.opportunityScore}
+                      <TermHint text={t.tipScore} />
+                    </span>
                     <span className="font-mono text-[22px] tabular-nums text-white">
                       {lot.opportunityScore ?? lot.score}
                       <span className="text-[13px] text-[#64748b]">/100</span>
                     </span>
                   </div>
+                  <p className="mt-2 text-[11px] leading-relaxed text-[#64748b]">
+                    {t.scoreExplain}
+                  </p>
                 </div>
 
                 <div className="rounded-2xl border border-white/10 bg-[#0d0f14] p-4">
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#64748b]">
+                      <div className="inline-flex items-center text-[10px] font-semibold uppercase tracking-[0.16em] text-[#64748b]">
                         {t.estProfit}
+                        <TermHint text={t.tipProfit} />
                       </div>
                       <div
                         className={[
@@ -177,6 +190,9 @@ export default function LotDetailModal({ lot, open, onClose }) {
                         {profit >= 0 ? "+" : "−"}₼{" "}
                         {Math.abs(profit).toLocaleString("en-US")}
                       </div>
+                      <p className="mt-1.5 max-w-[220px] text-[11px] leading-relaxed text-[#64748b]">
+                        {t.profitExplain}
+                      </p>
                     </div>
                     <button
                       type="button"
@@ -359,7 +375,12 @@ export default function LotDetailModal({ lot, open, onClose }) {
                   accent="orange"
                 />
                 <PriceCard
-                  label={t.deposit}
+                  label={
+                    <span className="inline-flex items-center">
+                      {t.deposit}
+                      <TermHint text={t.tipDeposit} />
+                    </span>
+                  }
                   value={deposit}
                   accent="blue"
                 />
@@ -411,7 +432,8 @@ export default function LotDetailModal({ lot, open, onClose }) {
                 </div>
               ) : null}
 
-              <div className="mt-auto space-y-2 pt-4">
+              <div className="mt-auto space-y-3 pt-4">
+                <HerracNextSteps showCta={false} />
                 <p className="text-center text-[11px] leading-relaxed text-[#64748b]">
                   {t.herracDisclaimer}
                 </p>

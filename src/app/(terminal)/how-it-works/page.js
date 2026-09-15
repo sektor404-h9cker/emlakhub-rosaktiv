@@ -10,6 +10,7 @@ import { useLocale } from "@/lib/i18n/LocaleProvider";
 import { getTerminalDict } from "@/lib/i18n/terminalDict";
 import { HERRAC_URL } from "@/lib/constants";
 import SectionGuide from "@/components/terminal/SectionGuide";
+import SimplePath from "@/components/terminal/SimplePath";
 import { useTerminalPanel } from "@/context/TerminalPanelContext";
 
 const HUB_STEPS = [
@@ -66,6 +67,8 @@ export default function HowItWorksPage() {
           {t.howHintLong}
         </p>
       </div>
+
+      <SimplePath />
 
       <div className="grid gap-3 sm:grid-cols-2">
         <div className="rounded-2xl border border-[#2563eb]/35 bg-[#0d1524] p-4">

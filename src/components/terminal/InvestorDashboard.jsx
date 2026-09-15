@@ -24,6 +24,8 @@ import { getTerminalDict } from "@/lib/i18n/terminalDict";
 import { useTerminalPanel } from "@/context/TerminalPanelContext";
 import LotDetailModal from "./LotDetailModal";
 import SectionGuide from "./SectionGuide";
+import SimplePath from "./SimplePath";
+import TermHint from "./TermHint";
 
 export default function InvestorDashboard() {
   const { locale } = useLocale();
@@ -77,16 +79,7 @@ export default function InvestorDashboard() {
         </div>
       ) : null}
 
-      {/* Status pills */}
-      <div className="flex flex-wrap gap-2">
-        <Pill>{t.beta}</Pill>
-        <Pill>
-          {t.aiSynced}: {DEMO_LOTS.length} / {DEMO_LOTS.length}
-        </Pill>
-        <Pill>
-          {t.mlSync}: 7 {locale === "az" ? "dəq əvvəl" : "мин назад"}
-        </Pill>
-      </div>
+      <SimplePath />
 
       {/* KPI */}
       <div className="grid gap-3 sm:grid-cols-3">
@@ -97,7 +90,12 @@ export default function InvestorDashboard() {
           tone="blue"
         />
         <Kpi
-          label={t.avgMargin}
+          label={
+            <>
+              {t.avgMargin}
+              <TermHint text={t.tipMargin} />
+            </>
+          }
           value={`~${avgMargin.toFixed(0)}%`}
           icon={TrendingUp}
           tone="green"
@@ -158,9 +156,19 @@ export default function InvestorDashboard() {
 
       {/* Lot grid */}
       {filtered.length === 0 ? (
-        <p className="rounded-2xl border border-white/10 bg-white/[0.02] px-4 py-12 text-center text-[13px] text-[#64748b]">
-          {t.emptyLots}
-        </p>
+        <div className="rounded-2xl border border-dashed border-white/10 bg-[#0a0c12]/80 px-6 py-12 text-center">
+          <p className="text-[14px] text-[#94a3b8]">{t.emptyLots}</p>
+          <button
+            type="button"
+            onClick={() => {
+              setMarket("all");
+              setQuery("");
+            }}
+            className="mt-4 inline-flex rounded-xl border border-white/10 px-4 py-2 text-[13px] text-[#93c5fd] hover:bg-white/[0.04]"
+          >
+            {t.marketAll}
+          </button>
+        </div>
       ) : (
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
           {filtered.map((lot) => (
@@ -195,13 +203,19 @@ export default function InvestorDashboard() {
                   </div>
                   <div className="mt-3 flex items-center justify-between gap-2">
                     <div>
-                      <div className="text-[10px] text-[#64748b]">{t.score}</div>
+                      <div className="text-[10px] text-[#64748b]">
+                        {t.score}
+                        <TermHint text={t.tipScore} />
+                      </div>
                       <div className="font-mono text-[15px] tabular-nums text-white">
                         {lot.score}
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-[10px] text-[#64748b]">{t.profit}</div>
+                      <div className="text-[10px] text-[#64748b]">
+                        {t.profit}
+                        <TermHint text={t.tipProfit} />
+                      </div>
                       <div className="font-mono text-[15px] tabular-nums text-emerald-400">
                         +₼ {lot.expectedProfit.toLocaleString("en-US")}
                       </div>
@@ -254,14 +268,6 @@ export default function InvestorDashboard() {
   );
 }
 
-function Pill({ children }) {
-  return (
-    <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[11px] text-[#94a3b8]">
-      {children}
-    </span>
-  );
-}
-
 function Kpi({ label, value, icon: Icon, tone }) {
   const toneCls =
     tone === "green"
@@ -272,7 +278,7 @@ function Kpi({ label, value, icon: Icon, tone }) {
   return (
     <div className="rounded-2xl border border-white/10 bg-[#0a0c12] p-4 sm:p-5">
       <div className="flex items-start justify-between">
-        <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#64748b]">
+        <div className="flex items-center text-[11px] font-medium uppercase tracking-[0.14em] text-[#64748b]">
           {label}
         </div>
         <Icon size={18} className={toneCls} strokeWidth={1.6} />

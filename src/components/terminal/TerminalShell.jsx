@@ -262,7 +262,7 @@ export default function TerminalShell({
                 ))}
               </div>
 
-              <div className="hidden items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 xl:flex">
+              <div className="hidden items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 xl:flex" title={t.balanceHint}>
                 <span className="text-[11px] text-[#64748b]">{t.balance}</span>
                 <span className="font-mono text-[13px] tabular-nums text-white">
                   ₼ {balance.toLocaleString("en-US")}
