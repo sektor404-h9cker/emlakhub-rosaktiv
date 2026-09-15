@@ -143,29 +143,33 @@ export default function InvestorDashboard() {
 
       {/* Search + wishes */}
       <section className="overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0a0c12]">
-        <div className="flex flex-col gap-3 border-b border-white/[0.06] p-3 sm:flex-row sm:items-center sm:p-4">
-          <div className="relative min-w-0 flex-1">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center border-r border-white/[0.08]">
-              <Search size={17} strokeWidth={2.2} className="text-[#93c5fd]" />
-            </div>
+        <div className="flex flex-col gap-3 border-b border-white/[0.06] p-3 sm:flex-row sm:items-stretch sm:p-4">
+          <label className="eh-search group flex min-h-12 min-w-0 flex-1 items-stretch overflow-hidden rounded-xl border border-white/12 bg-[#05070b] transition focus-within:border-[#3b82f6]/70 focus-within:shadow-[0_0_0_3px_rgba(37,99,235,0.18)]">
+            <span className="flex w-12 shrink-0 items-center justify-center border-r border-white/10 bg-[#0d1524] text-[#60a5fa] transition group-focus-within:bg-[#132033] group-focus-within:text-[#93c5fd]">
+              <Search size={18} strokeWidth={2.4} aria-hidden />
+            </span>
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={t.search}
-              className="eh-term-input h-12 w-full rounded-xl border-white/10 bg-[#05070b] pl-[3.25rem] pr-11 text-[14px] placeholder:text-[#64748b]"
+              className="min-w-0 flex-1 border-0 bg-transparent px-3.5 text-[14px] text-white outline-none placeholder:text-[#64748b]"
             />
             {query ? (
               <button
                 type="button"
                 onClick={() => setQuery("")}
-                className="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-lg text-[#94a3b8] hover:bg-white/[0.06] hover:text-white"
+                className="m-1.5 flex h-8 w-8 shrink-0 items-center justify-center self-center rounded-lg text-[#94a3b8] hover:bg-white/[0.06] hover:text-white"
                 aria-label="clear"
               >
                 <X size={15} />
               </button>
-            ) : null}
-          </div>
-          <div className="flex shrink-0 rounded-xl border border-white/10 bg-[#05070b] p-1">
+            ) : (
+              <span className="hidden shrink-0 items-center self-center pr-3 text-[11px] text-[#475569] sm:inline-flex">
+                ⌘K
+              </span>
+            )}
+          </label>
+          <div className="flex shrink-0 items-stretch rounded-xl border border-white/10 bg-[#05070b] p-1">
             {[
               { key: "all", label: t.marketAll },
               { key: "auto", label: t.marketAuto },
@@ -176,7 +180,7 @@ export default function InvestorDashboard() {
                 type="button"
                 onClick={() => setMarket(m.key)}
                 className={[
-                  "rounded-lg px-3.5 py-2.5 text-[12px] font-medium transition",
+                  "rounded-lg px-3.5 text-[12px] font-medium transition",
                   market === m.key
                     ? "bg-[#2563eb] text-white shadow-[0_8px_20px_-10px_rgba(37,99,235,0.9)]"
                     : "text-[#94a3b8] hover:text-white",
