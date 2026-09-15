@@ -6,12 +6,12 @@
 
 export const SECTION_GUIDE = {
   dashboard: {
-    whyAz: "Burada hərrac lotlarını oxuyursunuz: skor, marja, foto. Təklif vermək üçün herrac.gov.az lazımdır.",
-    whyRu: "Здесь вы читаете лоты аукционов: скор, маржа, фото. Чтобы сделать ставку — нужен herrac.gov.az.",
-    nextAz: "Maraqlı lotu ☆ ilə izləyin və ya kartı açıb kalkulyatora baxın.",
-    nextRu: "Интересный лот сохраните ★ или откройте карточку и калькулятор.",
-    tipAz: "Skor 60+ — diqqətə dəyər siqnal, zəmanət deyil.",
-    tipRu: "Скор 60+ — сигнал внимания, не гарантия.",
+    whyAz: "Burada hərrac lotlarına baxırsınız: qiymət, təxmini qazanc, foto. Stavka vermək üçün herrac.gov.az lazımdır.",
+    whyRu: "Здесь вы смотрите лоты аукционов: оценка, примерная выгода, фото. Чтобы сделать ставку — нужен herrac.gov.az.",
+    nextAz: "Maraqlı lota ☆ basın və ya kartı açıb hesabı görün.",
+    nextRu: "Понравившийся лот сохраните ★ или откройте карточку и расчёт.",
+    tipAz: "Qiymət 60+ — baxmağa dəyər. Bu qələbə vədi deyil.",
+    tipRu: "Оценка 60+ — стоит посмотреть. Это не обещание победы.",
   },
   map: {
     whyAz: "Lotların harada olduğunu bir baxışda görün — Bakı və Sumqayıt.",
@@ -195,9 +195,9 @@ export const TOUR_STEPS = [
 ];
 
 export const FLOW_PATH = [
-  { href: "/dashboard", az: "Lotlara baxın (Hub)", ru: "Смотрите лоты (Hub)" },
-  { href: "/watchlist", az: "İzləyin və müqayisə edin", ru: "Избранное и сравнение" },
-  { href: "/portfolio", az: "Portfeldə qeyd edin", ru: "Зафиксируйте в портфеле" },
+  { href: "/dashboard", az: "Lotlara baxın", ru: "Смотрите лоты" },
+  { href: "/watchlist", az: "Bəyəndiklərinizi saxlayın", ru: "Сохраните понравившиеся" },
+  { href: "/portfolio", az: "Qərarı qeyd edin", ru: "Зафиксируйте решение" },
   { href: "https://herrac.gov.az/", az: "Təklifi herrac.gov.az-da verin", ru: "Ставку — на herrac.gov.az" },
-  { href: "/support", az: "Sual → Dəstək", ru: "Вопрос → Поддержка" },
+  { href: "/support", az: "Sualınız varsa — yazın", ru: "Есть вопрос — напишите" },
 ];

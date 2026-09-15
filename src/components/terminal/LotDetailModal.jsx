@@ -123,10 +123,10 @@ export default function LotDetailModal({ lot, open, onClose }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.98 }}
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-            className="relative z-10 grid max-h-[92dvh] w-full max-w-[1100px] overflow-hidden rounded-3xl border border-white/10 bg-[#0a0c12] shadow-[0_40px_100px_-30px_rgba(0,0,0,0.85)] lg:grid-cols-[380px_1fr]"
+            className="relative z-10 grid max-h-[92dvh] w-full max-w-[1100px] overflow-hidden rounded-3xl border border-white/10 bg-[#0a0c12] shadow-[0_40px_100px_-30px_rgba(0,0,0,0.85)] lg:grid-cols-[380px_1fr] lg:grid-rows-1"
           >
             {/* LEFT */}
-            <div className="flex min-h-0 flex-col border-b border-white/10 lg:border-b-0 lg:border-r lg:border-white/10">
+            <div className="flex min-h-0 max-h-[42dvh] flex-col border-b border-white/10 lg:max-h-[92dvh] lg:border-b-0 lg:border-r lg:border-white/10">
               <div className="relative aspect-[16/11] shrink-0 overflow-hidden bg-[#111]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -136,12 +136,12 @@ export default function LotDetailModal({ lot, open, onClose }) {
                 />
                 <VisionOverlay defects={lot.defects || []} />
                 <div className="absolute bottom-2 left-2 z-20 inline-flex items-center rounded-lg bg-black/70 px-2 py-1 text-[10px] font-medium text-[#e8d5b0] backdrop-blur-sm">
-                  Vision
+                  {t.visionLabel}
                   <TermHint text={t.tipVision} />
                 </div>
               </div>
 
-              <div className="space-y-3 overflow-auto p-4">
+              <div className="eh-modal-scroll relative min-h-0 flex-1 space-y-3 overflow-y-auto overscroll-contain p-4">
                 <div className="rounded-2xl border border-[#1e3a5f]/60 bg-[#0d1524] p-4">
                   <div className="flex items-start gap-2">
                     <CheckCircle2
@@ -292,7 +292,8 @@ export default function LotDetailModal({ lot, open, onClose }) {
             </div>
 
             {/* RIGHT */}
-            <div className="flex min-h-0 flex-col overflow-auto p-5 sm:p-6">
+            <div className="flex min-h-0 max-h-[50dvh] flex-col lg:max-h-[92dvh]">
+              <div className="shrink-0 border-b border-white/[0.06] px-5 pb-4 pt-5 sm:px-6 sm:pt-6">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <span className="inline-flex rounded-full bg-[#1d4ed8]/90 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-white">
@@ -345,7 +346,7 @@ export default function LotDetailModal({ lot, open, onClose }) {
                 </div>
               </div>
 
-              <div className="mt-5 flex flex-wrap gap-2">
+              <div className="mt-4 flex flex-wrap gap-2">
                 {STAGES.map((s) => {
                   const Icon = s.icon;
                   const active = stage === s.id;
@@ -367,8 +368,10 @@ export default function LotDetailModal({ lot, open, onClose }) {
                   );
                 })}
               </div>
+              </div>
 
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              <div className="eh-modal-scroll relative min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-4 sm:px-6">
+              <div className="grid gap-3 sm:grid-cols-2">
                 <PriceCard
                   label={t.startPrice}
                   value={start}
@@ -411,6 +414,9 @@ export default function LotDetailModal({ lot, open, onClose }) {
               {/* NLP риски */}
               {lot.legalRisks?.length ? (
                 <div className="mt-4 space-y-2">
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#64748b]">
+                    {t.risksTitle}
+                  </div>
                   {lot.legalRisks.map((r, i) => (
                     <div
                       key={i}
@@ -432,9 +438,13 @@ export default function LotDetailModal({ lot, open, onClose }) {
                 </div>
               ) : null}
 
-              <div className="mt-auto space-y-3 pt-4">
+              <div className="mt-4">
                 <HerracNextSteps showCta={false} />
-                <p className="text-center text-[11px] leading-relaxed text-[#64748b]">
+              </div>
+              </div>
+
+              <div className="shrink-0 border-t border-white/[0.06] bg-[#0a0c12]/95 px-5 py-4 backdrop-blur-sm sm:px-6">
+                <p className="mb-3 text-center text-[11px] leading-relaxed text-[#64748b]">
                   {t.herracDisclaimer}
                 </p>
                 <a

@@ -36,6 +36,7 @@ import { useLocale } from "@/lib/i18n/LocaleProvider";
 import { getTerminalDict } from "@/lib/i18n/terminalDict";
 import { SECTION_GUIDE } from "@/data/guideCopy";
 import EmlakLogo from "./EmlakLogo";
+import UserAvatar from "./UserAvatar";
 
 const INVESTOR_GROUPS = [
   {
@@ -135,7 +136,7 @@ export default function TerminalShell({
   const personName =
     profile?.displayName || profile?.email?.split("@")[0] || "—";
   const companyName = (prefs?.company || "").trim();
-  const initial = personName.charAt(0).toUpperCase();
+  const avatarId = prefs?.avatarId || "ocean";
   const badge = unreadCount > 9 ? "9+" : unreadCount > 0 ? String(unreadCount) : null;
 
   const sidebar = (
@@ -147,7 +148,7 @@ export default function TerminalShell({
       isAdmin={isAdmin}
       personName={personName}
       companyName={companyName}
-      initial={initial}
+      avatarId={avatarId}
       watchlist={watchlist}
       compare={compare}
       logout={logout}
@@ -289,7 +290,7 @@ function SidebarBody({
   isAdmin,
   personName,
   companyName,
-  initial,
+  avatarId,
   watchlist,
   compare,
   logout,
@@ -310,9 +311,7 @@ function SidebarBody({
         title={t.navProfile}
       >
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-500/90 text-[14px] font-semibold text-white">
-            {initial}
-          </div>
+          <UserAvatar name={personName} avatarId={avatarId} size="md" />
           <div className="min-w-0 flex-1">
             <div className="truncate text-[13px] font-semibold tracking-tight text-white">
               {personName}

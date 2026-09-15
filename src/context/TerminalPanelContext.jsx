@@ -32,6 +32,7 @@ const DEFAULT_PREFS = {
   notifyEmail: true,
   notifyPush: true,
   showGuides: true,
+  avatarId: "ocean",
 };
 
 const DEFAULT_STATE = {

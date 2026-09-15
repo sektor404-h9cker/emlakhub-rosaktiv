@@ -2,7 +2,7 @@
 
 /**
  * =============================================================================
- * ProfilePage — настройки пользователя + перезапуск гида
+ * ProfilePage — настройки пользователя + аватар + перезапуск гида
  * =============================================================================
  */
 
@@ -12,7 +12,9 @@ import { useAuth } from "@/context/AuthContext";
 import { useTerminalPanel } from "@/context/TerminalPanelContext";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 import { getTerminalDict } from "@/lib/i18n/terminalDict";
+import { AVATAR_PRESETS } from "@/data/avatars";
 import SectionGuide from "@/components/terminal/SectionGuide";
+import UserAvatar from "@/components/terminal/UserAvatar";
 
 export default function ProfilePage() {
   const { locale, setLocale } = useLocale();
@@ -24,6 +26,7 @@ export default function ProfilePage() {
   const [company, setCompany] = useState(prefs.company || "");
   const [focus, setFocus] = useState(prefs.focus || "both");
   const [risk, setRisk] = useState(prefs.risk || "balanced");
+  const [avatarId, setAvatarId] = useState(prefs.avatarId || "ocean");
   const [notifyEmail, setNotifyEmail] = useState(prefs.notifyEmail !== false);
   const [notifyPush, setNotifyPush] = useState(prefs.notifyPush !== false);
   const [saved, setSaved] = useState(false);
@@ -36,6 +39,7 @@ export default function ProfilePage() {
     setCompany(prefs.company || "");
     setFocus(prefs.focus || "both");
     setRisk(prefs.risk || "balanced");
+    setAvatarId(prefs.avatarId || "ocean");
     setNotifyEmail(prefs.notifyEmail !== false);
     setNotifyPush(prefs.notifyPush !== false);
   }, [prefs]);
@@ -43,10 +47,19 @@ export default function ProfilePage() {
   const onSave = (e) => {
     e.preventDefault();
     updateLocalProfile({ displayName: name.trim() || profile?.displayName });
-    savePrefs({ company: company.trim(), focus, risk, notifyEmail, notifyPush });
+    savePrefs({
+      company: company.trim(),
+      focus,
+      risk,
+      avatarId,
+      notifyEmail,
+      notifyPush,
+    });
     setSaved(true);
     setTimeout(() => setSaved(false), 2200);
   };
+
+  const previewName = name.trim() || profile?.displayName || "?";
 
   return (
     <div className="mx-auto max-w-[640px]">
@@ -56,10 +69,45 @@ export default function ProfilePage() {
       <p className="mt-1 text-[13px] text-[#64748b]">{t.profileHint}</p>
 
       <form onSubmit={onSave} className="mt-6 space-y-5">
-        <Field
-          icon={User}
-          label={t.profileName}
-        >
+        <div className="rounded-2xl border border-white/10 bg-[#0a0c12] p-4">
+          <div className="flex items-center gap-4">
+            <UserAvatar name={previewName} avatarId={avatarId} size="lg" />
+            <div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#64748b]">
+                {t.profileAvatar}
+              </div>
+              <p className="mt-1 text-[12px] leading-relaxed text-[#94a3b8]">
+                {t.profileAvatarHint}
+              </p>
+            </div>
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2.5">
+            {AVATAR_PRESETS.map((a) => {
+              const on = avatarId === a.id;
+              return (
+                <button
+                  key={a.id}
+                  type="button"
+                  onClick={() => setAvatarId(a.id)}
+                  className={[
+                    "rounded-full p-0.5 transition",
+                    on ? "ring-2 ring-white/80" : "ring-1 ring-white/10 hover:ring-white/30",
+                  ].join(" ")}
+                  aria-label={a.id}
+                >
+                  <span
+                    className="block h-9 w-9 rounded-full"
+                    style={{
+                      background: `linear-gradient(145deg, ${a.from}, ${a.to})`,
+                    }}
+                  />
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <Field icon={User} label={t.profileName}>
           <input
             className="eh-term-input"
             value={name}
