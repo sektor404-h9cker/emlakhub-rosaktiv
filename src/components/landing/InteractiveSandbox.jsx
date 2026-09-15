@@ -234,7 +234,7 @@ export default function InteractiveSandbox({ locale = "ru" }) {
         <div className="flex items-center justify-between gap-3 border-b border-slate-100 bg-gradient-to-b from-white to-slate-50/80 px-4 py-3.5 sm:px-5">
           <div className="min-w-0">
             <div className="truncate font-mono text-[9px] uppercase tracking-[0.18em] text-slate-400 sm:text-[10px]">
-              {ru ? "Инспекция · до ставки" : "Yoxlama · təklifdən əvvəl"}
+              {ru ? "Проверка лота · до ставки" : "Lot yoxlaması · təklifdən əvvəl"}
             </div>
             <div className="mt-0.5 truncate text-[13px] font-semibold tracking-tight text-slate-900 sm:text-[14px]">
               {demoLot.title}
@@ -246,7 +246,7 @@ export default function InteractiveSandbox({ locale = "ru" }) {
             className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-[11px] font-medium text-slate-600 shadow-sm transition hover:border-slate-300 hover:text-slate-900"
           >
             <RotateCcw size={12} />
-            {ru ? "Повтор" : "Təkrar"}
+            {ru ? "Ещё раз" : "Yenidən"}
           </button>
         </div>
 
@@ -393,7 +393,7 @@ export default function InteractiveSandbox({ locale = "ru" }) {
         {/* Формула — светлая */}
         <div className="grid grid-cols-3 divide-x divide-slate-100 border-t border-slate-100 bg-white">
           <ValueCell
-            label={ru ? "Рынок" : "Bazar"}
+            label={ru ? "Рыночная цена" : "Bazar qiyməti"}
             value={marketPrice}
             tone="muted"
           />
@@ -411,7 +411,7 @@ export default function InteractiveSandbox({ locale = "ru" }) {
             tone="warn"
           />
           <ValueCell
-            label={ru ? "Ценность" : "Dəyər"}
+            label={ru ? "После ремонта" : "Təmirdən sonra"}
             value={realValue}
             tone="accent"
           />

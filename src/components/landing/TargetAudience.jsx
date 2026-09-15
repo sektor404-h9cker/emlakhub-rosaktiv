@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * TargetAudience — для кого терминал (язык капитала)
+ * TargetAudience — для кого сервис (простым языком)
  */
 
 import React from "react";
@@ -21,30 +21,30 @@ export default function TargetAudience({ locale = "ru" }) {
   const personas = [
     {
       icon: LineChart,
-      tag: ru ? "ЧАСТНЫЙ КАПИТАЛ" : "FƏRDİ KAPİTAL",
+      tag: ru ? "ДЛЯ СЕБЯ" : "ÖZÜ ÜÇÜN",
       title: ru ? "Частные инвесторы" : "Fərdi investorlar",
       desc: ru
-        ? "Недооценённые лоты, смета ремонта и чистая маржа - до участия в торгах. Решение по цифре, не по ощущению."
-        : "Qiyməti aşağı lotlar, təmir smetası və xalis marja - hərracdan əvvəl. Qərar hissə görə yox, rəqəmə görə.",
-      metric: ru ? "Маржа до торгов" : "Marja hərracdan əvvəl",
+        ? "Хотите купить лот на госаукционе и заранее понять: сколько уйдёт на ремонт и какая прибыль останется."
+        : "Dövlət hərracında lot almaq istəyirsiniz və əvvəlcədən bilmək: təmirə nə qədər gedəcək və nə qədər qazanc qalacaq.",
+      metric: ru ? "Прибыль до ставки" : "Təklifdən əvvəl qazanc",
     },
     {
       icon: ShieldCheck,
-      tag: ru ? "БРОКЕРЫ" : "BROKERLƏR",
+      tag: ru ? "ДЛЯ КЛИЕНТОВ" : "MÜŞTƏRİLƏR ÜÇÜN",
       title: ru ? "Брокеры и агентства" : "Brokerlər və agentliklər",
       desc: ru
-        ? "Автоматический поиск скрытых юридических рисков и обременений - капитал клиентов под защитой до задатка."
-        : "Gizli hüquqi risklərin və yüklərin avtomatik axtarışı - müştəri kapitalı behdən əvvəl qorunur.",
-      metric: ru ? "Защита клиента" : "Müştəri qorunması",
+        ? "Нужно быстро проверить лот за клиента: нет ли скрытых юридических проблем до внесения задатка."
+        : "Müştəri üçün lotu tez yoxlamaq lazımdır: beh qoymadan əvvəl gizli hüquqi problem varmı.",
+      metric: ru ? "Защита клиента" : "Müştərinin qorunması",
     },
     {
       icon: Building2,
-      tag: ru ? "ФОНДЫ" : "FONDLAR",
-      title: ru ? "Институциональный капитал" : "İnstitusional kapital",
+      tag: ru ? "ДЛЯ КОМАНД" : "KOMANDALAR ÜÇÜN",
+      title: ru ? "Фонды и компании" : "Fondlar və şirkətlər",
       desc: ru
-        ? "Обзор всего рынка в одном контуре. Единый стандарт оценки для авто и недвижимости."
-        : "Bütün bazar bir konturda. Avtomobil və daşınmaz əmlak üçün vahid qiymətləndirmə standardı.",
-      metric: ru ? "Масштаб без шума" : "Səs-küysüz miqyas",
+        ? "Нужен один экран по рынку: авто и недвижимость с госаукционов — в одном месте, по одним правилам."
+        : "Bazar üçün bir ekran lazımdır: dövlət hərraclarından avto və daşınmaz əmlak — bir yerdə, eyni qaydalarla.",
+      metric: ru ? "Всё в одном месте" : "Hər şey bir yerdə",
     },
   ];
 
@@ -54,12 +54,12 @@ export default function TargetAudience({ locale = "ru" }) {
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <motion.div {...fadeUp} className="mx-auto mb-14 max-w-2xl text-center">
           <h2 className="font-serif text-3xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-[2.75rem]">
-            {ru ? "Для тех, кто считает капитал" : "Kapitalı hesab edənlər üçün"}
+            {ru ? "Кому это полезно" : "Kimə faydalıdır"}
           </h2>
           <p className="mt-4 text-[16px] leading-relaxed tracking-[-0.01em] text-slate-600">
             {ru
-              ? "Один терминал - три сценария работы с государственными торгами."
-              : "Bir terminal - dövlət hərracları ilə işin üç ssenarisi."}
+              ? "Если вы участвуете в госаукционах или помогаете другим — этот сервис для вас."
+              : "Dövlət hərraclarında iştirak edirsinizsə və ya başqalarına kömək edirsinizsə — bu xidmət sizin üçündür."}
           </p>
         </motion.div>
 

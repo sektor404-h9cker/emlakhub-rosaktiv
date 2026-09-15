@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * EvaluationPipeline — язык бизнеса, без техжаргона
+ * EvaluationPipeline — как сервис работает (простым языком)
  */
 
 import React, { useRef } from "react";
@@ -29,60 +29,56 @@ export default function EvaluationPipeline({ locale = "ru" }) {
   const stages = [
     {
       icon: RefreshCw,
-      tag: ru ? "РЫНОК" : "BAZAR",
-      title: ru ? "Полная картина торгов" : "Hərracın tam mənzərəsi",
+      tag: ru ? "1 · ЛОТЫ" : "1 · LOTLAR",
+      title: ru ? "Собираем лоты с госаукционов" : "Dövlət hərraclarından lotları toplayırıq",
       desc: ru
-        ? "Лоты с государственных порталов собраны в одном контуре. Часы ручного поиска заменены ясным обзором рынка."
-        : "Dövlət portallarındakı lotlar bir konturda toplanıb. Saatlarla əl axtarışı aydın bazar mənzərəsi ilə əvəz olunub.",
-      meta: ru ? "Время - на решение, не на поиск" : "Vaxt axtarışa yox, qərara",
+        ? "Вместо поиска по разным сайтам вы видите лоты в одном месте — авто и недвижимость."
+        : "Müxtəlif saytlarda axtarmaq əvəzinə lotları bir yerdə görürsünüz — avto və daşınmaz əmlak.",
+      meta: ru ? "Меньше хаоса, больше времени на решение" : "Daha az qarışıqlıq, qərara daha çox vaxt",
     },
     {
       icon: ScanEye,
-      tag: ru ? "ОСМОТР" : "YOXLAMA",
-      title: ru
-        ? "Точная оценка стоимости ремонта по фотографиям"
-        : "Fotolara görə təmir dəyərinin dəqiq qiymətləndirilməsi",
+      tag: ru ? "2 · ФОТО" : "2 · FOTO",
+      title: ru ? "Смотрим, сколько может стоить ремонт" : "Təmirin nə qədər ola biləcəyinə baxırıq",
       desc: ru
-        ? "По снимкам лота видно скрытый износ кузова, фасада или отделки - и понятная смета до ставки."
-        : "Lot şəkillərində kuzov, fasad və ya təmirin gizli aşınması - və təklifdən əvvəl aydın smeta görünür.",
-      meta: ru ? "Смета без выезда на объект" : "Obyektə getmədən smeta",
+        ? "По фото лота отмечаем повреждения и даём понятную смету — ещё до того, как вы поедете на объект."
+        : "Lot fotolarında zədələri qeyd edirik və aydın smeta veririk — obyektə getməzdən əvvəl.",
+      meta: ru ? "Смета без выезда" : "Getmədən smeta",
     },
     {
       icon: FileCheck2,
-      tag: ru ? "РИСКИ" : "RİSKLƏR",
-      title: ru
-        ? "Автоматический поиск скрытых юридических рисков и обременений"
-        : "Gizli hüquqi risklərin və yüklərin avtomatik axtarışı",
+      tag: ru ? "3 · РИСКИ" : "3 · RİSKLƏR",
+      title: ru ? "Ищем скрытые юридические проблемы" : "Gizli hüquqi problemləri axtarırıq",
       desc: ru
-        ? "Описания и документы проверяются на обременения, долевую собственность и опасные формулировки - до задатка."
-        : "Təsvir və sənədlər yük, pay mülkiyyəti və təhlükəli ifadələr üzrə yoxlanır - behdən əvvəl.",
-      meta: ru ? "Капитал защищён заранее" : "Kapital əvvəlcədən qorunur",
+        ? "Проверяем описание и документы: обременения, доли, опасные формулировки — до внесения денег."
+        : "Təsvir və sənədləri yoxlayırıq: yüklər, paylar, təhlükəli ifadələr — pul qoymadan əvvəl.",
+      meta: ru ? "Меньше сюрпризов после задатка" : "Behdən sonra daha az sürpriz",
     },
     {
       icon: Calculator,
-      tag: ru ? "МАРЖА" : "MARJA",
-      title: ru ? "Чистая прибыль до участия в торгах" : "Hərracdan əvvəl xalis gəlir",
+      tag: ru ? "4 · ПРИБЫЛЬ" : "4 · QAZANC",
+      title: ru ? "Показываем, сколько останется вам" : "Sizə nə qədər qalacağını göstəririk",
       desc: ru
-        ? "Ставка, сборы, ремонт и рынок складываются в одну цифру. Решение принимается по прибыли, а не по ощущению."
-        : "Təklif, rüsum, təmir və bazar bir rəqəmdə toplanır. Qərar hissə görə yox, gəlirə görə verilir.",
-      meta: ru ? "Одна цифра - одно решение" : "Bir rəqəm - bir qərar",
+        ? "Ставка + сборы + ремонт + рыночная цена = одна понятная цифра. Решаете по ней, а не «на глаз»."
+        : "Təklif + rüsum + təmir + bazar qiyməti = bir aydın rəqəm. «Gözə görə» yox, bu rəqəmə görə qərar verirsiniz.",
+      meta: ru ? "Одна цифра — одно решение" : "Bir rəqəm — bir qərar",
     },
   ];
 
   return (
-    <section className="eh-wash-pearl relative overflow-hidden py-16 sm:py-24 lg:py-32">
+    <section id="platform" className="eh-wash-pearl relative overflow-hidden py-16 sm:py-24 lg:py-32">
       <div className="eh-orb absolute right-[10%] top-16 h-64 w-64 bg-slate-400/18" aria-hidden />
       <div className="eh-orb absolute left-[5%] bottom-10 h-56 w-56 bg-slate-400/15" aria-hidden />
       <div className="pointer-events-none absolute inset-0 bg-grid-premium texture-fade opacity-60" aria-hidden />
       <div className="relative mx-auto max-w-5xl px-5 sm:px-8">
         <motion.div {...stageFade} className="mb-16 max-w-2xl">
           <h2 className="font-serif text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
-            {ru ? "От сырых лотов - к ясному решению" : "Xam lotlardan - aydın qərara"}
+            {ru ? "Как это работает — за 4 шага" : "Necə işləyir — 4 addımda"}
           </h2>
           <p className="mt-4 text-[16px] leading-relaxed text-slate-600">
             {ru
-              ? "Четыре шага, которые экономят часы и отсекают убыточные активы до задатка."
-              : "Behdən əvvəl saatlara qənaət edən və zərərli aktivləri kənarlaşdıran dörd addım."}
+              ? "От списка лотов до понятной прибыли — без сложных терминов."
+              : "Lot siyahısından aydın qazanca qədər — mürəkkəb terminlər olmadan."}
           </p>
         </motion.div>
 

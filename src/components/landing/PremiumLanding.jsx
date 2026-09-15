@@ -238,29 +238,31 @@ export default function PremiumLanding() {
   const t = useMemo(
     () => ({
       nav: {
-        platform: ru ? "Платформа" : "Platforma",
+        platform: ru ? "Как это работает" : "Necə işləyir",
         security: ru ? "Безопасность" : "Təhlükəsizlik",
-        global: ru ? "Международно" : "Beynəlxalq",
+        global: ru ? "Страны" : "Ölkələr",
         login: ru ? "Войти" : "Daxil ol",
       },
       hero: {
-        eyebrow: ru ? "Закрытый B2B-терминал" : "Bağlı B2B-terminal",
+        eyebrow: ru
+          ? "Сервис для инвесторов на госаукционах"
+          : "Dövlət hərracları üçün investor xidməti",
         titleLines: ru
           ? ["Цифровое управление", "государственной", "собственностью"]
           : ["Dövlət əmlakının", "rəqəmsal idarəetməsi"],
         sub: ru
-          ? "Риски и чистая маржа видны до ставки. Без шума — только решение."
-          : "Risklər və xalis marja təklifdən əvvəl görünür. Səs-küy yox — yalnız qərar.",
+          ? "Вы смотрите лоты авто и недвижимости с государственных торгов. До ставки видно: сколько стоит ремонт, какие риски есть и какая прибыль останется."
+          : "Dövlət hərraclarından avto və daşınmaz əmlak lotlarına baxırsınız. Təklif verməzdən əvvəl görünür: təmir nə qədərdir, hansı risklər var və nə qədər qazanc qalır.",
         signals: ru
           ? [
-              { icon: Zap, text: "Ответ за доли секунды" },
-              { icon: ShieldCheck, text: "Риски до задатка" },
-              { icon: Gauge, text: "Чистая маржа на экране" },
+              { icon: Zap, text: "Ответ за секунды — без долгих таблиц" },
+              { icon: ShieldCheck, text: "Риски видны до внесения денег" },
+              { icon: Gauge, text: "Прибыль по лоту — сразу на экране" },
             ]
           : [
-              { icon: Zap, text: "Cavab saniyənin hissəsində" },
-              { icon: ShieldCheck, text: "Risklər behdən əvvəl" },
-              { icon: Gauge, text: "Xalis marja ekranda" },
+              { icon: Zap, text: "Cavab saniyələrlə — uzun cədvəlsiz" },
+              { icon: ShieldCheck, text: "Risklər pul qoymadan əvvəl görünür" },
+              { icon: Gauge, text: "Lot üzrə qazanc dərhal ekranda" },
             ],
         markets: [
           {
@@ -268,7 +270,7 @@ export default function PremiumLanding() {
             name: "Digital Emlak Hub",
             country: ru ? "Азербайджан" : "Azərbaycan",
             meta: "emlakhub.net",
-            badge: ru ? "Доступен" : "Əlçatan",
+            badge: ru ? "Работает" : "İşləyir",
             flag: "az",
           },
           {
@@ -276,109 +278,111 @@ export default function PremiumLanding() {
             name: "RosAktiv Hub",
             country: ru ? "Россия" : "Rusiya",
             meta: ru ? "скоро" : "tezliklə",
-            badge: ru ? "В разработке" : "İnkişafda",
+            badge: ru ? "Скоро" : "Tezliklə",
             flag: "ru",
           },
         ],
-        cta: ru ? "Запросить доступ" : "Giriş istəyin",
-        ctaSecondary: ru ? "Безопасность" : "Təhlükəsizlik",
+        cta: ru ? "Получить доступ" : "Giriş alın",
+        ctaSecondary: ru ? "Как храним данные" : "Məlumatı necə saxlayırıq",
       },
       stats: [
         {
           value: "247K+",
-          label: ru ? "Лотов в контуре" : "Konturdakı lotlar",
+          label: ru ? "Лотов в системе" : "Sistemdəki lotlar",
           spark: [12, 18, 16, 24, 30, 28, 38, 44, 52, 61],
           sparkColor: "#0f172a",
         },
         {
           value: "<0.5s",
-          label: ru ? "До цифры по сделке" : "Sövdə rəqəminə qədər",
+          label: ru ? "До понятной цифры по лоту" : "Lot üzrə aydın rəqəmə qədər",
           accent: "text-emerald-700",
           spark: [70, 74, 78, 82, 86, 90, 93, 96, 98, 99],
           sparkColor: "#047857",
         },
         {
           value: "2",
-          label: ru ? "Рынка в дорожной карте" : "Yol xəritəsində bazar",
+          label: ru ? "Страны в планах" : "Planlaşdırılan ölkə",
           spark: [0, 0, 0, 1, 1, 1, 1, 2, 2, 2],
           sparkColor: "#0f172a",
         },
         {
           value: "0",
-          label: ru ? "Утечек за периметр" : "Perimetrdən sızma",
+          label: ru ? "Данные не уходят наружу" : "Məlumat çölə getmir",
           spark: [5, 4, 3, 3, 2, 2, 1, 1, 0, 0],
           sparkColor: "#0f172a",
         },
       ],
       pillars: [
         {
-          title: ru ? "Капитал остаётся у вас" : "Kapital sizdə qalır",
+          title: ru ? "Ваши данные остаются у вас" : "Məlumatınız sizdə qalır",
           desc: ru
-            ? "Фото, документы и расчёты не покидают закрытый контур. Доступ - только для приглашённого капитала."
-            : "Foto, sənəd və hesablamalar bağlı konturdan çıxmır. Giriş - yalnız dəvətli kapital üçündür.",
+            ? "Фото лотов, документы и расчёты не отправляются в чужие сервисы. Вход только для тех, кому открыли доступ."
+            : "Lot fotoları, sənədlər və hesablamalar kənar servislərə göndərilmir. Giriş yalnız icazə verilənlər üçündür.",
           icon: ShieldCheck,
         },
         {
-          title: ru ? "Каждая цифра объясняется" : "Hər rəqəm izah olunur",
+          title: ru ? "Каждая цифра понятна" : "Hər rəqəm aydındır",
           desc: ru
-            ? "Маржа опирается на реестр, осмотр объекта и рыночные ориентиры - без «чёрного ящика»."
-            : "Marja reyestrə, obyekt yoxlamasına və bazar istiqamətlərinə söykənir - «qara qutu» yoxdur.",
+            ? "Прибыль считается из цены лота, ремонта и рыночной цены — без «магии» и скрытых формул."
+            : "Qazanc lot qiyməti, təmir və bazar qiymətindən hesablanır — «sehr» və gizli formul yoxdur.",
           icon: Gauge,
         },
         {
-          title: ru ? "Один стандарт - два рынка" : "Bir standart - iki bazar",
+          title: ru ? "Сначала Азербайджан, потом Россия" : "Əvvəl Azərbaycan, sonra Rusiya",
           desc: ru
-            ? "Азербайджан уже в работе. Россия - в подготовке. Юрисдикции разделены полностью."
-            : "Azərbaycan artıq işləyir. Rusiya hazırlanır. Yurisdiksiyalar tam ayrılıb.",
+            ? "Сейчас работает Digital Emlak Hub в Азербайджане. Версия для России — RosAktiv Hub — готовится отдельно."
+            : "İndi Azərbaycanda Digital Emlak Hub işləyir. Rusiya üçün RosAktiv Hub ayrıca hazırlanır.",
           icon: Globe2,
         },
       ],
       comparison: {
         title: ru
-          ? "Государственный портал + наш аналитический слой"
-          : "Dövlət portalı + analitik qatımız",
+          ? "Госпортал даёт лоты. Мы помогаем решить, стоит ли участвовать."
+          : "Dövlət portalı lotları verir. Biz iştirak etməyə dəyərini göstəririk.",
         sub: ru
-          ? "Мы не конкурируем с государством - мы усиливаем его данные."
-          : "Dövlətlə rəqabət etmirik - onun məlumatlarını gücləndiririk.",
+          ? "Мы не заменяем государство. Берём официальные лоты и добавляем понятную оценку."
+          : "Dövləti əvəz etmirik. Rəsmi lotları götürüb üzərinə aydın qiymətləndirmə əlavə edirik.",
         official: {
           title: ru ? "Государственный портал" : "Dövlət portalı",
           items: ru
             ? [
-                "Официальный реестр лотов",
+                "Список официальных лотов",
                 "Стартовая цена и условия",
                 "Регистрация участника",
-                "Залог и гарантийный взнос",
+                "Залог и взносы",
               ]
             : [
-                "Rəsmi lot reyestri",
+                "Rəsmi lotların siyahısı",
                 "Başlanğıc qiymət və şərtlər",
                 "İştirakçı qeydiyyatı",
-                "Beh və zəmanət ödənişi",
+                "Beh və ödənişlər",
               ],
         },
         hub: {
           title: "Digital Emlak Hub",
           items: ru
             ? [
-                "Оценка ремонта и износа по фотографиям",
-                "Поиск скрытых юридических рисков и обременений",
-                "Расчёт чистой маржи до ставки",
-                "Сравнение с рынком в один взгляд",
+                "Сколько примерно стоит ремонт по фото",
+                "Где спрятаны юридические риски",
+                "Какая прибыль останется до ставки",
+                "Сравнение с рыночной ценой простым языком",
               ]
             : [
-                "Fotolara görə təmir və aşınma qiymətləndirməsi",
-                "Gizli hüquqi risk və yüklərin axtarışı",
-                "Təklifdən əvvəl xalis marja",
-                "Bir baxışda bazar müqayisəsi",
+                "Fotoya görə təmir təxminən nə qədərdir",
+                "Harada hüquqi risklər gizlənir",
+                "Təklifdən əvvəl nə qədər qazanc qalır",
+                "Bazar qiyməti ilə sadə müqayisə",
               ],
         },
       },
       cta: {
-        title: ru ? "Следующий лот - без сюрпризов" : "Növbəti lot - sürprizsiz",
+        title: ru
+          ? "Следующий лот — уже с понятными цифрами"
+          : "Növbəti lot — artıq aydın rəqəmlərlə",
         sub: ru
-          ? "Закрытый доступ для профессионального капитала. Без комиссии с выигранных лотов."
-          : "Peşəkar kapital üçün bağlı giriş. Qazanılmış lotlardan komissiya yoxdur.",
-        btn: ru ? "Запросить доступ" : "Giriş istəyin",
+          ? "Доступ по заявке. С выигранных лотов комиссию не берём."
+          : "Giriş müraciətlə. Qazandığınız lotlardan komissiya almırıq.",
+        btn: ru ? "Получить доступ" : "Giriş alın",
       },
     }),
     [ru]
@@ -644,19 +648,19 @@ export default function PremiumLanding() {
       <TargetAudience locale={lang} />
       <EvaluationPipeline locale={lang} />
 
-      <section id="platform" className="eh-wash-pearl relative overflow-hidden py-16 sm:py-24 lg:py-32">
+      <section className="eh-wash-pearl relative overflow-hidden py-16 sm:py-24 lg:py-32">
         <div className="eh-orb absolute -right-20 top-10 h-72 w-72 bg-slate-400/20" aria-hidden />
         <div className="eh-orb absolute -left-16 bottom-0 h-64 w-64 bg-slate-400/15" aria-hidden />
         <div className="bg-grid-premium texture-fade pointer-events-none absolute inset-0 opacity-35" aria-hidden />
         <div className="relative max-w-7xl mx-auto px-5 sm:px-8">
           <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-16">
             <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-slate-900 tracking-tight">
-              {ru ? "Основа доверия" : "Etibarın əsası"}
+              {ru ? "Почему нам можно доверять" : "Niyə bizə etibar etmək olar"}
             </h2>
             <p className="mt-4 text-slate-600 text-[16px] leading-relaxed">
               {ru
-                ? "Три правила, без которых профессиональный капитал не входит в сделку."
-                : "Peşəkar kapitalın sövdəyə girmədiyi üç qayda."}
+                ? "Три простые вещи, которые важны, прежде чем вкладывать деньги в лот."
+                : "Lota pul qoymadan əvvəl vacib olan üç sadə məqam."}
             </p>
           </motion.div>
 
@@ -693,27 +697,27 @@ export default function PremiumLanding() {
           <div className="grid items-end gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-20">
             <motion.div {...fadeUp}>
               <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.22em] text-[#e8dcc6]/70">
-                {ru ? "Безопасность · технологический фундамент" : "Təhlükəsizlik · texnoloji təməl"}
+                {ru ? "Безопасность данных" : "Məlumat təhlükəsizliyi"}
               </p>
               <h2 className="font-serif text-3xl font-semibold leading-[1.1] tracking-tight text-white sm:text-[42px]">
                 {ru ? (
                   <>
-                    100% локальный контур.
+                    Ваши данные остаются у нас.
                     <br />
-                    <span className="text-white/45">Ноль внешних API.</span>
+                    <span className="text-white/45">Не уходят в чужие сервисы.</span>
                   </>
                 ) : (
                   <>
-                    100% lokal kontur.
+                    Məlumatınız bizdə qalır.
                     <br />
-                    <span className="text-white/45">Sıfır xarici API.</span>
+                    <span className="text-white/45">Kənar servislərə getmir.</span>
                   </>
                 )}
               </h2>
               <p className="mt-6 max-w-xl text-[16px] leading-[1.75] text-white/55">
                 {ru
-                  ? "Vision и NLP работают только на нашей инфраструктуре. Фото лотов, тексты реестра и данные инвесторов физически не покидают сервер. Это не маркетинг - это архитектура терминала."
-                  : "Vision və NLP yalnız infrastrukturumuzda işləyir. Lot fotoları, reyestr mətnləri və investor datası fiziki olaraq serverdən çıxmır. Bu marketinq deyil - terminalın arxitekturasıdır."}
+                  ? "Фото лотов, тексты из реестра и ваши данные обрабатываются на наших серверах. Мы не отправляем их в ChatGPT, Claude и другие внешние сервисы."
+                  : "Lot fotoları, reyestr mətnləri və sizin məlumatlarınız bizim serverlərdə emal olunur. Onları ChatGPT, Claude və digər xarici servislərə göndərmirik."}
               </p>
             </motion.div>
 
@@ -722,35 +726,35 @@ export default function PremiumLanding() {
                 ? [
                     {
                       k: "01",
-                      t: "Vision · on-prem",
-                      d: "Анализ кузова и дефектов без облачных vision-API.",
+                      t: "Осмотр по фото",
+                      d: "Кузов и дефекты анализируются у нас — без облачных сервисов распознавания.",
                     },
                     {
                       k: "02",
-                      t: "NLP · закрытый контур",
-                      d: "Юридические red flags читаются локально, без ChatGPT/Claude.",
+                      t: "Проверка текстов",
+                      d: "Юридические риски читаются на наших серверах, не через сторонние чат-боты.",
                     },
                     {
                       k: "03",
-                      t: "Данные инвестора",
-                      d: "Сессии, ставки и портфель не уходят к третьим сторонам.",
+                      t: "Ваш аккаунт",
+                      d: "Вход, ставки и портфель не передаются третьим лицам.",
                     },
                   ]
                 : [
                     {
                       k: "01",
-                      t: "Vision · on-prem",
-                      d: "Kuzov və qüsur analizi bulud vision-API-siz.",
+                      t: "Fotoya görə baxış",
+                      d: "Kuzov və qüsurlar bizdə analiz olunur — bulud tanıma servisləri olmadan.",
                     },
                     {
                       k: "02",
-                      t: "NLP · bağlı kontur",
-                      d: "Hüquqi red flag-lər lokal oxunur - ChatGPT/Claude yoxdur.",
+                      t: "Mətn yoxlaması",
+                      d: "Hüquqi risklər bizim serverlərdə oxunur, kənar çat-botlarla yox.",
                     },
                     {
                       k: "03",
-                      t: "Investor datası",
-                      d: "Sessiya, təklif və portfel üçüncü tərəfə getmir.",
+                      t: "Sizin hesab",
+                      d: "Giriş, təkliflər və portfel üçüncü şəxslərə ötürülmür.",
                     },
                   ]
               ).map((row) => (
@@ -780,15 +784,15 @@ export default function PremiumLanding() {
         <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
           <motion.div {...fadeUp} className="mb-12 max-w-2xl">
             <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.22em] text-slate-500">
-              {ru ? "Кейс · до ставки" : "Keys · təklifdən əvvəl"}
+              {ru ? "Пример · до ставки" : "Nümunə · təklifdən əvvəl"}
             </p>
             <h2 className="font-serif text-3xl font-semibold tracking-tight text-slate-900 sm:text-[40px]">
-              {ru ? "Юнит-экономика лота" : "Lotun unit-iqtisadiyyatı"}
+              {ru ? "Считаем прибыль по лоту вместе" : "Lot üzrə qazancı birlikdə sayırıq"}
             </h2>
             <p className="mt-4 text-[16px] leading-relaxed text-slate-600">
               {ru
-                ? "Тот же актив, что на главном экране. Меняйте ставку - увидите скрытые расходы и чистую маржу до участия."
-                : "Əsas ekrandakı eyni aktiv. Təklifi dəyişin - gizli xərcləri və iştirakdan əvvəl xalis marjanı görün."}
+                ? "Тот же актив, что справа на главном экране. Меняйте ставку — увидите ремонт, сборы и сколько денег останется вам."
+                : "Əsas ekrandakı eyni aktiv. Təklifi dəyişin — təmiri, rüsumları və sizə nə qədər pul qalacağını görün."}
             </p>
           </motion.div>
           <motion.div {...fadeUp}>
@@ -815,7 +819,7 @@ export default function PremiumLanding() {
                   {t.comparison.official.title}
                 </h3>
                 <p className="mb-6 text-[11px] font-medium uppercase tracking-[0.16em] text-slate-400">
-                  {ru ? "Официальный источник" : "Rəsmi mənbə"}
+                  {ru ? "Что даёт государство" : "Dövlət nə verir"}
                 </p>
                 <ul className="space-y-3">
                   {t.comparison.official.items.map((item) => (
@@ -834,7 +838,7 @@ export default function PremiumLanding() {
                   {t.comparison.hub.title}
                 </h3>
                 <p className="mb-6 text-[11px] font-medium uppercase tracking-[0.16em] text-slate-500">
-                  {ru ? "Аналитический слой" : "Analitik qat"}
+                  {ru ? "Что добавляем мы" : "Biz nə əlavə edirik"}
                 </p>
                 <ul className="space-y-3">
                   {t.comparison.hub.items.map((item) => (
@@ -858,12 +862,12 @@ export default function PremiumLanding() {
         <div className="relative max-w-7xl mx-auto px-5 sm:px-8">
           <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-16">
             <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-slate-900 tracking-tight">
-              {ru ? "Международная дорожная карта" : "Beynəlxalq yol xəritəsi"}
+              {ru ? "Где уже работаем и куда идём" : "Harada işləyirik və hara gedirik"}
             </h2>
             <p className="mt-4 text-slate-600 text-[16px] leading-relaxed">
               {ru
-                ? "Единая архитектура. Два рынка. Полная изоляция данных между юрисдикциями."
-                : "Vahid arxitektura. İki bazar. Yurisdiksiyalar arasında tam məlumat izolyasiyası."}
+                ? "Одна идея — две страны. Данные Азербайджана и России не смешиваются."
+                : "Bir ideya — iki ölkə. Azərbaycan və Rusiya məlumatları qarışmır."}
             </p>
           </motion.div>
 
@@ -881,15 +885,15 @@ export default function PremiumLanding() {
                 </div>
                 <p className="text-[14px] text-slate-600 leading-relaxed">
                   {ru
-                    ? "Аналитический терминал для профессионального капитала в Азербайджане. Недвижимость и авто с государственных аукционов."
-                    : "Azərbaycanda peşəkar kapital üçün analitik terminal. Dövlət hərraclarından daşınmaz əmlak və avto."}
+                    ? "Сервис для инвесторов в Азербайджане: авто и недвижимость с государственных аукционов — с понятной оценкой до ставки."
+                    : "Azərbaycanda investorlar üçün xidmət: dövlət hərraclarından avto və daşınmaz əmlak — təklifdən əvvəl aydın qiymətləndirmə ilə."}
                 </p>
                 <div className="mt-4 flex items-center gap-2 text-[12px] font-medium text-emerald-700">
                   <span className="relative flex h-1.5 w-1.5">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-50" />
                     <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-600" />
                   </span>
-                  {ru ? "Активно · Production" : "Aktiv · Production"}
+                  {ru ? "Уже работает · открыт для заявок" : "Artıq işləyir · müraciət üçün açıq"}
                 </div>
               </GlassCard>
             </motion.div>
@@ -909,15 +913,15 @@ export default function PremiumLanding() {
                 </div>
                 <p className="text-[14px] text-slate-600 leading-relaxed">
                   {ru
-                    ? "Версия той же архитектуры для российского рынка сейчас в разработке. Госаукционы недвижимости и авто с локальным AI-анализом - скоро будут доступны для инвесторов в России."
-                    : "Eyni arxitekturanın Rusiya bazarı üçün versiyası hazırda inkişaf mərhələsindədir. Dövlət hərracları və lokal AI analizi - tezliklə Rusiya investorları üçün əlçatan olacaq."}
+                    ? "Та же идея для России: госаукционы авто и недвижимости с понятной оценкой. Сейчас готовим — скоро откроем доступ."
+                    : "Eyni ideya Rusiya üçün: dövlət hərraclarından avto və daşınmaz əmlak, aydın qiymətləndirmə ilə. İndi hazırlanır — tezliklə giriş açılacaq."}
                 </p>
                 <div className="mt-4 flex items-center gap-2 text-[12px] font-medium text-amber-800">
                   <span className="relative flex h-1.5 w-1.5">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-50" />
                     <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-600" />
                   </span>
-                  {ru ? "В разработке · скоро доступен" : "İnkişafda · tezliklə əlçatan"}
+                  {ru ? "Скоро откроем" : "Tezliklə açılacaq"}
                 </div>
               </GlassCard>
             </motion.div>
@@ -956,8 +960,8 @@ export default function PremiumLanding() {
             </div>
             <p className="text-[13px] text-slate-500 max-w-xs leading-relaxed">
               {ru
-                ? "Закрытый B2B-терминал для профессионального капитала. RosAktiv Hub для России - скоро."
-                : "Peşəkar kapital üçün bağlı B2B terminal. RosAktiv Hub Rusiya üçün - tezliklə."}
+                ? "Помогаем инвесторам понять лоты госаукционов до ставки. RosAktiv Hub для России — скоро."
+                : "İnvestorlara dövlət hərrac lotlarını təklifdən əvvəl anlamağa kömək edirik. RosAktiv Hub Rusiya üçün — tezliklə."}
             </p>
           </div>
         </div>

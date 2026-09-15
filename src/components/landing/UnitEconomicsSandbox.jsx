@@ -25,8 +25,8 @@ const PRESET_META = {
   conservative: {
     ru: "Консервативный",
     az: "Konservativ",
-    hintRu: "Запас маржи",
-    hintAz: "Marja ehtiyatı",
+    hintRu: "Запас по прибыли",
+    hintAz: "Qazanc ehtiyatı",
   },
   optimal: {
     ru: "Оптимальный",
@@ -151,7 +151,7 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
       <div className="flex flex-col gap-4 border-b border-slate-200 bg-[#141414] px-5 py-5 sm:flex-row sm:items-end sm:justify-between sm:px-8 sm:py-6">
         <div>
           <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
-            {ru ? "Кейс · до ставки" : "Keys · təklifdən əvvəl"}
+            {ru ? "Пример · до ставки" : "Nümunə · təklifdən əvvəl"}
           </div>
           <h3 className="mt-1 font-serif text-2xl font-semibold tracking-[-0.02em] text-[#e8dcc6] sm:text-[30px]">
             {demoLot.title}
@@ -165,7 +165,7 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
         </div>
         <div className="text-left sm:text-right">
           <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/35">
-            {ru ? "Чистая маржа" : "Xalis marja"}
+            {ru ? "Ваша прибыль" : "Sizin qazancınız"}
           </div>
           <motion.div
             key={profit}
@@ -194,7 +194,7 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
         <div className="space-y-7 border-b border-slate-200 p-5 sm:p-8 lg:border-b-0 lg:border-r">
           <div>
             <div className="mb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-slate-400">
-              {ru ? "Сценарий ставки" : "Təklif ssenarisi"}
+              {ru ? "Какой размер ставки" : "Təklif nə qədər olsun"}
             </div>
             <div className="grid grid-cols-3 gap-2">
               {Object.keys(PRESET_META).map((id) => {
@@ -258,7 +258,7 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
         {/* Cascade */}
         <div className="bg-slate-50/60 p-5 sm:p-8">
           <div className="mb-5 font-mono text-[10px] uppercase tracking-[0.16em] text-slate-400">
-            {ru ? "Каскад расчёта" : "Hesablama kaskadı"}
+            {ru ? "Как считается" : "Necə hesablanır"}
           </div>
 
           <CascadeLine
@@ -287,11 +287,11 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
             label={
               ru
                 ? isEstate
-                  ? "Скрытое восстановление"
-                  : "Скрытый ремонт"
+                  ? "Ремонт / восстановление"
+                  : "Ремонт"
                 : isEstate
-                  ? "Gizli bərpa"
-                  : "Gizli təmir"
+                  ? "Təmir / bərpa"
+                  : "Təmir"
             }
             value={repairCost}
             sign="−"
@@ -301,7 +301,7 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
           <div className="mt-6 border-t border-slate-300 pt-5">
             <div className="flex items-baseline justify-between gap-3">
               <span className="text-[12px] font-medium uppercase tracking-[0.14em] text-slate-600">
-                {ru ? "Чистая прибыль" : "Xalis gəlir"}
+                {ru ? "Чистая прибыль" : "Xalis qazanc"}
               </span>
               <span
                 className={`font-mono-num text-[22px] font-semibold tabular-nums ${
@@ -342,14 +342,14 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
               <span>{ru ? "Ставка" : "Təklif"}</span>
               <span>{ru ? "Сборы" : "Rüsum"}</span>
               <span>{ru ? "Ремонт" : "Təmir"}</span>
-              <span>{ru ? "Маржа" : "Marja"}</span>
+              <span>{ru ? "Прибыль" : "Qazanc"}</span>
             </div>
           </div>
 
           <p className="mt-6 text-[12px] leading-relaxed text-slate-500">
             {ru
-              ? "Правило: ставка не выше рынка. Смета подтягивается с главного экрана - один непрерывный кейс."
-              : "Qayda: təklif bazardan yüksək ola bilməz. Smeta əsas ekrandan gəlir - vahid keys."}
+              ? "Правило: ставка не выше рыночной цены. Смета ремонта берётся с примера на главном экране."
+              : "Qayda: təklif bazar qiymətindən yüksək ola bilməz. Təmir smetası əsas ekrandakı nümunədən gəlir."}
           </p>
         </div>
       </div>

@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * PremiumFAQ — язык капитала; техника — только в ответах про периметр
+ * PremiumFAQ — простые вопросы для первого визита
  */
 
 import React, { useState } from "react";
@@ -50,55 +50,63 @@ function FAQItem({ q, a, open, onToggle }) {
 
 const FAQ_AZ = [
   {
-    q: "Bu hamı üçün açıq platformadır?",
-    a: "Xeyr. Digital Emlak Hub - peşəkar kapital üçün bağlı terminaldır. Giriş müraciət və abunəlik əsasında verilir.",
+    q: "Bu nədir — sadə dillə?",
+    a: "Digital Emlak Hub dövlət hərraclarındakı lotlara baxmağa kömək edir. Təklif verməzdən əvvəl təmir, risklər və təxmini qazancı göstəririk.",
   },
   {
-    q: "Lot məlumatları harada emal olunur?",
-    a: "Yalnız infrastrukturumuzda. Vision və NLP lokal işləyir, xarici API yoxdur. Investor datası fiziki olaraq serverdən çıxmır - ətraflı təhlükəsizlik blokunda.",
+    q: "Hamı üçün açıqdır?",
+    a: "Xeyr. Giriş müraciət və abunəliklə verilir. Bu, peşəkar investorlar və brokerlər üçündür.",
   },
   {
-    q: "Təmir fotolara görə necə qiymətləndirilir?",
-    a: "Lot şəkillərində aşınma və qüsur zonaları seçilir, bərpa smetası formalaşır. Bu məbləğ dərhal təklifdən əvvəl xalis marjaya daxil olur.",
+    q: "Məlumatlarım harada saxlanır?",
+    a: "Bizim serverlərdə. Lot fotoları və sizin hesab məlumatları ChatGPT və digər kənar servislərə göndərilmir.",
   },
   {
-    q: "Rusiyada da işləyirsiniz?",
-    a: "RosAktiv Hub - Rusiya bazarı üçün versiya - inkişafdadır və tezliklə əlçatan olacaq. Digital Emlak Hub artıq Azərbaycanda işləyir.",
+    q: "Təmiri fotoya görə necə bilirsiniz?",
+    a: "Lot şəkillərində zədələri qeyd edirik və təxmini təmir smetası veririk. Bu məbləğ dərhal qazanc hesabına daxil olur.",
   },
   {
-    q: "Qazanılmış lotlardan komissiya tutulur?",
-    a: "Xeyr. Model - aylıq abunəlik. Lot üzrə gəlir sizindir.",
+    q: "Rusiyada da var?",
+    a: "Azərbaycanda Digital Emlak Hub artıq işləyir. Rusiya üçün RosAktiv Hub hazırlanır və tezliklə açılacaq.",
   },
   {
-    q: "Dövlət portalı ilə nə fərqi var?",
-    a: "Dövlət portalı rəsmi mənbədir - biz onu əvəz etmirik. Biz qiymətləndirmə qatı veririk: gizli risklər, smeta və iştirakdan əvvəl xalis marja. Hüquqi mənbə dövlət portalı olaraq qalır.",
+    q: "Qazandığım lotdan komissiya götürürsünüz?",
+    a: "Xeyr. Aylıq abunəlik var. Lotdan qazanc sizindir.",
+  },
+  {
+    q: "Dövlət portalından fərqi nədir?",
+    a: "Dövlət portalı rəsmi lotları göstərir — biz onu əvəz etmirik. Biz əlavə edirik: təmir smetası, risklər və təklifdən əvvəl qazanc.",
   },
 ];
 
 const FAQ_RU = [
   {
-    q: "Это открытая платформа для всех?",
-    a: "Нет. Digital Emlak Hub - закрытый терминал для профессионального капитала. Доступ - по заявке и подписке.",
+    q: "Что это — простыми словами?",
+    a: "Digital Emlak Hub помогает смотреть лоты на госаукционах. До ставки мы показываем ремонт, риски и примерную прибыль.",
   },
   {
-    q: "Где обрабатываются данные лотов?",
-    a: "Только на нашей инфраструктуре. Vision и NLP работают локально, без внешних API. Данные инвесторов физически не покидают сервер - подробнее в блоке безопасности.",
+    q: "Это открыто для всех?",
+    a: "Нет. Доступ по заявке и подписке. Сервис для инвесторов и брокеров.",
   },
   {
-    q: "Как оценивается ремонт по фотографиям?",
-    a: "По снимкам лота выделяются зоны износа и дефектов, формируется смета восстановления. Эта сумма сразу входит в расчёт чистой маржи до ставки.",
+    q: "Где хранятся мои данные?",
+    a: "На наших серверах. Фото лотов и данные аккаунта не отправляются в ChatGPT и другие внешние сервисы.",
   },
   {
-    q: "Работаете ли в России?",
-    a: "RosAktiv Hub - версия для российского рынка - в разработке и скоро будет доступна. Digital Emlak Hub уже работает в Азербайджане.",
+    q: "Как вы понимаете ремонт по фото?",
+    a: "По снимкам лота отмечаем повреждения и даём примерную смету. Эта сумма сразу входит в расчёт прибыли.",
   },
   {
-    q: "Берёте ли комиссию с выигранных лотов?",
-    a: "Нет. Модель - месячная подписка. Прибыль по лоту остаётся вашей.",
+    q: "Есть ли версия для России?",
+    a: "В Азербайджане Digital Emlak Hub уже работает. Для России готовим RosAktiv Hub — скоро откроем.",
   },
   {
-    q: "Чем отличаетесь от государственного портала?",
-    a: "Госпортал - официальный источник, мы его не заменяем. Мы даём слой оценки: скрытые риски, смета и чистая маржа до участия. Юридически значимым источником остаётся госпортал.",
+    q: "Берёте комиссию с выигранных лотов?",
+    a: "Нет. Есть месячная подписка. Прибыль по лоту остаётся вашей.",
+  },
+  {
+    q: "Чем отличаетесь от госпортала?",
+    a: "Госпортал показывает официальные лоты — мы его не заменяем. Мы добавляем смету ремонта, риски и прибыль до ставки.",
   },
 ];
 
@@ -113,12 +121,12 @@ export default function PremiumFAQ({ locale = "az" }) {
       <div className="relative mx-auto max-w-3xl px-5 sm:px-8">
         <div className="mb-14 text-center">
           <h2 className="font-serif text-3xl font-semibold leading-tight tracking-tight text-slate-900 sm:text-[42px]">
-            {ru ? "Вопросы" : "Suallar"}
+            {ru ? "Частые вопросы" : "Tez-tez verilən suallar"}
           </h2>
           <p className="mt-4 text-[15px] text-slate-500">
             {ru
-              ? "То, что обычно спрашивает профессиональный капитал."
-              : "Peşəkar kapitalın adətən soruşduğu."}
+              ? "Коротко о том, куда вы попали и как этим пользоваться."
+              : "Haraya düşdüyünüz və necə istifadə edəcəyiniz haqqında qısa."}
           </p>
         </div>
 
