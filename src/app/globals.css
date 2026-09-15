@@ -614,6 +614,11 @@ body {
   border: none !important;
 }
 
+.eh-lot-marker .eh-pin {
+  margin: 0;
+  line-height: 0;
+}
+
 .eh-map-tooltip {
   background: rgba(10, 12, 18, 0.95) !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;

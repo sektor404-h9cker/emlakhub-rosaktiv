@@ -509,6 +509,7 @@ export function MapPage() {
   const t = getTerminalDict(locale);
   const [activeLotId, setActiveLotId] = useState(null);
   const [focusId, setFocusId] = useState(null);
+  const [panKey, setPanKey] = useState(0);
   const activeLot = getLotById(activeLotId);
   const focusLot = getLotById(focusId) || activeLot;
 
@@ -522,10 +523,11 @@ export function MapPage() {
       <div className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[1fr_300px]">
         <LotsMap
           locale={locale}
-          selectedId={focusId || activeLotId}
+          selectedId={focusId}
+          panKey={panKey}
           onSelect={(id) => {
+            // С карты — только карточка справа, без модалки и без pan
             setFocusId(id);
-            setActiveLotId(id);
           }}
           className="h-[min(58vh,520px)] min-h-[260px] w-full rounded-2xl border border-white/10 sm:h-[min(62vh,560px)] lg:h-auto lg:min-h-[440px]"
         />
@@ -598,7 +600,10 @@ export function MapPage() {
                 <li key={lot.id}>
                   <button
                     type="button"
-                    onClick={() => setFocusId(lot.id)}
+                    onClick={() => {
+                      setFocusId(lot.id);
+                      setPanKey((n) => n + 1);
+                    }}
                     className={[
                       "flex w-full items-center gap-2 rounded-xl px-2.5 py-2 text-left text-[12px] transition",
                       on
