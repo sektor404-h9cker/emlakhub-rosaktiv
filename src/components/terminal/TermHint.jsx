@@ -44,23 +44,32 @@ export default function TermHint({ text, label = "?" }) {
 
   return (
     <span className="relative inline-flex align-middle">
-      <button
+      <span
         ref={btnRef}
-        type="button"
+        role="button"
+        tabIndex={0}
         aria-describedby={open ? id : undefined}
         aria-label={label}
         onClick={(e) => {
+          e.preventDefault();
           e.stopPropagation();
           setOpen((v) => !v);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            e.stopPropagation();
+            setOpen((v) => !v);
+          }
         }}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
         onFocus={() => setOpen(true)}
         onBlur={() => setOpen(false)}
-        className="ml-1 inline-flex h-[15px] w-[15px] shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/[0.06] text-[9px] font-semibold leading-none text-[#94a3b8] transition hover:border-[#60a5fa]/50 hover:text-[#93c5fd]"
+        className="ml-1 inline-flex h-[15px] w-[15px] shrink-0 cursor-help items-center justify-center rounded-full border border-white/20 bg-white/[0.06] text-[9px] font-semibold leading-none text-[#94a3b8] transition hover:border-[#60a5fa]/50 hover:text-[#93c5fd]"
       >
         ?
-      </button>
+      </span>
       {mounted && open
         ? createPortal(
             <span
@@ -74,8 +83,6 @@ export default function TermHint({ text, label = "?" }) {
                 zIndex: 300,
               }}
               className="pointer-events-none rounded-xl border border-white/12 bg-[#0c1018] px-3 py-2.5 text-[12px] leading-relaxed text-[#cbd5e1] shadow-[0_20px_50px_-20px_rgba(0,0,0,0.9)]"
-              onMouseEnter={() => setOpen(true)}
-              onMouseLeave={() => setOpen(false)}
             >
               {text}
             </span>,
