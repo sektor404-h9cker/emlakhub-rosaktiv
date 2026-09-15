@@ -9,6 +9,7 @@
  */
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   X,
@@ -50,11 +51,16 @@ export default function LotDetailModal({ lot, open, onClose }) {
   } = useTerminalPanel();
   const [stage, setStage] = useState("explore");
   const [showCalc, setShowCalc] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   const market = lot?.marketPrice || 0;
   const start = lot?.startPrice || Math.round(market * 0.85);
   const [bid, setBid] = useState(start);
   const [repairAdj, setRepairAdj] = useState(lot?.repairCost || 0);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (lot) {
@@ -86,16 +92,17 @@ export default function LotDetailModal({ lot, open, onClose }) {
     else setBid(start);
   };
 
-  if (!lot) return null;
+  if (!lot || !mounted) return null;
 
   const watched = isWatched(lot.id);
   const compared = isCompared(lot.id);
 
-  return (
+  // Portal в body: иначе fixed «уезжает» внутри overflow/transform shell
+  return createPortal(
     <AnimatePresence>
       {open ? (
         <motion.div
-          className="fixed inset-0 z-[80] flex items-center justify-center p-3 sm:p-6"
+          className="fixed inset-0 z-[200] flex items-center justify-center p-3 sm:p-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -422,7 +429,8 @@ export default function LotDetailModal({ lot, open, onClose }) {
           </motion.div>
         </motion.div>
       ) : null}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }
 

@@ -526,8 +526,8 @@ export function MapPage() {
           selectedId={focusId}
           panKey={panKey}
           onSelect={(id) => {
-            // С карты — только карточка справа, без модалки и без pan
             setFocusId(id);
+            setActiveLotId(id);
           }}
           className="h-[min(58vh,520px)] min-h-[260px] w-full rounded-2xl border border-white/10 sm:h-[min(62vh,560px)] lg:h-auto lg:min-h-[440px]"
         />
