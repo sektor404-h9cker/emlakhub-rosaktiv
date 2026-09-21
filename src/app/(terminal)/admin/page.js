@@ -1,18 +1,17 @@
 "use client";
 
-/**
- * /admin — редирект на первый раздел админки
- */
-
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import { adminHomeForRole } from "@/lib/adminPrivileges";
 
 export default function AdminIndexPage() {
   const router = useRouter();
+  const { role } = useAuth();
+
   useEffect(() => {
-    router.replace("/admin/users");
-  }, [router]);
-  return (
-    <div className="font-mono text-[11px] text-[#6b7280]">Переход в админку…</div>
-  );
+    router.replace(adminHomeForRole(role));
+  }, [role, router]);
+
+  return null;
 }

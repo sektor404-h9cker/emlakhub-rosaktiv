@@ -13,6 +13,7 @@
 export const ROLES = {
   ADMIN: "admin",
   DEVELOPER: "developer",
+  SUPPORT: "support",
   INVESTOR: "investor",
 };
 
@@ -20,14 +21,20 @@ export const ROLES = {
 export const ROLE_LABELS = {
   [ROLES.ADMIN]: "Админ",
   [ROLES.DEVELOPER]: "Разработчик",
+  [ROLES.SUPPORT]: "Поддержка",
   [ROLES.INVESTOR]: "Инвестор",
 };
 
-/** Кто может зайти в /admin/* */
-export const ADMIN_ROLES = [ROLES.ADMIN, ROLES.DEVELOPER];
+/** Кто может зайти в /admin/* (часть разделов — по привилегиям) */
+export const ADMIN_ROLES = [ROLES.ADMIN, ROLES.DEVELOPER, ROLES.SUPPORT];
 
 /** Кто может зайти в /dashboard (инвесторский терминал) */
-export const TERMINAL_ROLES = [ROLES.ADMIN, ROLES.DEVELOPER, ROLES.INVESTOR];
+export const TERMINAL_ROLES = [
+  ROLES.ADMIN,
+  ROLES.DEVELOPER,
+  ROLES.SUPPORT,
+  ROLES.INVESTOR,
+];
 
 export function isAdminRole(role) {
   return ADMIN_ROLES.includes(role);
@@ -44,4 +51,5 @@ export const COLLECTIONS = {
   PAYMENTS: "payments",
   CHATS: "chats",
   MESSAGES: "messages",
+  SETTINGS: "settings",
 };

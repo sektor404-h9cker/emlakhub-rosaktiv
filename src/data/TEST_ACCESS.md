@@ -4,29 +4,23 @@
 
 ## Вход
 
-Откройте **http://localhost:3000/login** и введите email + пароль как в таблице.
-
-| Роль | Email | Пароль | Куда попадёте |
-|------|-------|--------|----------------|
+| Роль | Email | Пароль | Куда |
+|------|-------|--------|------|
 | **Админ** | `admin@emlakhub.net` | `EmlakHub2026!` | `/admin/users` |
-| **Инвестор** | `investor@emlakhub.net` | `EmlakHub2026!` | `/dashboard` |
-| **Разработчик** | `dev@emlakhub.net` | `EmlakHub2026!` | `/admin/users` (аккаунт заблокирован — для проверки блокировки) |
+| **Инвестор (Free)** | `investor@emlakhub.net` | `EmlakHub2026!` | `/dashboard` · 2 карточки |
+| **Разработчик** | `dev@emlakhub.net` | `EmlakHub2026!` | система / security |
+| **Поддержка** | `support@emlakhub.net` | `EmlakHub2026!` | только `/admin/support` |
 
-## Разделы админки
+## Подписка
 
-- `/admin/users` — роли и блокировка
-- `/admin/finance` — оплаты и подписки
-- `/admin/support` — чат с клиентами
+- Free: список лотов открыт, **макс. 2 карточки**, карта/сравнение/портфель/документы/алерты — PRO
+- PRO: демо-оплата в модалке (1 / 3 / 12 мес.)
+- Админ может выдать PRO или снять в `/admin/users`
 
-## Терминал инвестора
+## Админка
 
-- `/dashboard` — лоты, Vision-сетка, юнит-экономика
-
-## Демо-данные
-
-Лоты: `src/data/demoLots.js`  
-Пользователи / платежи / чат (без Firebase): `src/lib/firebase/firestore.js` → mock-блоки.
-
-## Продакшен
-
-После настройки Firebase создайте реального админа в Console и задайте роль `admin` в коллекции `users/{uid}`.
+- `/admin/users` — роли, блок, PRO, создать/удалить
+- `/admin/finance` — оплаты
+- `/admin/support` — чат
+- `/admin/system` — kill-switch (техработы / сбой)
+- `/admin/security` — привилегии, аудит, быстрые меры

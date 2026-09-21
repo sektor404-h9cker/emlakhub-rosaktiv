@@ -25,6 +25,7 @@ import LotDetailModal from "./LotDetailModal";
 import SectionGuide from "./SectionGuide";
 import SimplePath from "./SimplePath";
 import TermHint from "./TermHint";
+import { useAuth } from "@/context/AuthContext";
 
 export default function InvestorDashboard() {
   const { locale } = useLocale();
@@ -38,6 +39,7 @@ export default function InvestorDashboard() {
     startTour,
     prefs,
   } = useTerminalPanel();
+  const { tryOpenLot } = useAuth();
 
   const [market, setMarket] = useState(
     prefs?.focus === "auto" || prefs?.focus === "estate" ? prefs.focus : "all"
@@ -274,7 +276,10 @@ export default function InvestorDashboard() {
             >
               <button
                 type="button"
-                onClick={() => setActiveLotId(lot.id)}
+                onClick={() => {
+                  const res = tryOpenLot(lot.id);
+                  if (res.ok) setActiveLotId(lot.id);
+                }}
                 className="w-full text-left"
               >
                 <div className="relative aspect-[16/10] overflow-hidden bg-[#111]">

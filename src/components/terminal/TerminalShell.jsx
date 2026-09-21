@@ -29,12 +29,17 @@ import {
   UserRound,
   Menu,
   X,
+  Shield,
+  Server,
+  Crown,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useTerminalPanel } from "@/context/TerminalPanelContext";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 import { getTerminalDict } from "@/lib/i18n/terminalDict";
 import { SECTION_GUIDE } from "@/data/guideCopy";
+import { hasPrivilege, PRIV, adminHomeForRole } from "@/lib/adminPrivileges";
+import { formatExpiry } from "@/lib/subscription";
 import EmlakLogo from "./EmlakLogo";
 import UserAvatar from "./UserAvatar";
 
@@ -68,9 +73,41 @@ const INVESTOR_GROUPS = [
 ];
 
 const ADMIN_HREFS = [
-  { href: "/admin/users", key: "users", icon: Users, labelRu: "Пользователи", labelAz: "İstifadəçilər" },
-  { href: "/admin/finance", key: "finance", icon: Wallet, labelRu: "Финансы", labelAz: "Maliyyə" },
-  { href: "/admin/support", key: "support", icon: MessageSquare, labelRu: "Поддержка", labelAz: "Dəstək" },
+  {
+    href: "/admin/users",
+    priv: PRIV.USERS,
+    icon: Users,
+    labelRu: "Пользователи",
+    labelAz: "İstifadəçilər",
+  },
+  {
+    href: "/admin/finance",
+    priv: PRIV.FINANCE,
+    icon: Wallet,
+    labelRu: "Финансы",
+    labelAz: "Maliyyə",
+  },
+  {
+    href: "/admin/support",
+    priv: PRIV.SUPPORT,
+    icon: MessageSquare,
+    labelRu: "Поддержка",
+    labelAz: "Dəstək",
+  },
+  {
+    href: "/admin/system",
+    priv: PRIV.SYSTEM,
+    icon: Server,
+    labelRu: "Система",
+    labelAz: "Sistem",
+  },
+  {
+    href: "/admin/security",
+    priv: PRIV.SECURITY,
+    icon: Shield,
+    labelRu: "Безопасность",
+    labelAz: "Təhlükəsizlik",
+  },
 ];
 
 const PAGE_META = {
@@ -95,7 +132,7 @@ export default function TerminalShell({
   onOpenNotifications,
 }) {
   const pathname = usePathname();
-  const { profile, logout, isAdmin } = useAuth();
+  const { profile, logout, isAdmin, isPro, openPaywall, role } = useAuth();
   const { balance, unreadCount, watchlist, compare, startTour, prefs } =
     useTerminalPanel();
   const { locale, setLocale } = useLocale();
@@ -138,6 +175,7 @@ export default function TerminalShell({
   const companyName = (prefs?.company || "").trim();
   const avatarId = prefs?.avatarId || "ocean";
   const badge = unreadCount > 9 ? "9+" : unreadCount > 0 ? String(unreadCount) : null;
+  const adminLinks = ADMIN_HREFS.filter((item) => hasPrivilege(role, item.priv));
 
   const sidebar = (
     <SidebarBody
@@ -146,9 +184,14 @@ export default function TerminalShell({
       t={t}
       locale={locale}
       isAdmin={isAdmin}
+      isPro={isPro}
+      adminLinks={adminLinks}
+      adminHome={adminHomeForRole(role)}
       personName={personName}
       companyName={companyName}
       avatarId={avatarId}
+      subscription={profile?.subscription}
+      openPaywall={openPaywall}
       watchlist={watchlist}
       compare={compare}
       logout={logout}
@@ -288,9 +331,14 @@ function SidebarBody({
   t,
   locale,
   isAdmin,
+  isPro,
+  adminLinks,
+  adminHome,
   personName,
   companyName,
   avatarId,
+  subscription,
+  openPaywall,
   watchlist,
   compare,
   logout,
@@ -325,10 +373,29 @@ function SidebarBody({
                 {t.profileNoCompany}
               </div>
             )}
-            <div className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-blue-700/90 px-1.5 py-0.5 text-[9px] font-medium text-white">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-300" />
-              {t.proActive}
-            </div>
+            {isPro ? (
+              <div className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-blue-700/90 px-1.5 py-0.5 text-[9px] font-medium text-white">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-300" />
+                {t.proActive}
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  openPaywall?.("feature");
+                }}
+                className="mt-1.5 inline-flex items-center gap-1 rounded-full border border-amber-400/40 bg-amber-500/10 px-1.5 py-0.5 text-[9px] font-medium text-amber-200"
+              >
+                <Crown size={9} />
+                Free · PRO
+              </button>
+            )}
+            {isPro && subscription?.expiresAt ? (
+              <div className="mt-1 text-[10px] text-[#64748b]">
+                {formatExpiry(subscription.expiresAt, locale)}
+              </div>
+            ) : null}
           </div>
         </div>
       </Link>
@@ -336,7 +403,7 @@ function SidebarBody({
       <nav className="mt-3 min-h-0 flex-1 space-y-3 overflow-y-auto overscroll-contain px-3 pb-2">
         {mode === "admin" ? (
           <div className="flex flex-col gap-1">
-            {ADMIN_HREFS.map((item) => {
+            {(adminLinks || []).map((item) => {
               const active =
                 pathname === item.href || pathname.startsWith(item.href + "/");
               const Icon = item.icon;
@@ -400,7 +467,7 @@ function SidebarBody({
 
         {isAdmin && mode === "investor" ? (
           <Link
-            href="/admin/users"
+            href={adminHome || "/admin/users"}
             onClick={onNavigate}
             className="mt-1 flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13px] text-[#60a5fa] hover:bg-white/[0.04]"
           >

@@ -1,18 +1,15 @@
 "use client";
 
-/**
- * =============================================================================
- * Providers — Auth + Locale для лендинга и терминала
- * =============================================================================
- */
-
 import { AuthProvider } from "@/context/AuthContext";
+import { SystemProvider } from "@/context/SystemContext";
 import { LocaleProvider } from "@/lib/i18n/LocaleProvider";
 
 export default function Providers({ children }) {
   return (
     <AuthProvider>
-      <LocaleProvider defaultLocale="az">{children}</LocaleProvider>
+      <SystemProvider>
+        <LocaleProvider defaultLocale="az">{children}</LocaleProvider>
+      </SystemProvider>
     </AuthProvider>
   );
 }

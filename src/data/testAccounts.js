@@ -2,18 +2,13 @@
  * =============================================================================
  * TEST ACCOUNTS — локальный доступ без Firebase
  * =============================================================================
- * Используются только когда .env.local пустой (DEMO-режим).
- * На экране /login кнопок нет — вход обычной формой email + пароль.
- *
- * Админ-панель:  admin@emlakhub.net
- * Терминал:      investor@emlakhub.net
- * Разработчик:   dev@emlakhub.net  (тоже видит /admin)
- *
- * Пароль для всех тестовых аккаунтов: EmlakHub2026!
+ * Пароль для всех: EmlakHub2026!
  * =============================================================================
  */
 
 import { ROLES, isAdminRole } from "@/lib/firebase/constants";
+import { adminHomeForRole } from "@/lib/adminPrivileges";
+import { PLANS, defaultSubscription } from "@/lib/subscription";
 
 export const TEST_PASSWORD = "EmlakHub2026!";
 
@@ -23,23 +18,31 @@ export const TEST_ACCOUNTS = [
     password: TEST_PASSWORD,
     role: ROLES.ADMIN,
     displayName: "Admin Demo",
+    subscription: defaultSubscription(PLANS.PRO),
   },
   {
     email: "investor@emlakhub.net",
     password: TEST_PASSWORD,
     role: ROLES.INVESTOR,
     displayName: "Investor Demo",
+    subscription: defaultSubscription(PLANS.FREE),
   },
   {
     email: "dev@emlakhub.net",
     password: TEST_PASSWORD,
     role: ROLES.DEVELOPER,
     displayName: "Developer Demo",
-    blocked: true,
+    subscription: defaultSubscription(PLANS.PRO),
+  },
+  {
+    email: "support@emlakhub.net",
+    password: TEST_PASSWORD,
+    role: ROLES.SUPPORT,
+    displayName: "Support Demo",
+    subscription: defaultSubscription(PLANS.PRO),
   },
 ];
 
-/** Проверка email/пароля в DEMO-режиме */
 export function resolveTestAccount(email, password) {
   const normalized = email.trim().toLowerCase();
   return (
@@ -49,7 +52,7 @@ export function resolveTestAccount(email, password) {
   );
 }
 
-/** Куда отправить после входа */
 export function redirectAfterLogin(role) {
-  return isAdminRole(role) ? "/admin/users" : "/dashboard";
+  if (isAdminRole(role)) return adminHomeForRole(role);
+  return "/dashboard";
 }
