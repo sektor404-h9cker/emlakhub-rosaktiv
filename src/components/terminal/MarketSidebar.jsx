@@ -2,7 +2,7 @@
 
 /**
  * =============================================================================
- * MarketSidebar — рынок Авто/Недвижимость + поиск ID + фильтр маржи
+ * MarketSidebar - рынок Авто/Недвижимость + поиск ID + фильтр маржи
  * =============================================================================
  * Это «левый» блок внутри дашборда (рядом с карточкой лота),
  * не путать с TerminalShell sidebar (навигация приложения).
@@ -52,7 +52,7 @@ export default function MarketSidebar({
           <input
             value={query}
             onChange={(e) => onQueryChange(e.target.value)}
-            placeholder="AUTO-911"
+            placeholder="EH-REG…"
             className="eh-term-input text-[13px]"
           />
         </label>

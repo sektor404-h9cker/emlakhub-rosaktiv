@@ -2,7 +2,7 @@
 
 /**
  * =============================================================================
- * TerminalShell — fixed sidebar (не скроллится с контентом) + mobile drawer
+ * TerminalShell - fixed sidebar (не скроллится с контентом) + mobile drawer
  * =============================================================================
  */
 
@@ -32,16 +32,24 @@ import {
   Shield,
   Server,
   Crown,
+  MessagesSquare,
+  CheckSquare,
+  Settings2,
+  ScrollText,
+  Activity,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useTerminalPanel } from "@/context/TerminalPanelContext";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 import { getTerminalDict } from "@/lib/i18n/terminalDict";
 import { SECTION_GUIDE } from "@/data/guideCopy";
-import { hasPrivilege, PRIV, adminHomeForRole } from "@/lib/adminPrivileges";
-import { formatExpiry } from "@/lib/subscription";
+import { PRIV } from "@/lib/adminPrivileges";
+import { adminNavLabel } from "@/lib/i18n/adminDict";
+import { useSystem } from "@/context/SystemContext";
+import { daysLeft as daysLeftFn } from "@/lib/subscription";
 import EmlakLogo from "./EmlakLogo";
 import UserAvatar from "./UserAvatar";
+import AdminNotifPanel from "@/components/admin/AdminNotifPanel";
 
 const INVESTOR_GROUPS = [
   {
@@ -77,8 +85,33 @@ const ADMIN_HREFS = [
     href: "/admin/users",
     priv: PRIV.USERS,
     icon: Users,
-    labelRu: "Пользователи",
-    labelAz: "İstifadəçilər",
+    labelRu: "Клиенты",
+    labelAz: "Müştərilər",
+    labelEn: "Clients",
+  },
+  {
+    href: "/admin/staff",
+    priv: PRIV.STAFF,
+    icon: UserRound,
+    labelRu: "Сотрудники",
+    labelAz: "Əməkdaşlar",
+    labelEn: "Staff",
+  },
+  {
+    href: "/admin/lots",
+    priv: PRIV.LOTS,
+    icon: Map,
+    labelRu: "Лоты",
+    labelAz: "Lotlar",
+    labelEn: "Lots",
+  },
+  {
+    href: "/admin/herrac",
+    priv: PRIV.LOTS,
+    icon: Activity,
+    labelRu: "Hərrac Monitor",
+    labelAz: "Hərrac Monitor",
+    labelEn: "Hərrac Monitor",
   },
   {
     href: "/admin/finance",
@@ -86,6 +119,15 @@ const ADMIN_HREFS = [
     icon: Wallet,
     labelRu: "Финансы",
     labelAz: "Maliyyə",
+    labelEn: "Finance",
+  },
+  {
+    href: "/admin/growth",
+    priv: PRIV.FINANCE,
+    icon: TrendingUp,
+    labelRu: "Бизнес и рост",
+    labelAz: "Biznes və artım",
+    labelEn: "Business and growth",
   },
   {
     href: "/admin/support",
@@ -93,6 +135,23 @@ const ADMIN_HREFS = [
     icon: MessageSquare,
     labelRu: "Поддержка",
     labelAz: "Dəstək",
+    labelEn: "Support",
+  },
+  {
+    href: "/admin/team",
+    priv: PRIV.TEAM,
+    icon: MessagesSquare,
+    labelRu: "Чат команды",
+    labelAz: "Komanda çatı",
+    labelEn: "Team chat",
+  },
+  {
+    href: "/admin/tasks",
+    priv: PRIV.TASKS,
+    icon: CheckSquare,
+    labelRu: "Задачи",
+    labelAz: "Tapşırıqlar",
+    labelEn: "Tasks",
   },
   {
     href: "/admin/system",
@@ -100,6 +159,7 @@ const ADMIN_HREFS = [
     icon: Server,
     labelRu: "Система",
     labelAz: "Sistem",
+    labelEn: "System",
   },
   {
     href: "/admin/security",
@@ -107,6 +167,40 @@ const ADMIN_HREFS = [
     icon: Shield,
     labelRu: "Безопасность",
     labelAz: "Təhlükəsizlik",
+    labelEn: "Security",
+  },
+  {
+    href: "/admin/settings",
+    priv: PRIV.SETTINGS,
+    icon: Settings2,
+    labelRu: "Настройки",
+    labelAz: "Ayarlar",
+    labelEn: "Settings",
+  },
+];
+
+const ADMIN_SOFT_LINKS = [
+  {
+    href: "/admin",
+    icon: LayoutDashboard,
+    labelRu: "Панель",
+    labelAz: "Panel",
+    labelEn: "Dashboard",
+    exact: true,
+  },
+  {
+    href: "/admin/profile",
+    icon: UserRound,
+    labelRu: "Профиль",
+    labelAz: "Profil",
+    labelEn: "Profile",
+  },
+  {
+    href: "/admin/activity",
+    icon: ScrollText,
+    labelRu: "Журнал",
+    labelAz: "Jurnal",
+    labelEn: "Activity",
   },
 ];
 
@@ -133,15 +227,22 @@ export default function TerminalShell({
 }) {
   const pathname = usePathname();
   const { profile, logout, isAdmin, isPro, openPaywall, role } = useAuth();
+  const { hasPrivilege, adminHomeForRole, isAdminCapable, adminNotifications } =
+    useSystem();
   const { balance, unreadCount, watchlist, compare, startTour, prefs } =
     useTerminalPanel();
   const { locale, setLocale } = useLocale();
   const t = getTerminalDict(locale);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuPath, setMenuPath] = useState(pathname);
+  const [adminNotifOpen, setAdminNotifOpen] = useState(false);
 
-  useEffect(() => {
+  if (pathname !== menuPath) {
+    setMenuPath(pathname);
     setMenuOpen(false);
-  }, [pathname]);
+  }
+
+  const adminUnread = (adminNotifications || []).filter((n) => !n.read).length;
 
   useEffect(() => {
     if (!menuOpen) return undefined;
@@ -158,7 +259,9 @@ export default function TerminalShell({
     (mode === "admin"
       ? locale === "az"
         ? "Admin"
-        : "Админ"
+        : locale === "en"
+          ? "Admin"
+          : "Админ"
       : meta
         ? t[meta.titleKey]
         : t.title);
@@ -171,11 +274,23 @@ export default function TerminalShell({
         : t.subtitle);
 
   const personName =
-    profile?.displayName || profile?.email?.split("@")[0] || "—";
+    profile?.displayName || profile?.email?.split("@")[0] || "-";
   const companyName = (prefs?.company || "").trim();
   const avatarId = prefs?.avatarId || "ocean";
-  const badge = unreadCount > 9 ? "9+" : unreadCount > 0 ? String(unreadCount) : null;
+  const badge =
+    mode === "admin"
+      ? adminUnread > 9
+        ? "9+"
+        : adminUnread > 0
+          ? String(adminUnread)
+          : null
+      : unreadCount > 9
+        ? "9+"
+        : unreadCount > 0
+          ? String(unreadCount)
+          : null;
   const adminLinks = ADMIN_HREFS.filter((item) => hasPrivilege(role, item.priv));
+  const adminCapable = isAdmin || isAdminCapable(role);
 
   const sidebar = (
     <SidebarBody
@@ -183,7 +298,7 @@ export default function TerminalShell({
       pathname={pathname}
       t={t}
       locale={locale}
-      isAdmin={isAdmin}
+      isAdmin={adminCapable}
       isPro={isPro}
       adminLinks={adminLinks}
       adminHome={adminHomeForRole(role)}
@@ -201,7 +316,7 @@ export default function TerminalShell({
 
   return (
     <div className="eh-terminal flex h-[100dvh] overflow-hidden bg-[#05070b] text-[#e8eaed]">
-      {/* Desktop sidebar — fixed, never scrolls with main content */}
+      {/* Desktop sidebar - fixed, never scrolls with main content */}
       <aside className="relative z-30 hidden h-full w-[248px] shrink-0 flex-col border-r border-white/[0.07] bg-[#07090e] lg:flex">
         {sidebar}
       </aside>
@@ -237,7 +352,7 @@ export default function TerminalShell({
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse at 12% 0%, rgba(37,99,235,0.10), transparent 42%), radial-gradient(ellipse at 90% 100%, rgba(15,23,42,0.55), transparent 48%)",
+              "radial-gradient(ellipse at 0% 0%, rgba(255,255,255,0.03), transparent 36%)",
           }}
         />
 
@@ -267,29 +382,40 @@ export default function TerminalShell({
                 <button
                   type="button"
                   onClick={startTour}
-                  className="hidden items-center gap-1.5 rounded-xl border border-[#2563eb]/40 bg-[#2563eb]/10 px-3 py-2 text-[12px] font-medium text-[#93c5fd] transition hover:bg-[#2563eb]/20 md:inline-flex"
+                  className="eh-press hidden items-center gap-1.5 rounded-lg px-2.5 py-2 text-[12px] text-[#a8a29e] transition hover:bg-white/[0.04] hover:text-white md:inline-flex"
                 >
                   <Compass size={14} />
                   {t.tourRestart}
                 </button>
               ) : null}
 
-              <button
-                type="button"
-                onClick={onOpenNotifications}
-                className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] text-[#94a3b8] transition hover:text-white"
-                aria-label={t.notifications}
-              >
-                <Bell size={17} />
-                {badge ? (
-                  <span className="absolute -right-1 -top-1 rounded-full bg-rose-500 px-1 text-[9px] font-bold text-white">
-                    {badge}
-                  </span>
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (mode === "admin") setAdminNotifOpen((v) => !v);
+                    else onOpenNotifications?.();
+                  }}
+                  className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] text-[#94a3b8] transition hover:text-white"
+                  aria-label={t.notifications}
+                >
+                  <Bell size={17} />
+                  {badge ? (
+                    <span className="absolute -right-1 -top-1 rounded-full bg-rose-500 px-1 text-[9px] font-bold text-white">
+                      {badge}
+                    </span>
+                  ) : null}
+                </button>
+                {mode === "admin" ? (
+                  <AdminNotifPanel
+                    open={adminNotifOpen}
+                    onClose={() => setAdminNotifOpen(false)}
+                  />
                 ) : null}
-              </button>
+              </div>
 
               <div className="flex rounded-xl border border-white/10 bg-white/[0.03] p-1">
-                {["az", "ru"].map((code) => (
+                {["az", "ru", "en"].map((code) => (
                   <button
                     key={code}
                     type="button"
@@ -297,8 +423,8 @@ export default function TerminalShell({
                     className={[
                       "rounded-lg px-2 py-1.5 text-[11px] font-semibold uppercase tracking-wide transition sm:px-2.5",
                       locale === code
-                        ? "bg-[#2563eb] text-white"
-                        : "text-[#64748b] hover:text-white",
+                        ? "bg-white text-[#0b0d12]"
+                        : "text-[#78716c] hover:text-white",
                     ].join(" ")}
                   >
                     {code}
@@ -344,6 +470,7 @@ function SidebarBody({
   logout,
   onNavigate,
 }) {
+  const left = daysLeftFn(subscription);
   return (
     <>
       <div className="shrink-0 border-b border-white/[0.07] px-4 py-4">
@@ -353,9 +480,9 @@ function SidebarBody({
       </div>
 
       <Link
-        href="/profile"
+        href={mode === "admin" ? "/admin/profile" : "/profile"}
         onClick={onNavigate}
-        className="mx-3 mt-3 block shrink-0 rounded-2xl border border-white/[0.08] bg-white/[0.03] p-3 transition hover:border-[#2563eb]/40"
+        className="mx-3 mt-2 block shrink-0 rounded-xl px-2.5 py-2 transition hover:bg-white/[0.04]"
         title={t.navProfile}
       >
         <div className="flex items-center gap-3">
@@ -374,9 +501,9 @@ function SidebarBody({
               </div>
             )}
             {isPro ? (
-              <div className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-blue-700/90 px-1.5 py-0.5 text-[9px] font-medium text-white">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-300" />
-                {t.proActive}
+              <div className="mt-1 text-[10px] tracking-wide text-[#a8a29e]">
+                PRO
+                {left != null ? ` · ${left}д` : ""}
               </div>
             ) : (
               <button
@@ -391,11 +518,6 @@ function SidebarBody({
                 Free · PRO
               </button>
             )}
-            {isPro && subscription?.expiresAt ? (
-              <div className="mt-1 text-[10px] text-[#64748b]">
-                {formatExpiry(subscription.expiresAt, locale)}
-              </div>
-            ) : null}
           </div>
         </div>
       </Link>
@@ -407,7 +529,26 @@ function SidebarBody({
               const active =
                 pathname === item.href || pathname.startsWith(item.href + "/");
               const Icon = item.icon;
-              const label = locale === "az" ? item.labelAz : item.labelRu;
+              const label = adminNavLabel(item, locale);
+              return (
+                <NavLink
+                  key={item.href}
+                  href={item.href}
+                  active={active}
+                  icon={Icon}
+                  onClick={onNavigate}
+                >
+                  {label}
+                </NavLink>
+              );
+            })}
+            <div className="my-2 h-px bg-white/[0.06]" />
+            {ADMIN_SOFT_LINKS.map((item) => {
+              const active = item.exact
+                ? pathname === item.href
+                : pathname === item.href || pathname.startsWith(item.href + "/");
+              const Icon = item.icon;
+              const label = adminNavLabel(item, locale);
               return (
                 <NavLink
                   key={item.href}
@@ -508,19 +649,22 @@ function NavLink({ href, active, icon: Icon, children, count, title, onClick }) 
       title={title}
       onClick={onClick}
       className={[
-        "flex items-center gap-2.5 rounded-xl px-3 py-2 text-[13px] transition",
+        "relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] transition duration-150",
         active
-          ? "bg-[#2563eb] text-white shadow-[0_10px_28px_-12px_rgba(37,99,235,0.85)]"
-          : "text-[#94a3b8] hover:bg-white/[0.04] hover:text-white",
+          ? "bg-white/[0.06] text-white"
+          : "text-[#a8a29e] hover:bg-white/[0.04] hover:text-white",
       ].join(" ")}
     >
-      <Icon size={15} strokeWidth={1.7} className="shrink-0" />
+      {active ? (
+        <span className="absolute bottom-1.5 left-0 top-1.5 w-[2px] rounded-full bg-[#93c5fd]" />
+      ) : null}
+      <Icon size={16} strokeWidth={1.6} className="shrink-0" />
       <span className="min-w-0 flex-1 truncate">{children}</span>
       {count != null ? (
         <span
           className={[
             "rounded-md px-1.5 py-0.5 text-[10px] font-semibold tabular-nums",
-            active ? "bg-white/20 text-white" : "bg-white/5 text-[#64748b]",
+            active ? "text-white" : "text-[#78716c]",
           ].join(" ")}
         >
           {count}

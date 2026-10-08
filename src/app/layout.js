@@ -1,5 +1,5 @@
 /**
- * ROOT LAYOUT — SEO + типографика
+ * ROOT LAYOUT - SEO + типографика
  * Display: Playfair Display · Body: Manrope
  */
 
@@ -27,11 +27,11 @@ const OG_IMAGE = `${SITE}/landing/porsche-hero.jpg`;
 export const metadata = {
   metadataBase: new URL(SITE),
   title: {
-    default: "Digital Emlak Hub — B2B-терминал госаукционов Азербайджана",
+    default: "Digital Emlak Hub - B2B-терминал госаукционов Азербайджана",
     template: "%s · Digital Emlak Hub",
   },
   description:
-    "Digital Emlak Hub — закрытый B2B-терминал для инвесторов: скрытые риски, оценка ремонта и чистая маржа по лотам государственных аукционов до ставки. Азербайджан. RosAktiv Hub для России — скоро.",
+    "Digital Emlak Hub — независимый аналитический сервис: от государственного лота к обоснованному инвестиционному решению. Авто и недвижимость с торгов Азербайджана. RosTorg Hub для России готовится отдельно.",
   applicationName: "Digital Emlak Hub",
   authors: [{ name: "Camal Huseynov", url: SITE }],
   creator: "Camal Huseynov",
@@ -46,7 +46,7 @@ export const metadata = {
     "B2B терминал аукционов",
     "unit economics лота",
     "due diligence аукцион",
-    "RosAktiv Hub",
+    "RosTorg Hub",
     "Camal Huseynov",
   ],
   openGraph: {
@@ -55,23 +55,23 @@ export const metadata = {
     alternateLocale: ["ru_RU", "en_US"],
     url: SITE,
     siteName: "Digital Emlak Hub",
-    title: "Digital Emlak Hub — решение до ставки на госаукционах",
+    title: "Digital Emlak Hub — от государственного лота к решению",
     description:
-      "Риски, смета и чистая маржа до участия. Закрытый терминал для профессионального капитала. Основатель — Camal Huseynov.",
+      "Сравните цену лота с рынком, учтите расходы и увидьте возможный результат до ставки. Независимый сервис, не государственный портал. RosTorg Hub — будущий продукт для России.",
     images: [
       {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Digital Emlak Hub — аналитика лотов госаукционов",
+        alt: "Digital Emlak Hub - аналитика лотов госаукционов",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Digital Emlak Hub — B2B-терминал госаукционов",
+    title: "Digital Emlak Hub - B2B-терминал госаукционов",
     description:
-      "Маржа и риски до ставки. Азербайджан в работе · RosAktiv Hub для России — скоро.",
+      "Маржа и риски до ставки. Азербайджан в работе · RosTorg Hub для России - скоро.",
     images: [OG_IMAGE],
   },
   robots: {
@@ -102,10 +102,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="az">
-      <head>
-        <JsonLd />
-      </head>
       <body className={`${manrope.variable} ${playfair.variable} font-sans antialiased`}>
+        <JsonLd />
         <Providers>
           <SmoothScroll />
           {children}

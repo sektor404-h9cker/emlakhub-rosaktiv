@@ -2,7 +2,7 @@
 
 /**
  * =============================================================================
- * AuthContext — сессия + подписка Free/PRO
+ * AuthContext - сессия + подписка Free/PRO
  * =============================================================================
  */
 
@@ -14,20 +14,16 @@ import React, {
   useMemo,
   useState,
 } from "react";
+import { canAccessTerminal, isAdminRole } from "@/lib/roles";
+import { redirectAfterLogin } from "@/lib/auth/redirect";
 import {
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut,
-  updateProfile,
-} from "firebase/auth";
-import { auth, isFirebaseConfigured } from "@/lib/firebase/config";
-import { ensureUserProfile, getUserProfile } from "@/lib/firebase/firestore";
-import { ROLES, canAccessTerminal, isAdminRole } from "@/lib/firebase/constants";
-import {
-  redirectAfterLogin,
-  resolveTestAccount,
-} from "@/data/testAccounts";
+  fetchMe,
+  loginApi,
+  logoutApi,
+  registerApi,
+  createPayment,
+} from "@/lib/api/client";
+import { allowDemoFallback } from "@/lib/runtimePolicy";
 import {
   FREE_LIMITS,
   PLANS,
@@ -78,42 +74,90 @@ export function AuthProvider({ children }) {
   const [error, setError] = useState("");
   const [paywallOpen, setPaywallOpen] = useState(false);
   const [paywallReason, setPaywallReason] = useState("");
+  const [dbConfigured, setDbConfigured] = useState(null);
+  /** "" | "unavailable" | "unconfigured" — не путать с «просто не залогинен» */
+  const [sessionError, setSessionError] = useState("");
+  const [sessionAttempt, setSessionAttempt] = useState(0);
 
+  /**
+   * Сессия только из PostgreSQL.
+   * Firebase здесь больше не держит экран загрузки: его колбэк может не прийти,
+   * и терминал оставался на «Загрузка терминала…» навсегда.
+   * Демо из localStorage не подставляем, если база недоступна.
+   */
   useEffect(() => {
-    if (!isFirebaseConfigured || !auth) {
-      const demo = readDemoSession();
-      if (demo) {
-        setUser(demo.user);
-        setProfile(normalizeProfile(demo.profile));
-      }
+    let cancelled = false;
+    const timer = setTimeout(() => {
+      if (cancelled) return;
+      setSessionError((prev) => prev || "unavailable");
       setLoading(false);
-      return undefined;
-    }
+    }, 8000);
 
-    const unsub = onAuthStateChanged(auth, async (fbUser) => {
-      setLoading(true);
-      setError("");
-      if (!fbUser) {
+    (async () => {
+      try {
+        const data = await fetchMe();
+        if (cancelled) return;
+        clearTimeout(timer);
+        if (data.unavailable) {
+          setDbConfigured(true);
+          setSessionError("unavailable");
+          setUser(null);
+          setProfile(null);
+          return;
+        }
+        if (!data.configured) {
+          setDbConfigured(false);
+          setSessionError("unconfigured");
+          if (allowDemoFallback()) {
+            const demo = readDemoSession();
+            if (demo) {
+              setUser(demo.user);
+              setProfile(normalizeProfile(demo.profile));
+              setSessionError("");
+            }
+          } else {
+            setUser(null);
+            setProfile(null);
+          }
+          return;
+        }
+        setDbConfigured(true);
+        setSessionError("");
+        if (data.profile) {
+          const p = normalizeProfile(data.profile);
+          setUser({
+            uid: p.id,
+            email: p.email,
+            displayName: p.displayName,
+            isPostgres: true,
+          });
+          setProfile(p);
+        } else {
+          setUser(null);
+          setProfile(null);
+        }
+      } catch {
+        if (cancelled) return;
+        clearTimeout(timer);
+        setDbConfigured(false);
+        setSessionError("unavailable");
         setUser(null);
         setProfile(null);
-        setLoading(false);
-        return;
-      }
-      try {
-        let p = await getUserProfile(fbUser.uid);
-        if (!p) p = await ensureUserProfile(fbUser);
-        setUser(fbUser);
-        setProfile(normalizeProfile(p));
-      } catch (e) {
-        setError(e.message || "Ошибка профиля");
-        setUser(fbUser);
-        setProfile(null);
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
-    });
+    })();
 
-    return () => unsub();
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [sessionAttempt]);
+
+  const retrySession = useCallback(() => {
+    setLoading(true);
+    setSessionError("");
+    setSessionAttempt((n) => n + 1);
   }, []);
 
   const persistProfile = useCallback((nextProfile, nextUser) => {
@@ -134,7 +178,15 @@ export function AuthProvider({ children }) {
       id: demoUser.uid,
       uid: demoUser.uid,
       email: demoUser.email,
-      displayName: demoUser.displayName,
+      displayName: account.displayName,
+      firstName: account.firstName || "",
+      lastName: account.lastName || "",
+      jobTitle: account.jobTitle || "",
+      department: account.department || "",
+      presence: account.presence || "online",
+      avatarId: account.avatarId || "ocean",
+      accent: account.accent || "sky",
+      bio: account.bio || "",
       role: account.role,
       blocked: Boolean(account.blocked),
       subscription: account.subscription || defaultSubscription(PLANS.FREE),
@@ -150,40 +202,80 @@ export function AuthProvider({ children }) {
   const login = useCallback(
     async (email, password) => {
       setError("");
-      if (!isFirebaseConfigured || !auth) {
+      try {
+        const data = await loginApi(email, password);
+        if (data.profile) {
+          const p = normalizeProfile(data.profile);
+          setUser({
+            uid: p.id,
+            email: p.email,
+            displayName: p.displayName,
+            isPostgres: true,
+          });
+          setProfile(p);
+          setDbConfigured(true);
+          return redirectAfterLogin(p.role);
+        }
+      } catch (e) {
+        if (e.unavailable) {
+          throw new Error("База временно недоступна. Попробуйте позже.");
+        }
+        if (!(e.status === 503 && e.configured === false && allowDemoFallback())) {
+          throw e;
+        }
+      }
+
+      if (
+        process.env.NODE_ENV !== "production" &&
+        process.env.NEXT_PUBLIC_ALLOW_DEMO === "1"
+      ) {
+        const { resolveTestAccount } = await import("@/data/testAccounts");
         const account = resolveTestAccount(email, password);
         if (!account) throw new Error("Неверный email или пароль");
         if (account.blocked) throw new Error("Аккаунт заблокирован");
         return applyDemoSession(account);
       }
-      const cred = await signInWithEmailAndPassword(auth, email, password);
-      let p = await getUserProfile(cred.user.uid);
-      if (!p) p = await ensureUserProfile(cred.user);
-      if (p?.blocked) {
-        await signOut(auth);
-        throw new Error("Аккаунт заблокирован");
-      }
-      return redirectAfterLogin(p?.role);
+      throw new Error("Неверный email или пароль");
     },
     [applyDemoSession]
   );
 
-  const register = useCallback(async (email, password, displayName) => {
+  const register = useCallback(async (email, password, displayName, extra = {}) => {
     setError("");
-    if (!isFirebaseConfigured || !auth) {
-      throw new Error("Регистрация пока недоступна. Войдите по выданному доступу.");
+    try {
+      const data = await registerApi(email, password, displayName, extra);
+      if (data.profile) {
+        const p = normalizeProfile(data.profile);
+        setUser({
+          uid: p.id,
+          email: p.email,
+          displayName: p.displayName,
+          isPostgres: true,
+        });
+        setProfile(p);
+        setDbConfigured(true);
+        return;
+      }
+    } catch (e) {
+      if (!(e.status === 503 && e.configured === false && allowDemoFallback())) {
+        throw e.status === 503
+          ? new Error(e.message || "База временно недоступна. Попробуйте позже.")
+          : e;
+      }
     }
-    const cred = await createUserWithEmailAndPassword(auth, email, password);
-    if (displayName) await updateProfile(cred.user, { displayName });
-    await ensureUserProfile(cred.user, { displayName, role: ROLES.INVESTOR });
+    throw new Error("Регистрация недоступна без PostgreSQL.");
   }, []);
 
   const logout = useCallback(async () => {
     setError("");
+    try {
+      await logoutApi();
+    } catch {
+      /* demo / offline */
+    }
     writeDemoSession(null);
     setUser(null);
     setProfile(null);
-    if (isFirebaseConfigured && auth) await signOut(auth);
   }, []);
 
   const updateLocalProfile = useCallback((patch) => {
@@ -194,7 +286,7 @@ export function AuthProvider({ children }) {
         if (!u) return u;
         const nu = {
           ...u,
-          displayName: patch.displayName ?? u.displayName,
+          displayName: next.displayName ?? patch.displayName ?? u.displayName,
         };
         if (u.isDemo) writeDemoSession({ user: nu, profile: next });
         return nu;
@@ -213,9 +305,18 @@ export function AuthProvider({ children }) {
     setPaywallReason("");
   }, []);
 
-  /** Демо-оплата PRO */
+  /**
+   * Заявка на оплату PRO.
+   * Postgres: POST /api/payments → pending (админ подтверждает).
+   * Demo: локальная активация без сервера.
+   */
   const activatePro = useCallback(
-    (planKey = "month") => {
+    async (planKey = "month") => {
+      if (dbConfigured) {
+        await createPayment(planKey);
+        setPaywallOpen(false);
+        return { pending: true };
+      }
       const price = PLAN_PRICES[planKey] || PLAN_PRICES.month;
       setProfile((prev) => {
         if (!prev) return prev;
@@ -236,11 +337,12 @@ export function AuthProvider({ children }) {
         return next;
       });
       setPaywallOpen(false);
+      return { pending: false };
     },
-    []
+    [dbConfigured]
   );
 
-  /** Попытка открыть карточку лота — Free лимит */
+  /** Попытка открыть карточку лота - Free лимит */
   const tryOpenLot = useCallback(
     (lotId) => {
       if (!profile) return { ok: false };
@@ -289,8 +391,11 @@ export function AuthProvider({ children }) {
       profile,
       loading,
       error,
+      sessionError,
+      retrySession,
       setError,
-      isConfigured: isFirebaseConfigured,
+      isConfigured: Boolean(dbConfigured),
+      dbConfigured,
       role: profile?.role || null,
       blocked: Boolean(profile?.blocked),
       isAdmin: isAdminRole(profile?.role),
@@ -311,12 +416,21 @@ export function AuthProvider({ children }) {
       paywallReason,
       openPaywall,
       closePaywall,
+      refreshProfile: async () => {
+        const data = await fetchMe();
+        if (data.profile) {
+          setProfile(normalizeProfile(data.profile));
+        }
+      },
     }),
     [
       user,
       profile,
       loading,
       error,
+      sessionError,
+      retrySession,
+      dbConfigured,
       pro,
       expired,
       left,

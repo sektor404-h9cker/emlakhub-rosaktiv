@@ -1,8 +1,8 @@
 "use client";
 
 /**
- * SmoothScroll — Lenis только на лендинге (/).
- * Терминал / auth — обычный скролл (иначе ломает дашборд).
+ * SmoothScroll - Lenis только на лендинге (/).
+ * Терминал / auth - обычный скролл (иначе ломает дашборд).
  */
 
 import { useEffect } from "react";

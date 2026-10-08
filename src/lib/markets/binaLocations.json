@@ -1,0 +1,897 @@
+{
+  "1": {
+    "id": "1",
+    "name": "Nəriman Nərimanov",
+    "fullName": "Nəriman Nərimanov m."
+  },
+  "2": {
+    "id": "1",
+    "name": "Nəriman Nərimanov",
+    "fullName": "Nəriman Nərimanov m."
+  },
+  "3": {
+    "id": "3",
+    "name": "Ulduz",
+    "fullName": "Ulduz m."
+  },
+  "4": {
+    "id": "4",
+    "name": "Koroğlu",
+    "fullName": "Koroğlu m."
+  },
+  "5": {
+    "id": "5",
+    "name": "20 Yanvar",
+    "fullName": "20 Yanvar m."
+  },
+  "6": {
+    "id": "6",
+    "name": "Azadlıq Prospekti",
+    "fullName": "Azadlıq Prospekti m."
+  },
+  "7": {
+    "id": "7",
+    "name": "İnşaatçılar",
+    "fullName": "İnşaatçılar m."
+  },
+  "8": {
+    "id": "8",
+    "name": "28 May",
+    "fullName": "28 May m."
+  },
+  "9": {
+    "id": "9",
+    "name": "Xocəsən",
+    "fullName": "Xocəsən q."
+  },
+  "10": {
+    "id": "1",
+    "name": "Nəriman Nərimanov",
+    "fullName": "Nəriman Nərimanov m."
+  },
+  "11": {
+    "id": "11",
+    "name": "Nizami",
+    "fullName": "Nizami r."
+  },
+  "12": {
+    "id": "8",
+    "name": "28 May",
+    "fullName": "28 May m."
+  },
+  "13": {
+    "id": "380",
+    "name": "Sea Breeze",
+    "fullName": "Sea Breeze q."
+  },
+  "14": {
+    "id": "89",
+    "name": "Zığ",
+    "fullName": "Zığ q."
+  },
+  "15": {
+    "id": "109",
+    "name": "Mərdəkan",
+    "fullName": "Mərdəkan q."
+  },
+  "16": {
+    "id": "54",
+    "name": "Xalqlar Dostluğu",
+    "fullName": "Xalqlar Dostluğu m."
+  },
+  "17": {
+    "id": "266",
+    "name": "Avtovağzal",
+    "fullName": "Avtovağzal m."
+  },
+  "18": {
+    "id": "18",
+    "name": "Binəqədi",
+    "fullName": "Binəqədi q."
+  },
+  "19": {
+    "id": "19",
+    "name": "M.Ə.Rəsulzadə",
+    "fullName": "M.Ə.Rəsulzadə q."
+  },
+  "20": {
+    "id": "20",
+    "name": "Lökbatan",
+    "fullName": "Lökbatan q."
+  },
+  "21": {
+    "id": "21",
+    "name": "Sahil",
+    "fullName": "Sahil q."
+  },
+  "24": {
+    "id": "24",
+    "name": "Ələt",
+    "fullName": "Ələt q."
+  },
+  "25": {
+    "id": "190",
+    "name": "Nəsimi",
+    "fullName": "Nəsimi r."
+  },
+  "26": {
+    "id": "1",
+    "name": "Nəriman Nərimanov",
+    "fullName": "Nəriman Nərimanov m."
+  },
+  "27": {
+    "id": "37",
+    "name": "İçəri Şəhər",
+    "fullName": "İçəri Şəhər m."
+  },
+  "28": {
+    "id": "8",
+    "name": "28 May",
+    "fullName": "28 May m."
+  },
+  "29": {
+    "id": "34",
+    "name": "Elmlər Akademiyası",
+    "fullName": "Elmlər Akademiyası m."
+  },
+  "30": {
+    "id": "37",
+    "name": "İçəri Şəhər",
+    "fullName": "İçəri Şəhər m."
+  },
+  "31": {
+    "id": "10",
+    "name": "Nərimanov",
+    "fullName": "Nərimanov r."
+  },
+  "32": {
+    "id": "37",
+    "name": "İçəri Şəhər",
+    "fullName": "İçəri Şəhər m."
+  },
+  "33": {
+    "id": "33",
+    "name": "Həzi Aslanov",
+    "fullName": "Həzi Aslanov m."
+  },
+  "34": {
+    "id": "35",
+    "name": "Nizami",
+    "fullName": "Nizami m."
+  },
+  "35": {
+    "id": "35",
+    "name": "Nizami",
+    "fullName": "Nizami m."
+  },
+  "36": {
+    "id": "36",
+    "name": "Şah İsmayıl Xətai",
+    "fullName": "Şah İsmayıl Xətai m."
+  },
+  "37": {
+    "id": "37",
+    "name": "İçəri Şəhər",
+    "fullName": "İçəri Şəhər m."
+  },
+  "38": {
+    "id": "8",
+    "name": "28 May",
+    "fullName": "28 May m."
+  },
+  "46": {
+    "id": "46",
+    "name": "Badamdar",
+    "fullName": "Badamdar q."
+  },
+  "47": {
+    "id": "47",
+    "name": "Bibiheybət",
+    "fullName": "Bibiheybət q."
+  },
+  "48": {
+    "id": "37",
+    "name": "İçəri Şəhər",
+    "fullName": "İçəri Şəhər m."
+  },
+  "49": {
+    "id": "49",
+    "name": "Bayıl",
+    "fullName": "Bayıl q."
+  },
+  "50": {
+    "id": "50",
+    "name": "Hökməli",
+    "fullName": "Hökməli q."
+  },
+  "51": {
+    "id": "51",
+    "name": "Əhmədli",
+    "fullName": "Əhmədli m."
+  },
+  "52": {
+    "id": "52",
+    "name": "Qara Qarayev",
+    "fullName": "Qara Qarayev m."
+  },
+  "53": {
+    "id": "52",
+    "name": "Qara Qarayev",
+    "fullName": "Qara Qarayev m."
+  },
+  "54": {
+    "id": "54",
+    "name": "Xalqlar Dostluğu",
+    "fullName": "Xalqlar Dostluğu m."
+  },
+  "56": {
+    "id": "7",
+    "name": "İnşaatçılar",
+    "fullName": "İnşaatçılar m."
+  },
+  "57": {
+    "id": "20",
+    "name": "Lökbatan",
+    "fullName": "Lökbatan q."
+  },
+  "58": {
+    "id": "60",
+    "name": "Nəsimi",
+    "fullName": "Nəsimi m."
+  },
+  "59": {
+    "id": "59",
+    "name": "Memar Əcəmi",
+    "fullName": "Memar Əcəmi m."
+  },
+  "60": {
+    "id": "60",
+    "name": "Nəsimi",
+    "fullName": "Nəsimi m."
+  },
+  "61": {
+    "id": "61",
+    "name": "Dərnəgül",
+    "fullName": "Dərnəgül m."
+  },
+  "63": {
+    "id": "1",
+    "name": "Nəriman Nərimanov",
+    "fullName": "Nəriman Nərimanov m."
+  },
+  "64": {
+    "id": "64",
+    "name": "Sulutəpə",
+    "fullName": "Sulutəpə q."
+  },
+  "65": {
+    "id": "65",
+    "name": "Çiçək",
+    "fullName": "Çiçək q."
+  },
+  "68": {
+    "id": "4",
+    "name": "Koroğlu",
+    "fullName": "Koroğlu m."
+  },
+  "69": {
+    "id": "69",
+    "name": "Bakıxanov",
+    "fullName": "Bakıxanov q."
+  },
+  "70": {
+    "id": "279",
+    "name": "8 Noyabr",
+    "fullName": "8 Noyabr m."
+  },
+  "72": {
+    "id": "72",
+    "name": "Əmircan",
+    "fullName": "Əmircan q."
+  },
+  "74": {
+    "id": "52",
+    "name": "Qara Qarayev",
+    "fullName": "Qara Qarayev m."
+  },
+  "75": {
+    "id": "75",
+    "name": "Qaraçuxur",
+    "fullName": "Qaraçuxur q."
+  },
+  "76": {
+    "id": "76",
+    "name": "Ramana",
+    "fullName": "Ramana q."
+  },
+  "77": {
+    "id": "77",
+    "name": "Yeni Ramana",
+    "fullName": "Yeni Ramana q."
+  },
+  "78": {
+    "id": "78",
+    "name": "Zabrat",
+    "fullName": "Zabrat q."
+  },
+  "79": {
+    "id": "79",
+    "name": "Binə",
+    "fullName": "Binə q."
+  },
+  "81": {
+    "id": "81",
+    "name": "Massiv A",
+    "fullName": "Massiv A q."
+  },
+  "82": {
+    "id": "82",
+    "name": "Massiv B",
+    "fullName": "Massiv B q."
+  },
+  "83": {
+    "id": "83",
+    "name": "Massiv V",
+    "fullName": "Massiv V q."
+  },
+  "84": {
+    "id": "84",
+    "name": "Massiv G",
+    "fullName": "Massiv G q."
+  },
+  "85": {
+    "id": "85",
+    "name": "Massiv D",
+    "fullName": "Massiv D q."
+  },
+  "86": {
+    "id": "380",
+    "name": "Sea Breeze",
+    "fullName": "Sea Breeze q."
+  },
+  "87": {
+    "id": "87",
+    "name": "Suraxanı",
+    "fullName": "Suraxanı q."
+  },
+  "88": {
+    "id": "88",
+    "name": "Yeni Suraxanı",
+    "fullName": "Yeni Suraxanı q."
+  },
+  "89": {
+    "id": "89",
+    "name": "Zığ",
+    "fullName": "Zığ q."
+  },
+  "91": {
+    "id": "33",
+    "name": "Həzi Aslanov",
+    "fullName": "Həzi Aslanov m."
+  },
+  "92": {
+    "id": "92",
+    "name": "Yeni Günəşli",
+    "fullName": "Yeni Günəşli q."
+  },
+  "93": {
+    "id": "93",
+    "name": "Hövsan",
+    "fullName": "Hövsan q."
+  },
+  "94": {
+    "id": "94",
+    "name": "Türkan",
+    "fullName": "Türkan q."
+  },
+  "95": {
+    "id": "95",
+    "name": "Qala",
+    "fullName": "Qala q."
+  },
+  "96": {
+    "id": "96",
+    "name": "Zirə",
+    "fullName": "Zirə q."
+  },
+  "97": {
+    "id": "97",
+    "name": "Dübəndi",
+    "fullName": "Dübəndi q."
+  },
+  "98": {
+    "id": "98",
+    "name": "Müşfiqabad",
+    "fullName": "Müşfiqabad q."
+  },
+  "99": {
+    "id": "33",
+    "name": "Həzi Aslanov",
+    "fullName": "Həzi Aslanov m."
+  },
+  "100": {
+    "id": "54",
+    "name": "Xalqlar Dostluğu",
+    "fullName": "Xalqlar Dostluğu m."
+  },
+  "102": {
+    "id": "102",
+    "name": "Yeni Yasamal",
+    "fullName": "Yeni Yasamal q."
+  },
+  "103": {
+    "id": "7",
+    "name": "İnşaatçılar",
+    "fullName": "İnşaatçılar m."
+  },
+  "104": {
+    "id": "59",
+    "name": "Memar Əcəmi",
+    "fullName": "Memar Əcəmi m."
+  },
+  "105": {
+    "id": "4",
+    "name": "Koroğlu",
+    "fullName": "Koroğlu m."
+  },
+  "106": {
+    "id": "106",
+    "name": "Zuğulba",
+    "fullName": "Zuğulba q."
+  },
+  "107": {
+    "id": "107",
+    "name": "Şimal DRES",
+    "fullName": "Şimal DRES q."
+  },
+  "108": {
+    "id": "108",
+    "name": "Şağan",
+    "fullName": "Şağan q."
+  },
+  "109": {
+    "id": "109",
+    "name": "Mərdəkan",
+    "fullName": "Mərdəkan q."
+  },
+  "110": {
+    "id": "110",
+    "name": "Şüvəlan",
+    "fullName": "Şüvəlan q."
+  },
+  "111": {
+    "id": "111",
+    "name": "Saray",
+    "fullName": "Saray q."
+  },
+  "112": {
+    "id": "112",
+    "name": "Mehdiabad",
+    "fullName": "Mehdiabad q."
+  },
+  "113": {
+    "id": "113",
+    "name": "Novxanı",
+    "fullName": "Novxanı q."
+  },
+  "114": {
+    "id": "114",
+    "name": "Yeni Corat",
+    "fullName": "Yeni Corat q."
+  },
+  "115": {
+    "id": "115",
+    "name": "Köhnə Corat",
+    "fullName": "Köhnə Corat q."
+  },
+  "116": {
+    "id": "116",
+    "name": "Fatmayı",
+    "fullName": "Fatmayı q."
+  },
+  "117": {
+    "id": "117",
+    "name": "Buzovna",
+    "fullName": "Buzovna q."
+  },
+  "118": {
+    "id": "118",
+    "name": "Bilgəh",
+    "fullName": "Bilgəh q."
+  },
+  "119": {
+    "id": "119",
+    "name": "Nardaran",
+    "fullName": "Nardaran q."
+  },
+  "120": {
+    "id": "120",
+    "name": "Kürdəxanı",
+    "fullName": "Kürdəxanı q."
+  },
+  "121": {
+    "id": "121",
+    "name": "Pirşağı",
+    "fullName": "Pirşağı q."
+  },
+  "122": {
+    "id": "122",
+    "name": "Maştağa",
+    "fullName": "Maştağa q."
+  },
+  "123": {
+    "id": "59",
+    "name": "Memar Əcəmi",
+    "fullName": "Memar Əcəmi m."
+  },
+  "124": {
+    "id": "59",
+    "name": "Memar Əcəmi",
+    "fullName": "Memar Əcəmi m."
+  },
+  "125": {
+    "id": "59",
+    "name": "Memar Əcəmi",
+    "fullName": "Memar Əcəmi m."
+  },
+  "126": {
+    "id": "59",
+    "name": "Memar Əcəmi",
+    "fullName": "Memar Əcəmi m."
+  },
+  "127": {
+    "id": "59",
+    "name": "Memar Əcəmi",
+    "fullName": "Memar Əcəmi m."
+  },
+  "128": {
+    "id": "60",
+    "name": "Nəsimi",
+    "fullName": "Nəsimi m."
+  },
+  "129": {
+    "id": "129",
+    "name": "7-ci mikrorayon",
+    "fullName": "7-ci mikrorayon q."
+  },
+  "130": {
+    "id": "6",
+    "name": "Azadlıq Prospekti",
+    "fullName": "Azadlıq Prospekti m."
+  },
+  "131": {
+    "id": "59",
+    "name": "Memar Əcəmi",
+    "fullName": "Memar Əcəmi m."
+  },
+  "132": {
+    "id": "10",
+    "name": "Nərimanov",
+    "fullName": "Nərimanov r."
+  },
+  "133": {
+    "id": "190",
+    "name": "Nəsimi",
+    "fullName": "Nəsimi r."
+  },
+  "134": {
+    "id": "190",
+    "name": "Nəsimi",
+    "fullName": "Nəsimi r."
+  },
+  "135": {
+    "id": "190",
+    "name": "Nəsimi",
+    "fullName": "Nəsimi r."
+  },
+  "136": {
+    "id": "190",
+    "name": "Nəsimi",
+    "fullName": "Nəsimi r."
+  },
+  "137": {
+    "id": "35",
+    "name": "Nizami",
+    "fullName": "Nizami m."
+  },
+  "138": {
+    "id": "35",
+    "name": "Nizami",
+    "fullName": "Nizami m."
+  },
+  "139": {
+    "id": "8",
+    "name": "28 May",
+    "fullName": "28 May m."
+  },
+  "140": {
+    "id": "34",
+    "name": "Elmlər Akademiyası",
+    "fullName": "Elmlər Akademiyası m."
+  },
+  "141": {
+    "id": "34",
+    "name": "Elmlər Akademiyası",
+    "fullName": "Elmlər Akademiyası m."
+  },
+  "142": {
+    "id": "10",
+    "name": "Nərimanov",
+    "fullName": "Nərimanov r."
+  },
+  "143": {
+    "id": "37",
+    "name": "İçəri Şəhər",
+    "fullName": "İçəri Şəhər m."
+  },
+  "144": {
+    "id": "35",
+    "name": "Nizami",
+    "fullName": "Nizami m."
+  },
+  "145": {
+    "id": "8",
+    "name": "28 May",
+    "fullName": "28 May m."
+  },
+  "146": {
+    "id": "37",
+    "name": "İçəri Şəhər",
+    "fullName": "İçəri Şəhər m."
+  },
+  "147": {
+    "id": "37",
+    "name": "İçəri Şəhər",
+    "fullName": "İçəri Şəhər m."
+  },
+  "148": {
+    "id": "37",
+    "name": "İçəri Şəhər",
+    "fullName": "İçəri Şəhər m."
+  },
+  "150": {
+    "id": "37",
+    "name": "İçəri Şəhər",
+    "fullName": "İçəri Şəhər m."
+  },
+  "151": {
+    "id": "38",
+    "name": "Sahil",
+    "fullName": "Sahil m."
+  },
+  "152": {
+    "id": "38",
+    "name": "Sahil",
+    "fullName": "Sahil m."
+  },
+  "153": {
+    "id": "37",
+    "name": "İçəri Şəhər",
+    "fullName": "İçəri Şəhər m."
+  },
+  "154": {
+    "id": "8",
+    "name": "28 May",
+    "fullName": "28 May m."
+  },
+  "155": {
+    "id": "8",
+    "name": "28 May",
+    "fullName": "28 May m."
+  },
+  "156": {
+    "id": "12",
+    "name": "Səbail",
+    "fullName": "Səbail r."
+  },
+  "157": {
+    "id": "46",
+    "name": "Badamdar",
+    "fullName": "Badamdar q."
+  },
+  "158": {
+    "id": "60",
+    "name": "Nəsimi",
+    "fullName": "Nəsimi m."
+  },
+  "159": {
+    "id": "8",
+    "name": "28 May",
+    "fullName": "28 May m."
+  },
+  "160": {
+    "id": "10",
+    "name": "Nərimanov",
+    "fullName": "Nərimanov r."
+  },
+  "161": {
+    "id": "8",
+    "name": "28 May",
+    "fullName": "28 May m."
+  },
+  "162": {
+    "id": "2",
+    "name": "Gənclik",
+    "fullName": "Gənclik m."
+  },
+  "163": {
+    "id": "8",
+    "name": "28 May",
+    "fullName": "28 May m."
+  },
+  "164": {
+    "id": "34",
+    "name": "Elmlər Akademiyası",
+    "fullName": "Elmlər Akademiyası m."
+  },
+  "165": {
+    "id": "8",
+    "name": "28 May",
+    "fullName": "28 May m."
+  },
+  "166": {
+    "id": "279",
+    "name": "8 Noyabr",
+    "fullName": "8 Noyabr m."
+  },
+  "167": {
+    "id": "38",
+    "name": "Sahil",
+    "fullName": "Sahil m."
+  },
+  "168": {
+    "id": "35",
+    "name": "Nizami",
+    "fullName": "Nizami m."
+  },
+  "169": {
+    "id": "37",
+    "name": "İçəri Şəhər",
+    "fullName": "İçəri Şəhər m."
+  },
+  "170": {
+    "id": "35",
+    "name": "Nizami",
+    "fullName": "Nizami m."
+  },
+  "171": {
+    "id": "190",
+    "name": "Nəsimi",
+    "fullName": "Nəsimi r."
+  },
+  "172": {
+    "id": "37",
+    "name": "İçəri Şəhər",
+    "fullName": "İçəri Şəhər m."
+  },
+  "173": {
+    "id": "37",
+    "name": "İçəri Şəhər",
+    "fullName": "İçəri Şəhər m."
+  },
+  "174": {
+    "id": "37",
+    "name": "İçəri Şəhər",
+    "fullName": "İçəri Şəhər m."
+  },
+  "175": {
+    "id": "8",
+    "name": "28 May",
+    "fullName": "28 May m."
+  },
+  "176": {
+    "id": "190",
+    "name": "Nəsimi",
+    "fullName": "Nəsimi r."
+  },
+  "177": {
+    "id": "190",
+    "name": "Nəsimi",
+    "fullName": "Nəsimi r."
+  },
+  "178": {
+    "id": "51",
+    "name": "Əhmədli",
+    "fullName": "Əhmədli m."
+  },
+  "179": {
+    "id": "51",
+    "name": "Əhmədli",
+    "fullName": "Əhmədli m."
+  },
+  "180": {
+    "id": "36",
+    "name": "Şah İsmayıl Xətai",
+    "fullName": "Şah İsmayıl Xətai m."
+  },
+  "181": {
+    "id": "34",
+    "name": "Elmlər Akademiyası",
+    "fullName": "Elmlər Akademiyası m."
+  },
+  "182": {
+    "id": "8",
+    "name": "28 May",
+    "fullName": "28 May m."
+  },
+  "183": {
+    "id": "190",
+    "name": "Nəsimi",
+    "fullName": "Nəsimi r."
+  },
+  "184": {
+    "id": "37",
+    "name": "İçəri Şəhər",
+    "fullName": "İçəri Şəhər m."
+  },
+  "185": {
+    "id": "3",
+    "name": "Ulduz",
+    "fullName": "Ulduz m."
+  },
+  "186": {
+    "id": "190",
+    "name": "Nəsimi",
+    "fullName": "Nəsimi r."
+  },
+  "187": {
+    "id": "190",
+    "name": "Nəsimi",
+    "fullName": "Nəsimi r."
+  },
+  "188": {
+    "id": "7",
+    "name": "İnşaatçılar",
+    "fullName": "İnşaatçılar m."
+  },
+  "189": {
+    "id": "190",
+    "name": "Nəsimi",
+    "fullName": "Nəsimi r."
+  },
+  "190": {
+    "id": "190",
+    "name": "Nəsimi",
+    "fullName": "Nəsimi r."
+  },
+  "191": {
+    "id": "2",
+    "name": "Gənclik",
+    "fullName": "Gənclik m."
+  },
+  "192": {
+    "id": "190",
+    "name": "Nəsimi",
+    "fullName": "Nəsimi r."
+  },
+  "193": {
+    "id": "38",
+    "name": "Sahil",
+    "fullName": "Sahil m."
+  },
+  "194": {
+    "id": "194",
+    "name": "Görədil",
+    "fullName": "Görədil q."
+  },
+  "196": {
+    "id": "105",
+    "name": "Keşlə",
+    "fullName": "Keşlə q."
+  },
+  "197": {
+    "id": "111",
+    "name": "Saray",
+    "fullName": "Saray q."
+  },
+  "198": {
+    "id": "198",
+    "name": "Masazır",
+    "fullName": "Masazır q."
+  },
+  "200": {
+    "id": "200",
+    "name": "Köhnə Günəşli",
+    "fullName": "Köhnə Günəşli q."
+  }
+}

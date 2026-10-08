@@ -2,7 +2,7 @@
 
 /**
  * =============================================================================
- * SupportCenter — FAQ от А до Я + тикеты + чат с экспертом
+ * SupportCenter - FAQ от А до Я + тикеты + чат с экспертом
  * =============================================================================
  */
 
@@ -19,13 +19,11 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { SUPPORT_FAQ } from "@/data/demoPanel";
-import { getLotById, lotTitle } from "@/data/demoLots";
+import { say } from "@/lib/i18n/copy";
 import { HERRAC_URL } from "@/lib/constants";
-import { useTerminalPanel } from "@/context/TerminalPanelContext";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 import { getTerminalDict } from "@/lib/i18n/terminalDict";
-import SupportChat from "@/components/admin/SupportChat";
-import SectionGuide from "./SectionGuide";
+import { useSupportDesk } from "@/hooks/useSupportDesk";
 
 const TOPICS = [
   { id: "legal", az: "Hüquq", ru: "Юридика" },
@@ -43,7 +41,7 @@ const STATUS_META = {
     ru: "Ждёт ответа",
     cls: "text-amber-300 bg-amber-500/15",
   },
-  done: {
+  closed: {
     icon: CheckCircle2,
     az: "Bağlı",
     ru: "Закрыт",
@@ -54,8 +52,19 @@ const STATUS_META = {
 export default function SupportCenter() {
   const { locale } = useLocale();
   const t = getTerminalDict(locale);
-  const { tickets, addTicket, setTicketStatus } = useTerminalPanel();
-  const [tab, setTab] = useState("faq");
+  const {
+    tickets,
+    loading,
+    error,
+    createTicket,
+    sendMessage,
+    setStatus,
+  } = useSupportDesk();
+  const [activeId, setActiveId] = useState("");
+  const [reply, setReply] = useState("");
+  const [formError, setFormError] = useState("");
+  const [tab, setTab] = useState("home");
+  const [query, setQuery] = useState("");
   const [openFaq, setOpenFaq] = useState(SUPPORT_FAQ[0]?.id || null);
   const [cat, setCat] = useState("all");
   const [showForm, setShowForm] = useState(false);
@@ -75,28 +84,51 @@ export default function SupportCenter() {
   }, [locale]);
 
   const filteredFaq = useMemo(() => {
-    if (cat === "all") return SUPPORT_FAQ;
-    return SUPPORT_FAQ.filter(
-      (f) => (locale === "az" ? f.catAz : f.catRu) === cat
+    const base =
+      cat === "all"
+        ? SUPPORT_FAQ
+        : SUPPORT_FAQ.filter((f) => (locale === "az" ? f.catAz : f.catRu) === cat);
+    const needle = query.trim().toLocaleLowerCase("ru");
+    if (!needle) return base;
+    return base.filter((item) =>
+      `${item.qRu} ${item.qAz} ${item.aRu} ${item.aAz}`.toLocaleLowerCase("ru").includes(needle)
     );
-  }, [cat, locale]);
+  }, [cat, locale, query]);
 
-  const onCreate = (e) => {
+  const onCreate = async (e) => {
     e.preventDefault();
     if (!form.title.trim() || !form.body.trim()) return;
-    addTicket({
-      topic: form.topic,
-      lotId: form.lotId || null,
-      titleAz: form.title.trim(),
-      titleRu: form.title.trim(),
-      bodyAz: form.body.trim(),
-      bodyRu: form.body.trim(),
-    });
-    setForm({ topic: "lot", title: "", body: "", lotId: "" });
-    setShowForm(false);
-    setSent(true);
-    setTab("tickets");
-    setTimeout(() => setSent(false), 2500);
+    setFormError("");
+    try {
+      const ticket = await createTicket({
+        topic: form.topic,
+        lotId: form.lotId || null,
+        subject: form.title.trim(),
+        body: form.body.trim(),
+      });
+      setForm({ topic: "lot", title: "", body: "", lotId: "" });
+      setShowForm(false);
+      setSent(true);
+      setActiveId(ticket?.id || "");
+      setTab("chat");
+      setTimeout(() => setSent(false), 2500);
+    } catch (err) {
+      setFormError(err.message || "Не удалось отправить сообщение.");
+    }
+  };
+
+  const onReply = async (e) => {
+    e.preventDefault();
+    const body = reply.trim();
+    const id = activeId || tickets[0]?.id;
+    if (!body || !id) return;
+    setFormError("");
+    try {
+      await sendMessage(id, { body });
+      setReply("");
+    } catch (err) {
+      setFormError(err.message || "Не удалось отправить сообщение.");
+    }
   };
 
   const tabs = [
@@ -106,73 +138,82 @@ export default function SupportCenter() {
   ];
 
   return (
-    <div className="mx-auto max-w-[960px] space-y-5">
-      <SectionGuide section="support" />
-
-      <div>
-        <h2 className="text-[22px] font-semibold tracking-tight text-white">
-          {t.supportTitle}
-        </h2>
-        <p className="mt-1 max-w-2xl text-[13px] leading-relaxed text-[#94a3b8]">
-          {t.supportHintLong}
-        </p>
-      </div>
-
-      <div className="grid gap-3 sm:grid-cols-2">
-        <div className="rounded-2xl border border-[#2563eb]/30 bg-[#0d1524] px-4 py-3.5">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#93c5fd]">
-            {t.howHubRole}
-          </div>
-          <p className="mt-1.5 text-[12px] leading-relaxed text-[#94a3b8]">
-            {t.howHubRoleText}
-          </p>
-        </div>
-        <div className="rounded-2xl border border-amber-500/25 bg-[#16120a] px-4 py-3.5">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-300">
-            {t.howHerracRole}
-          </div>
-          <p className="mt-1.5 text-[12px] leading-relaxed text-[#94a3b8]">
-            {t.howHerracRoleText}
-          </p>
-          <a
-            href={HERRAC_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-2 inline-flex items-center gap-1 text-[12px] font-medium text-amber-200 hover:text-white"
+    <div className="mx-auto max-w-[880px]">
+      {tab === "home" ? (
+        <div className="eh-fade-in">
+          <h2 className="text-[32px] font-semibold tracking-tight text-white sm:text-[40px]">
+            {say(locale, "Nə ilə kömək edək?", "Чем можем помочь?", "How can we help?")}
+          </h2>
+          <form
+            className="mt-6"
+            onSubmit={(event) => {
+              event.preventDefault();
+              setTab("faq");
+            }}
           >
-            herrac.gov.az
-            <ExternalLink size={12} />
-          </a>
+            <input
+              className="eh-term-input text-[16px]"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder={say(
+                locale,
+                "Sualı yazın və ya cavab axtarın…",
+                "Опишите вопрос или найдите ответ…",
+                "Type a question or search for an answer…"
+              )}
+            />
+          </form>
+          <div className="mt-8 grid gap-6 sm:grid-cols-3">
+            {tabs.map((item) => {
+              const Icon = item.icon;
+              const hint =
+                item.id === "faq"
+                  ? say(locale, "Qısa cavablar və təlimatlar.", "Быстрые ответы и инструкции.", "Short answers and guides.")
+                  : item.id === "tickets"
+                    ? say(locale, "Cari sorğuların statusu.", "Статусы текущих запросов.", "Status of your current requests.")
+                    : say(locale, "Komanda ilə canlı dialoq.", "Живой диалог с командой.", "A live conversation with the team.");
+              const title =
+                item.id === "faq"
+                  ? say(locale, "Bilik bazası", "База знаний", "Knowledge base")
+                  : item.id === "tickets"
+                    ? say(locale, "Müraciətlərim", "Мои обращения", "My requests")
+                    : say(locale, "Dəstəyə yazın", "Написать в поддержку", "Write to support");
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => setTab(item.id)}
+                  className="eh-press border-t border-white/[0.08] pt-4 text-left transition hover:bg-white/[0.02]"
+                >
+                  <Icon size={18} strokeWidth={1.6} className="text-[#d6d3d1]" />
+                  <div className="mt-3 text-[16px] font-medium text-white">{title}</div>
+                  <p className="mt-1 text-[13px] leading-relaxed text-[#a8a29e]">{hint}</p>
+                </button>
+              );
+            })}
+          </div>
+          <p className="mt-10 max-w-xl text-[13px] leading-relaxed text-[#a8a29e]">
+            {say(
+              locale,
+              "Emlak Hub analiz edir. İştirak və təklif rəsmi Hərrac meydançasındadır.",
+              "Emlak Hub анализирует. Участие и ставка — на официальной площадке Hərrac.",
+              "Emlak Hub analyses. Taking part and bidding stay on the official Hərrac site."
+            )}{" "}
+            <a href={HERRAC_URL} target="_blank" rel="noopener noreferrer" className="text-[#93c5fd] hover:text-white">
+              herrac.gov.az
+              <ExternalLink size={12} className="ml-1 inline" />
+            </a>
+          </p>
         </div>
-      </div>
-
-      <div className="flex flex-wrap gap-1.5 rounded-2xl border border-white/10 bg-[#0a0c12] p-1.5">
-        {tabs.map((item) => {
-          const Icon = item.icon;
-          const active = tab === item.id;
-          return (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => setTab(item.id)}
-              className={[
-                "inline-flex flex-1 items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-[13px] font-medium transition sm:flex-none",
-                active
-                  ? "bg-[#2563eb] text-white shadow-[0_10px_24px_-12px_rgba(37,99,235,0.85)]"
-                  : "text-[#94a3b8] hover:bg-white/[0.04] hover:text-white",
-              ].join(" ")}
-            >
-              <Icon size={15} />
-              {item.label}
-              {item.id === "tickets" ? (
-                <span className="rounded-md bg-white/10 px-1.5 py-0.5 font-mono text-[10px]">
-                  {tickets.length}
-                </span>
-              ) : null}
-            </button>
-          );
-        })}
-      </div>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setTab("home")}
+          className="mb-6 text-[13px] text-[#93c5fd] hover:text-white"
+        >
+          ← {say(locale, "Dəstək mərkəzi", "Центр поддержки", "Support centre")}
+        </button>
+      )}
 
       {tab === "faq" ? (
         <div className="space-y-4">
@@ -200,7 +241,7 @@ export default function SupportCenter() {
               return (
                 <div
                   key={item.id}
-                  className="overflow-hidden rounded-2xl border border-white/10 bg-[#0a0c12]"
+                  className="border-b border-white/[0.06]"
                 >
                   <button
                     type="button"
@@ -262,6 +303,12 @@ export default function SupportCenter() {
               {t.supportNewTicket}
             </button>
           </div>
+
+          {error || formError ? (
+            <div className="rounded-xl border border-amber-400/30 bg-amber-500/10 px-4 py-3 text-[13px] text-amber-100">
+              {formError || error}
+            </div>
+          ) : null}
 
           {sent ? (
             <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-[13px] text-emerald-300">
@@ -358,9 +405,9 @@ export default function SupportCenter() {
             {tickets.map((ticket) => {
               const meta = STATUS_META[ticket.status] || STATUS_META.open;
               const StatusIcon = meta.icon;
-              const lot = ticket.lotId ? getLotById(ticket.lotId) : null;
-              const reply =
-                locale === "az" ? ticket.replyAz : ticket.replyRu;
+              const answer = [...(ticket.messages || [])]
+                .reverse()
+                .find((m) => m.from === "agent");
               return (
                 <article
                   key={ticket.id}
@@ -382,46 +429,49 @@ export default function SupportCenter() {
                           {locale === "az" ? meta.az : meta.ru}
                         </span>
                         <span className="text-[11px] text-[#64748b]">
-                          {ticket.createdAt}
+                          {ticket.createdAt
+                            ? new Date(ticket.createdAt).toLocaleString(
+                                locale === "az" ? "az-AZ" : "ru-RU",
+                                { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }
+                              )
+                            : ""}
                         </span>
                       </div>
                       <h3 className="mt-2 text-[15px] font-semibold text-white">
                         {locale === "az" ? ticket.titleAz : ticket.titleRu}
                       </h3>
-                      {lot ? (
+                      {ticket.lotId ? (
                         <p className="mt-1 text-[12px] text-[#64748b]">
-                          {t.openLot}: {lotTitle(lot, locale)}
+                          {t.openLot}: {ticket.lotId}
                         </p>
                       ) : null}
                     </div>
                     <select
                       className="eh-term-input w-auto py-1.5 text-[11px]"
                       value={ticket.status}
-                      onChange={(e) =>
-                        setTicketStatus(ticket.id, e.target.value)
-                      }
+                      onChange={(e) => setStatus(ticket.id, e.target.value)}
                     >
                       <option value="open">
-                        {locale === "az" ? "Açıq" : "Открыт"}
+                        {say(locale, "Açıq", "Открыт", "Open")}
                       </option>
                       <option value="waiting">
-                        {locale === "az" ? "Gözləyir" : "Ждёт"}
+                        {say(locale, "Gözləyir", "Ждёт", "Waiting")}
                       </option>
-                      <option value="done">
-                        {locale === "az" ? "Bağlı" : "Закрыт"}
+                      <option value="closed">
+                        {say(locale, "Bağlı", "Закрыт", "Closed")}
                       </option>
                     </select>
                   </div>
                   <p className="mt-3 text-[13px] leading-relaxed text-[#94a3b8]">
                     {locale === "az" ? ticket.bodyAz : ticket.bodyRu}
                   </p>
-                  {reply ? (
+                  {answer ? (
                     <div className="mt-3 rounded-xl border border-[#2563eb]/25 bg-[#0d1524] px-3 py-2.5">
                       <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#93c5fd]">
                         {t.supportReply}
                       </div>
                       <p className="mt-1 text-[13px] leading-relaxed text-[#cbd5e1]">
-                        {reply}
+                        {answer.text}
                       </p>
                     </div>
                   ) : (
@@ -432,16 +482,143 @@ export default function SupportCenter() {
                 </article>
               );
             })}
+            {!tickets.length && !loading ? (
+              <p className="rounded-2xl border border-dashed border-white/10 px-4 py-8 text-center text-[13px] text-[#64748b]">
+                {locale === "az"
+                  ? "Hələ müraciət yoxdur."
+                  : "Обращений пока нет."}
+              </p>
+            ) : null}
           </div>
         </div>
       ) : null}
 
       {tab === "chat" ? (
-        <div className="space-y-3">
-          <p className="text-[13px] text-[#94a3b8]">{t.supportChatHint}</p>
-          <SupportChat />
-        </div>
+        <SupportThread
+          tickets={tickets}
+          loading={loading}
+          activeId={activeId}
+          setActiveId={setActiveId}
+          reply={reply}
+          setReply={setReply}
+          onReply={onReply}
+          formError={formError}
+          locale={locale}
+          t={t}
+        />
       ) : null}
+    </div>
+  );
+}
+
+function SupportThread({
+  tickets,
+  loading,
+  activeId,
+  setActiveId,
+  reply,
+  setReply,
+  onReply,
+  formError,
+  locale,
+  t,
+}) {
+  const current =
+    tickets.find((ticket) => ticket.id === activeId) || tickets[0] || null;
+
+  if (loading && !tickets.length) {
+    return <p className="text-[13px] text-[#64748b]">…</p>;
+  }
+  if (!current) {
+    return (
+      <div className="eh-fade-in max-w-md py-6">
+        <p className="text-[22px] font-semibold text-white">
+          {say(locale, "Dialoq hələ boşdur", "Диалог ещё пуст", "The conversation is still empty")}
+        </p>
+        <p className="mt-2 text-[14px] leading-relaxed text-[#a8a29e]">
+          {locale === "az"
+            ? "Müraciət yaradın — cavab burada, tarix və statusla görünəcək."
+            : "Создайте обращение — ответ появится здесь, со временем и статусом."}
+        </p>
+        <p className="mt-4 text-[13px] text-[#78716c]">
+          {locale === "az"
+            ? "Emlak Hub analiz edir. Təklif Hərrac-dadır."
+            : "Emlak Hub анализирует. Ставка остаётся на Hərrac."}
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid gap-3 lg:grid-cols-[240px_1fr]">
+      <aside className="space-y-1">
+        {tickets.map((ticket) => (
+          <button
+            key={ticket.id}
+            type="button"
+            onClick={() => setActiveId(ticket.id)}
+            className={[
+              "w-full rounded-xl border px-3 py-2 text-left",
+              current.id === ticket.id
+                ? "border-[#2563eb]/40 bg-[#2563eb]/10"
+                : "border-white/10",
+            ].join(" ")}
+          >
+            <div className="truncate text-[13px] text-white">{ticket.subject}</div>
+            <div className="text-[11px] text-[#64748b]">{ticket.status}</div>
+          </button>
+        ))}
+      </aside>
+      <section className="rounded-2xl border border-white/10 bg-[#0a0c12] p-4">
+        <h3 className="text-[15px] font-semibold text-white">{current.subject}</h3>
+        <div className="mt-4 space-y-2">
+          {(current.messages || []).map((message) => {
+            const mine = message.from !== "agent";
+            return (
+              <div
+                key={message.id}
+                className={[
+                  "eh-fade-in max-w-[85%] px-1 py-2 text-[14px]",
+                  mine ? "ml-auto text-right" : "text-left",
+                ].join(" ")}
+              >
+                <div className="mb-1 text-[11px] text-[#78716c]">
+                  {mine ? say(locale, "Siz", "Вы", "You") : t.supportReply}
+                  {message.createdAt
+                    ? ` · ${new Date(message.createdAt).toLocaleString(locale === "az" ? "az" : locale === "en" ? "en-GB" : "ru", { hour: "2-digit", minute: "2-digit", day: "numeric", month: "short" })}`
+                    : ""}
+                </div>
+                <p className="whitespace-pre-wrap leading-relaxed text-[#f5f5f4]">{message.text}</p>
+              </div>
+            );
+          })}
+        </div>
+        {formError ? (
+          <p className="mt-3 text-[12px] text-amber-200">{formError}</p>
+        ) : null}
+        {current.status === "closed" ? (
+          <p className="mt-4 text-[12px] text-[#64748b]">
+            {locale === "az"
+              ? "Müraciət bağlıdır."
+              : "Обращение закрыто."}
+          </p>
+        ) : (
+          <form onSubmit={onReply} className="mt-4 flex gap-2">
+            <input
+              className="eh-term-input flex-1"
+              value={reply}
+              onChange={(e) => setReply(e.target.value)}
+              placeholder={t.supportBodyPh}
+            />
+            <button
+              type="submit"
+              className="rounded-xl bg-[#2563eb] px-4 py-2 text-[13px] font-semibold text-white"
+            >
+              {t.supportSend}
+            </button>
+          </form>
+        )}
+      </section>
     </div>
   );
 }

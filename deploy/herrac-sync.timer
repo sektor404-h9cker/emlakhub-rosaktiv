@@ -1,0 +1,11 @@
+[Unit]
+Description=Run the Hərrac sync twice a day
+# Not installed until an administrator copies this to /etc/systemd/system and enables it.
+
+[Timer]
+OnCalendar=*-*-* 07,19:00:00
+Persistent=true
+Unit=herrac-sync.service
+
+[Install]
+WantedBy=timers.target

@@ -1,6 +1,6 @@
 /*
   ============================================================================
-  EMLAK HUB — дизайн-система · Quiet Luxury
+  EMLAK HUB - дизайн-система · Quiet Luxury
   Display: Playfair Display · UI: Manrope
   ============================================================================
 */
@@ -153,7 +153,7 @@ body {
   transform-origin: left;
 }
 
-/* Тонкая инженерная сетка — холодный slate */
+/* Тонкая инженерная сетка - холодный slate */
 .bg-grid-premium {
   background-size: 64px 64px;
   background-image:
@@ -180,7 +180,7 @@ body {
   mask-image: radial-gradient(ellipse 75% 60% at 50% 40%, #000 35%, transparent 100%);
 }
 
-/* ─── Atmosphere washes — светлый холодный камень ─── */
+/* ─── Atmosphere washes - светлый холодный камень ─── */
 .eh-grain {
   isolation: isolate;
   width: 100%;
@@ -259,7 +259,7 @@ body {
   overflow: hidden;
 }
 
-/* Нижние секции — лёгкая атмосфера, без «карточного» блеска */
+/* Нижние секции - лёгкая атмосфера, без «карточного» блеска */
 .eh-afterglow {
   position: relative;
 }
@@ -565,12 +565,71 @@ body {
 }
 
 /* =============================================================================
-   OLED TERMINAL — Digital Emlak Hub (SpaceX / quiet luxury dark)
+   OLED TERMINAL - Digital Emlak Hub (SpaceX / quiet luxury dark)
    Используется на /login, /register, /dashboard, /admin/*
    ============================================================================= */
 
 .eh-terminal {
   color-scheme: dark;
+  --eh-bg: #07080c;
+  --eh-ink: #f5f5f4;
+  --eh-muted: #a8a29e;
+  --eh-faint: #78716c;
+  --eh-line: rgba(255, 255, 255, 0.08);
+  --eh-blue: #2563eb;
+  --eh-radius: 12px;
+  --eh-ease: 180ms ease;
+}
+
+.eh-terminal :focus-visible {
+  outline: 2px solid rgba(147, 197, 253, 0.75);
+  outline-offset: 2px;
+}
+
+.eh-num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+.eh-skel {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  background-size: 200% 100%;
+  animation: eh-skel 1.15s ease infinite;
+}
+
+@keyframes eh-skel {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
+
+.eh-fade-in {
+  animation: eh-fade-in 200ms ease;
+}
+
+@keyframes eh-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+
+.eh-terminal .eh-press:active {
+  transform: translateY(1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eh-skel,
+  .eh-fade-in,
+  .eh-settle {
+    animation: none;
+  }
+  .eh-term-btn-primary:hover,
+  .eh-terminal .eh-press:active {
+    transform: none;
+  }
 }
 
 /* Leaflet lot map */
@@ -580,7 +639,7 @@ body {
 }
 
 .eh-lots-map .leaflet-tile-pane {
-  /* Dark OLED look from free OSM tiles — без API-ключа */
+  /* Dark OLED look from free OSM tiles - без API-ключа */
   filter: invert(0.9) hue-rotate(180deg) brightness(0.95) contrast(1.05) saturate(0.55);
 }
 
@@ -617,6 +676,25 @@ body {
 .eh-lot-marker .eh-pin {
   margin: 0;
   line-height: 0;
+}
+
+.eh-cluster {
+  background: transparent !important;
+  border: none !important;
+}
+
+.eh-cluster-dot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: #0b0d12;
+  color: #f5f5f4;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  font: 600 12px/1 ui-monospace, Menlo, monospace;
+  font-variant-numeric: tabular-nums;
 }
 
 .eh-map-tooltip {
@@ -905,4 +983,44 @@ body {
 .eh-modal-fade-bottom {
   mask-image: linear-gradient(to top, transparent, #000 16px);
 }
+
+/* Live security feed */
+@keyframes eh-live-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.eh-live-pop {
+  animation: eh-live-in 0.45s ease-out;
+}
+
+@keyframes eh-settle {
+  from { opacity: 0.45; }
+  to { opacity: 1; }
+}
+
+.eh-settle {
+  animation: eh-settle 0.35s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eh-settle {
+    animation: none;
+  }
+}
+
+.eh-live-feed::-webkit-scrollbar {
+  width: 6px;
+}
+.eh-live-feed::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 999px;
+}
+
 

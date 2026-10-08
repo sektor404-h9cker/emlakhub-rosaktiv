@@ -2,11 +2,11 @@
 
 /**
  * =============================================================================
- * GuidedTour — пошаговый гид «за руку» по терминалу
+ * GuidedTour - пошаговый гид «за руку» по терминалу
  * =============================================================================
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, Compass } from "lucide-react";
@@ -31,18 +31,17 @@ export default function GuidedTour({ enabled = true }) {
     hydrated,
   } = useTerminalPanel();
 
-  const [bootstrapped, setBootstrapped] = useState(false);
+  const bootstrapped = useRef(false);
 
-  /* Первый заход инвестора — открыть гид */
   useEffect(() => {
-    if (!enabled || !hydrated || bootstrapped) return;
-    setBootstrapped(true);
+    if (!enabled || !hydrated || bootstrapped.current) return undefined;
+    bootstrapped.current = true;
     if (!onboardingDone && !pathname?.startsWith("/admin")) {
       const timer = setTimeout(() => startTour(), 600);
       return () => clearTimeout(timer);
     }
     return undefined;
-  }, [enabled, hydrated, bootstrapped, onboardingDone, pathname, startTour]);
+  }, [enabled, hydrated, onboardingDone, pathname, startTour]);
 
   const step = TOUR_STEPS[tourStep] || TOUR_STEPS[0];
   const total = TOUR_STEPS.length;

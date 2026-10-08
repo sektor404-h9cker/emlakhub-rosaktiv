@@ -1,10 +1,11 @@
 "use client";
 
 /**
- * TermHint — компактная (?) подсказка у жаргона (AZ/RU)
+ * TermHint - компактная (?) подсказка у жаргона (AZ/RU)
  */
 
 import { useEffect, useId, useRef, useState } from "react";
+import { useIsClient } from "@/lib/react/useIsClient";
 import { createPortal } from "react-dom";
 
 export default function TermHint({ text, label = "?" }) {
@@ -12,11 +13,7 @@ export default function TermHint({ text, label = "?" }) {
   const btnRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState({ top: 0, left: 0 });
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useIsClient();
 
   useEffect(() => {
     if (!open || !btnRef.current) return undefined;

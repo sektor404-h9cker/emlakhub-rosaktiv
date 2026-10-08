@@ -2,7 +2,7 @@
 
 /**
  * ============================================================================
- * UnitEconomicsSandbox — мини-терминал сделки (тихая роскошь)
+ * UnitEconomicsSandbox - мини-терминал сделки (тихая роскошь)
  * ============================================================================
  * Тот же Porsche-кейс, что в Hero. Клиент крутит ставку / рынок / ремонт
  * и видит каскад: скрытые риски → чистая маржа.
@@ -13,6 +13,7 @@ import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { HelpCircle } from "lucide-react";
 import { useLandingDeal } from "./LandingDealContext";
+import { say } from "@/lib/i18n/copy";
 
 const FEE_PCT = 0.05;
 
@@ -25,20 +26,26 @@ const PRESET_META = {
   conservative: {
     ru: "Консервативный",
     az: "Konservativ",
+    en: "Conservative",
     hintRu: "Запас по прибыли",
     hintAz: "Qazanc ehtiyatı",
+    hintEn: "A margin of safety",
   },
   optimal: {
     ru: "Оптимальный",
     az: "Optimal",
+    en: "Balanced",
     hintRu: "Баланс",
     hintAz: "Balans",
+    hintEn: "Balance",
   },
   aggressive: {
     ru: "Агрессивный",
     az: "Aqressiv",
+    en: "Aggressive",
     hintRu: "Близко к рынку",
     hintAz: "Bazara yaxın",
+    hintEn: "Close to the market",
   },
 };
 
@@ -83,7 +90,7 @@ function Slider({ label, value, min, max, step, onChange, tone = "slate", hint }
   );
 }
 
-function FeesTip({ ru }) {
+function FeesTip({ locale }) {
   const [open, setOpen] = useState(false);
   return (
     <span className="relative inline-flex">
@@ -103,9 +110,12 @@ function FeesTip({ ru }) {
           role="tooltip"
           className="absolute bottom-full left-1/2 z-20 mb-2 w-52 -translate-x-1/2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-[11px] font-normal normal-case tracking-normal text-slate-600 shadow-lg"
         >
-          {ru
-            ? "5% от ставки: госпошлина и нотариус."
-            : "Təklifin 5%-i: dövlət rüsumu və notarius."}
+          {say(
+            locale,
+            "Təklifin 5%-i: dövlət rüsumu və notarius.",
+            "5% от ставки: госпошлина и нотариус.",
+            "5% of the bid: state fee and notary."
+          )}
         </span>
       )}
     </span>
@@ -113,7 +123,7 @@ function FeesTip({ ru }) {
 }
 
 export default function UnitEconomicsSandbox({ locale = "ru" }) {
-  const ru = locale === "ru";
+  const L = (az, ru, en) => say(locale, az, ru, en);
   const {
     marketPrice,
     bid,
@@ -132,13 +142,9 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
   const marketMin = isEstate ? 50000 : 30000;
   const bidMin = isEstate ? 20000 : 10000;
   const repairMax = isEstate ? 60000 : 25000;
-  const repairLabel = ru
-    ? isEstate
-      ? "Восстановление"
-      : "Ремонт"
-    : isEstate
-      ? "Bərpa"
-      : "Təmir";
+  const repairLabel = isEstate
+    ? L("Bərpa", "Восстановление", "Restoration")
+    : L("Təmir", "Ремонт", "Repair");
 
   const fees = useMemo(() => Math.round(bid * FEE_PCT), [bid]);
   const invested = bid + fees + repairCost;
@@ -151,21 +157,19 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
       <div className="flex flex-col gap-4 border-b border-slate-200 bg-[#141414] px-5 py-5 sm:flex-row sm:items-end sm:justify-between sm:px-8 sm:py-6">
         <div>
           <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
-            {ru ? "Пример · до ставки" : "Nümunə · təklifdən əvvəl"}
+            {L("Nümunə · təklifdən əvvəl", "Пример · до ставки", "Example · before you bid")}
           </div>
           <h3 className="mt-1 font-serif text-2xl font-semibold tracking-[-0.02em] text-[#e8dcc6] sm:text-[30px]">
             {demoLot.title}
           </h3>
           <p className="mt-1 font-mono text-[11px] text-white/45">
             {demoLot.id} ·{" "}
-            {ru
-              ? "смета с главного экрана"
-              : "əsas ekrandakı smeta"}
+            {L("nümunə rəqəmi", "цифра примера", "example figure")}
           </p>
         </div>
         <div className="text-left sm:text-right">
           <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/35">
-            {ru ? "Ваша прибыль" : "Sizin qazancınız"}
+            {L("Sizin qazancınız", "Ваша прибыль", "Your profit")}
           </div>
           <motion.div
             key={profit}
@@ -194,7 +198,7 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
         <div className="space-y-7 border-b border-slate-200 p-5 sm:p-8 lg:border-b-0 lg:border-r">
           <div>
             <div className="mb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-slate-400">
-              {ru ? "Какой размер ставки" : "Təklif nə qədər olsun"}
+              {L("Təklif nə qədər olsun", "Какой размер ставки", "How large should the bid be")}
             </div>
             <div className="grid grid-cols-3 gap-2">
               {Object.keys(PRESET_META).map((id) => {
@@ -213,14 +217,14 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
                     ].join(" ")}
                   >
                     <div className="text-[12px] font-semibold tracking-tight">
-                      {ru ? meta.ru : meta.az}
+                      {say(locale, meta.az, meta.ru, meta.en)}
                     </div>
                     <div
                       className={`mt-0.5 text-[10px] ${
                         active ? "text-white/55" : "text-slate-400"
                       }`}
                     >
-                      {ru ? meta.hintRu : meta.hintAz}
+                      {say(locale, meta.hintAz, meta.hintRu, meta.hintEn)}
                     </div>
                   </button>
                 );
@@ -229,7 +233,7 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
           </div>
 
           <Slider
-            label={ru ? "Рыночная цена" : "Bazar qiyməti"}
+            label={L("Bazar qiyməti", "Рыночная цена", "Market price")}
             value={marketPrice}
             min={marketMin}
             max={marketMax}
@@ -237,7 +241,7 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
             onChange={setMarketPrice}
           />
           <Slider
-            label={ru ? "Ставка на аукционе" : "Hərrac təklifi"}
+            label={L("Hərrac təklifi", "Ставка на аукционе", "Auction bid")}
             value={bid}
             min={bidMin}
             max={marketPrice}
@@ -258,16 +262,16 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
         {/* Cascade */}
         <div className="bg-slate-50/60 p-5 sm:p-8">
           <div className="mb-5 font-mono text-[10px] uppercase tracking-[0.16em] text-slate-400">
-            {ru ? "Как считается" : "Necə hesablanır"}
+            {L("Necə hesablanır", "Как считается", "How it is calculated")}
           </div>
 
           <CascadeLine
-            label={ru ? "Рыночная цена" : "Bazar qiyməti"}
+            label={L("Bazar qiyməti", "Рыночная цена", "Market price")}
             value={marketPrice}
             sign=""
           />
           <CascadeLine
-            label={ru ? "Ставка" : "Təklif"}
+            label={L("Təklif", "Ставка", "Bid")}
             value={bid}
             sign="−"
             dim
@@ -275,8 +279,8 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
           <CascadeLine
             label={
               <span className="inline-flex items-center gap-1.5">
-                {ru ? "Налоги и сборы 5%" : "Vergi və rüsumlar 5%"}
-                <FeesTip ru={ru} />
+                {L("Vergi və rüsumlar 5%", "Налоги и сборы 5%", "Taxes and fees 5%")}
+                <FeesTip locale={locale} />
               </span>
             }
             value={fees}
@@ -285,13 +289,9 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
           />
           <CascadeLine
             label={
-              ru
-                ? isEstate
-                  ? "Ремонт / восстановление"
-                  : "Ремонт"
-                : isEstate
-                  ? "Təmir / bərpa"
-                  : "Təmir"
+              isEstate
+                ? L("Təmir / bərpa", "Ремонт / восстановление", "Repair / restoration")
+                : L("Təmir", "Ремонт", "Repair")
             }
             value={repairCost}
             sign="−"
@@ -301,7 +301,7 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
           <div className="mt-6 border-t border-slate-300 pt-5">
             <div className="flex items-baseline justify-between gap-3">
               <span className="text-[12px] font-medium uppercase tracking-[0.14em] text-slate-600">
-                {ru ? "Чистая прибыль" : "Xalis qazanc"}
+                {L("Xalis qazanc", "Чистая прибыль", "Net profit")}
               </span>
               <span
                 className={`font-mono-num text-[22px] font-semibold tabular-nums ${
@@ -339,17 +339,19 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
               />
             </div>
             <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[9px] uppercase tracking-[0.12em] text-slate-400">
-              <span>{ru ? "Ставка" : "Təklif"}</span>
-              <span>{ru ? "Сборы" : "Rüsum"}</span>
-              <span>{ru ? "Ремонт" : "Təmir"}</span>
-              <span>{ru ? "Прибыль" : "Qazanc"}</span>
+              <span>{L("Təklif", "Ставка", "Bid")}</span>
+              <span>{L("Rüsum", "Сборы", "Fees")}</span>
+              <span>{repairLabel}</span>
+              <span>{L("Qazanc", "Прибыль", "Profit")}</span>
             </div>
           </div>
 
           <p className="mt-6 text-[12px] leading-relaxed text-slate-500">
-            {ru
-              ? "Правило: ставка не выше рыночной цены. Смета ремонта берётся с примера на главном экране."
-              : "Qayda: təklif bazar qiymətindən yüksək ola bilməz. Təmir smetası əsas ekrandakı nümunədən gəlir."}
+            {L(
+              "Tədris nümunəsi. Buradakı təmir rəqəmi fotodan gəlmir və lot smetası deyil.",
+              "Учебный пример. Цифра ремонта здесь не взята из фото и не является сметой лота.",
+              "A teaching example. The repair figure here is not taken from a photo and is not a lot estimate."
+            )}
           </p>
         </div>
       </div>

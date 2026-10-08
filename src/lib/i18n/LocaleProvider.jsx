@@ -1,47 +1,61 @@
 "use client";
 
 /**
- * ============================================================================
- * LocaleProvider — живой переключатель языка для всего marketing-слоя
- * ============================================================================
- * Почему client-компонент:
- * - Язык меняется мгновенно без перезагрузки → ощущение «терминала»,
- *   а не статичной брошюры. Это удерживает внимание и повышает CTR CTA.
- *
- * Почему храним в localStorage:
- * - Возврат инвестора с тем же языком = меньше трения на пути к логину.
- * ============================================================================
+ * Язык лендинга и терминала. Выбор хранится локально: это настройка браузера, не данные команды.
  */
 
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useSyncExternalStore,
+} from "react";
 import { getDictionary } from "./dictionary";
 
-const LocaleContext = createContext({
-  locale: "ru",
-  setLocale: () => {},
-  t: getDictionary("ru"),
-});
+const KEY = "eh_locale";
+const listeners = new Set();
+
+function readLocale() {
+  try {
+    const saved = window.localStorage.getItem(KEY);
+    if (saved === "az" || saved === "ru" || saved === "en") return saved;
+  } catch {
+    /* private mode */
+  }
+  return null;
+}
+
+function subscribe(onStoreChange) {
+  listeners.add(onStoreChange);
+  return () => listeners.delete(onStoreChange);
+}
+
+function emit() {
+  listeners.forEach((listener) => listener());
+}
 
 export function LocaleProvider({ children, defaultLocale = "ru" }) {
-  const [locale, setLocale] = useState(defaultLocale);
+  const locale = useSyncExternalStore(
+    subscribe,
+    () => readLocale() || defaultLocale,
+    () => defaultLocale
+  );
 
-  // Восстанавливаем язык после гидрации — без «мигания» SSR/CSR
-  useEffect(() => {
+  const setLocale = useCallback((next) => {
+    if (next !== "az" && next !== "ru" && next !== "en") return;
     try {
-      const saved = window.localStorage.getItem("eh_locale");
-      if (saved === "az" || saved === "ru") setLocale(saved);
-    } catch {
-      /* private mode / SSR — игнорируем */
-    }
-  }, []);
-
-  useEffect(() => {
-    try {
-      window.localStorage.setItem("eh_locale", locale);
-      document.documentElement.lang = locale === "az" ? "az" : "ru";
+      window.localStorage.setItem(KEY, next);
     } catch {
       /* ignore */
     }
+    emit();
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.lang =
+      locale === "az" ? "az" : locale === "en" ? "en" : "ru";
   }, [locale]);
 
   const value = useMemo(
@@ -50,13 +64,19 @@ export function LocaleProvider({ children, defaultLocale = "ru" }) {
       setLocale,
       t: getDictionary(locale),
     }),
-    [locale]
+    [locale, setLocale]
   );
 
   return (
     <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>
   );
 }
+
+const LocaleContext = createContext({
+  locale: "ru",
+  setLocale: () => {},
+  t: getDictionary("ru"),
+});
 
 export function useLocale() {
   return useContext(LocaleContext);

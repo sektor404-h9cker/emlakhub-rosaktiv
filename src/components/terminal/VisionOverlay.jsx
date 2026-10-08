@@ -1,64 +1,111 @@
 "use client";
 
 /**
- * =============================================================================
- * VisionOverlay — UI-сетка дефектов поверх фото (Vision AI слой)
- * =============================================================================
+ * Маркеры на фото — цвет по типу (ржавчина / коррозия / …), без текста на картинке.
  */
 
 import { motion } from "framer-motion";
 
-export default function VisionOverlay({ defects = [], show = true }) {
-  if (!show) return null;
+export default function VisionOverlay({
+  defects = [],
+  show = true,
+  locale = "ru",
+  interactive = true,
+  activeId = null,
+  onSelect,
+}) {
+  const az = locale === "az";
+
+  const visible = defects.filter(
+    (d) =>
+      d.showOnPhoto !== false &&
+      Number(d.w || 0) > 0 &&
+      Number(d.h || 0) > 0
+  );
+
+  if (!show || !visible.length) return null;
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-10">
-      {/* Сетка */}
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-[0.15]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(184,149,108,0.35) 1px, transparent 1px), linear-gradient(90deg, rgba(184,149,108,0.35) 1px, transparent 1px)",
-          backgroundSize: "40px 40px",
-        }}
-      />
+    <div className="pointer-events-none absolute inset-0 z-10 overflow-hidden">
+      {visible.map((d, i) => {
+        const n = d.n || i + 1;
+        const isOn = activeId == null ? i === 0 : activeId === d.id;
+        const color = d.color || (d.severity === "high" ? "#f59e0b" : "#e8d5b0");
+        const left = Math.min(
+          94,
+          Math.max(4, (d.x || 10) + (d.w || 12) / 2)
+        );
+        const top = Math.min(
+          90,
+          Math.max(6, (d.y || 12) + (d.h || 10) / 2)
+        );
+        const rw = Math.max(10, Math.min(36, d.w || 14));
+        const rh = Math.max(10, Math.min(36, d.h || 14));
 
-      {defects.map((d, i) => (
-        <motion.div
-          key={d.id}
-          initial={{ opacity: 0, scale: 0.92 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.15 * i, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute"
-          style={{
-            left: `${d.x}%`,
-            top: `${d.y}%`,
-            width: `${d.w}%`,
-            height: `${d.h}%`,
-          }}
-        >
-          <div
-            className="absolute inset-0 rounded-sm"
-            style={{
-              border: "1px solid rgba(184,149,108,0.85)",
-              boxShadow: "0 0 0 1px rgba(0,0,0,0.35), inset 0 0 20px rgba(184,149,108,0.08)",
-              background: "rgba(184,149,108,0.08)",
+        return (
+          <motion.button
+            key={d.id}
+            type="button"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.05 * i, duration: 0.3 }}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (interactive) onSelect?.(d.id);
             }}
-          />
-          <span className="absolute -left-px -top-px h-2 w-2 border-l border-t border-[#e8d5b0]" />
-          <span className="absolute -right-px -top-px h-2 w-2 border-r border-t border-[#e8d5b0]" />
-          <span className="absolute -bottom-px -left-px h-2 w-2 border-b border-l border-[#e8d5b0]" />
-          <span className="absolute -bottom-px -right-px h-2 w-2 border-b border-r border-[#e8d5b0]" />
-
-          <div className="absolute -top-6 left-0 whitespace-nowrap rounded bg-black/80 px-1.5 py-0.5 font-mono text-[9px] text-[#e8d5b0]">
-            {d.label}
-            {d.cost ? (
-              <span className="ml-1 text-[#9aa3ad]">−{d.cost.toLocaleString("en-US")}</span>
-            ) : null}
-          </div>
-        </motion.div>
-      ))}
+            className={[
+              "absolute -translate-x-1/2 -translate-y-1/2",
+              interactive ? "pointer-events-auto cursor-pointer" : "",
+            ].join(" ")}
+            style={{ left: `${left}%`, top: `${top}%` }}
+            aria-pressed={isOn}
+            aria-label={
+              locale === "az"
+                ? d.labelAz || d.label
+                : locale === "en"
+                  ? d.labelEn || d.labelRu || d.label
+                  : d.labelRu || d.label
+            }
+          >
+            {/* полупрозрачное пятно зоны */}
+            <span
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full transition"
+              style={{
+                width: `${rw * 2.2}px`,
+                height: `${rh * 2.2}px`,
+                background: isOn
+                  ? `${color}33`
+                  : `${color}18`,
+                boxShadow: isOn
+                  ? `0 0 0 1.5px ${color}, 0 0 18px ${color}55`
+                  : `0 0 0 1px ${color}88`,
+              }}
+            />
+            {/* пульс для rust/corrosion */}
+            {(d.kind === "rust" || d.kind === "corrosion") && (
+              <motion.span
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+                style={{
+                  width: 28,
+                  height: 28,
+                  border: `1px solid ${color}`,
+                }}
+                animate={{ scale: [1, 1.55, 1], opacity: [0.55, 0, 0.55] }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
+              />
+            )}
+            <span
+              className="relative flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-bold text-black shadow-lg ring-2 ring-black/50"
+              style={{
+                background: color,
+                transform: isOn ? "scale(1.12)" : "scale(1)",
+              }}
+            >
+              {n}
+            </span>
+          </motion.button>
+        );
+      })}
     </div>
   );
 }

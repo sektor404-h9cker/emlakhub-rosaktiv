@@ -1,0 +1,9 @@
+[Unit]
+Description=One Digital Emlak Hub Hərrac sync
+# This unit is not installed by the repository.
+# Enable it only on the production host, and do not also install the crontab.
+
+[Service]
+Type=oneshot
+Environment=CRON_SECRET=replace-me
+ExecStart=/usr/bin/curl -fsS -X POST -H "x-cron-secret: ${CRON_SECRET}" -H "Content-Type: application/json" -d "{\"forceDiscovery\":true}" https://emlakhub.net/api/admin/herrac/sync

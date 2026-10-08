@@ -1,17 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/AuthContext";
-import { adminHomeForRole } from "@/lib/adminPrivileges";
+import AdminDashboard from "@/components/admin/AdminDashboard";
 
-export default function AdminIndexPage() {
-  const router = useRouter();
-  const { role } = useAuth();
-
-  useEffect(() => {
-    router.replace(adminHomeForRole(role));
-  }, [role, router]);
-
-  return null;
+export default function AdminHomePage() {
+  return <AdminDashboard />;
 }

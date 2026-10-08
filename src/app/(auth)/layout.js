@@ -1,8 +1,10 @@
 /**
  * =============================================================================
- * (auth) LAYOUT — OLED + мягкое переливание для /login и /register
+ * (auth) LAYOUT - OLED + мягкое переливание для /login и /register
  * =============================================================================
  */
+
+import LegalBar from "@/components/legal/LegalBar";
 
 export const metadata = {
   robots: { index: false, follow: false },
@@ -17,7 +19,12 @@ export default function AuthLayout({ children }) {
         <div className="eh-auth-sheen-secondary" />
         <div className="eh-auth-grid" />
       </div>
-      <div className="relative z-10 w-full max-w-md">{children}</div>
+      <div className="relative z-10 w-full max-w-md">
+        {children}
+        <div className="mt-8 flex justify-center">
+          <LegalBar />
+        </div>
+      </div>
     </div>
   );
 }

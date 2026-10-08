@@ -2,20 +2,20 @@
 
 /**
  * ============================================================================
- * HeroSection — первый экран, который «продаёт доступ»
+ * HeroSection - первый экран, который «продаёт доступ»
  * ============================================================================
  * Маркетинговая логика (A→Я):
- * 1. Eyebrow: кто мы (B2B терминал) — мгновенная категоризация.
+ * 1. Eyebrow: кто мы (B2B терминал) - мгновенная категоризация.
  * 2. Headline: обещание результата (маржа + прозрачность).
- * 3. Subhead: как именно — аукционы, риски, прибыль до сделки.
+ * 3. Subhead: как именно - аукционы, риски, прибыль до сделки.
  * 4. Pillars: 3 коротких доказательства ценности (без карточек-шума).
  * 5. CTA: единственный магнит → закрытый дашборд.
- * 6. Dual-brand: Digital Emlak / RosAktiv — международный статус.
+ * 6. Dual-brand: Digital Emlak / RosTorg - международный статус.
  *
  * Визуал Quiet Luxury × SpaceX:
  * - Full-bleed атмосфера (сетка + градиент midnight), не inset-карточка.
  * - Бренд и headline доминируют; вторичный текст титановый.
- * - Золото только в одном месте рядом с «маржой» — якорь прибыли.
+ * - Золото только в одном месте рядом с «маржой» - якорь прибыли.
  * ============================================================================
  */
 
@@ -31,7 +31,7 @@ export default function HeroSection() {
       {/* Техническая сетка: ощущение инженерной точности */}
       <div aria-hidden className="eh-grid-atmosphere pointer-events-none absolute inset-0" />
 
-      {/* Вертикальный «луч» — намёк на сканирование данных (SpaceX vibe) */}
+      {/* Вертикальный «луч» - намёк на сканирование данных (SpaceX vibe) */}
       <div
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-0 h-[55vh] w-px -translate-x-1/2 bg-[linear-gradient(180deg,rgba(62,207,255,0.45),transparent)] opacity-60"
@@ -40,7 +40,7 @@ export default function HeroSection() {
       <LandingNav />
 
       <div className="relative z-10 mx-auto flex max-w-6xl flex-col px-5 pb-16 pt-16 sm:px-8 sm:pt-20 lg:px-12 lg:pt-24">
-        {/* Статус-линия: «система живая» — повышает доверие без статистики-шума */}
+        {/* Статус-линия: «система живая» - повышает доверие без статистики-шума */}
         <p className="eh-rise eh-rise-delay-1 mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-[var(--eh-titanium)]">
           <span className="relative flex h-1.5 w-1.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--eh-cyan)] opacity-40" />
@@ -54,7 +54,7 @@ export default function HeroSection() {
         </p>
 
         {/*
-          Headline — бренд-уровень силы:
+          Headline - бренд-уровень силы:
           крупно, спокойно, без «кричащего» маркетинга.
           Конверсия растёт, когда инвестор сразу видит outcome.
         */}
@@ -66,7 +66,7 @@ export default function HeroSection() {
           {t.subhead}
         </p>
 
-        {/* Три опоры ценности — линейный ритм, не карточки */}
+        {/* Три опоры ценности - линейный ритм, не карточки */}
         <ul className="eh-rise eh-rise-delay-3 mt-10 grid max-w-3xl gap-5 sm:grid-cols-3">
           {t.pillars.map((pillar, index) => (
             <li key={pillar.label} className="relative pl-4">
@@ -98,7 +98,7 @@ export default function HeroSection() {
         </p>
       </div>
 
-      {/* Нижний градиент: мягкий «край земли» — взгляд не упирается в обрез */}
+      {/* Нижний градиент: мягкий «край земли» - взгляд не упирается в обрез */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(180deg,transparent,rgba(11,13,16,0.9))]"

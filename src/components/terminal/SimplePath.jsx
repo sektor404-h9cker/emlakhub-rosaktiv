@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * SimplePath — видимый путь Hub → herrac (FLOW_PATH)
+ * SimplePath - видимый путь Hub → herrac (FLOW_PATH)
  */
 
 import Link from "next/link";

@@ -1,12 +1,13 @@
 "use client";
 
 /**
- * TargetAudience — для кого сервис (простым языком)
+ * TargetAudience - для кого сервис (простым языком)
  */
 
 import React from "react";
 import { motion } from "framer-motion";
 import { LineChart, ShieldCheck, Building2 } from "lucide-react";
+import { say } from "@/lib/i18n/copy";
 
 const fadeUp = {
   initial: { opacity: 0, y: 22 },
@@ -16,35 +17,41 @@ const fadeUp = {
 };
 
 export default function TargetAudience({ locale = "ru" }) {
-  const ru = locale === "ru";
+  const L = (az, ru, en) => say(locale, az, ru, en);
 
   const personas = [
     {
       icon: LineChart,
-      tag: ru ? "ДЛЯ СЕБЯ" : "ÖZÜ ÜÇÜN",
-      title: ru ? "Частные инвесторы" : "Fərdi investorlar",
-      desc: ru
-        ? "Хотите купить лот на госаукционе и заранее понять: сколько уйдёт на ремонт и какая прибыль останется."
-        : "Dövlət hərracında lot almaq istəyirsiniz və əvvəlcədən bilmək: təmirə nə qədər gedəcək və nə qədər qazanc qalacaq.",
-      metric: ru ? "Прибыль до ставки" : "Təklifdən əvvəl qazanc",
+      tag: L("ÖZÜ ÜÇÜN", "ДЛЯ СЕБЯ", "FOR YOURSELF"),
+      title: L("Fərdi investorlar", "Частные инвесторы", "Private investors"),
+      desc: L(
+        "Dövlət hərracında lot almaq istəyirsiniz və əvvəlcədən bazar oxşarlarını, kart risklərini və öz təmir rəqəminizdən sonra qazancı görmək.",
+        "Хотите купить лот на госаукционе и заранее увидеть рыночные аналоги, риски из карточки и прибыль после своей цифры ремонта.",
+        "You want to buy a lot at a state auction and see market comps, card risks and profit after your own repair figure."
+      ),
+      metric: L("Təklifdən əvvəl qazanc", "Прибыль до ставки", "Profit before you bid"),
     },
     {
       icon: ShieldCheck,
-      tag: ru ? "ДЛЯ КЛИЕНТОВ" : "MÜŞTƏRİLƏR ÜÇÜN",
-      title: ru ? "Брокеры и агентства" : "Brokerlər və agentliklər",
-      desc: ru
-        ? "Нужно быстро проверить лот за клиента: нет ли скрытых юридических проблем до внесения задатка."
-        : "Müştəri üçün lotu tez yoxlamaq lazımdır: beh qoymadan əvvəl gizli hüquqi problem varmı.",
-      metric: ru ? "Защита клиента" : "Müştərinin qorunması",
+      tag: L("MÜŞTƏRİLƏR ÜÇÜN", "ДЛЯ КЛИЕНТОВ", "FOR CLIENTS"),
+      title: L("Brokerlər və agentliklər", "Брокеры и агентства", "Brokers and agencies"),
+      desc: L(
+        "Müştəri üçün lotu tez yoxlamaq lazımdır: beh qoymadan əvvəl gizli hüquqi problem varmı.",
+        "Нужно быстро проверить лот за клиента: нет ли скрытых юридических проблем до внесения задатка.",
+        "You need to check a lot quickly for a client: hidden legal problems before the deposit."
+      ),
+      metric: L("Müştərinin qorunması", "Защита клиента", "Client protection"),
     },
     {
       icon: Building2,
-      tag: ru ? "ДЛЯ КОМАНД" : "KOMANDALAR ÜÇÜN",
-      title: ru ? "Фонды и компании" : "Fondlar və şirkətlər",
-      desc: ru
-        ? "Нужен один экран по рынку: авто и недвижимость с госаукционов — в одном месте, по одним правилам."
-        : "Bazar üçün bir ekran lazımdır: dövlət hərraclarından avto və daşınmaz əmlak — bir yerdə, eyni qaydalarla.",
-      metric: ru ? "Всё в одном месте" : "Hər şey bir yerdə",
+      tag: L("KOMANDALAR ÜÇÜN", "ДЛЯ КОМАНД", "FOR TEAMS"),
+      title: L("Fondlar və şirkətlər", "Фонды и компании", "Funds and companies"),
+      desc: L(
+        "Bazar üçün bir ekran lazımdır: dövlət hərraclarından avto və daşınmaz əmlak - bir yerdə, eyni qaydalarla.",
+        "Нужен один экран по рынку: авто и недвижимость с госаукционов - в одном месте, по одним правилам.",
+        "You need one market screen: cars and property from state auctions, in one place, under the same rules."
+      ),
+      metric: L("Hər şey bir yerdə", "Всё в одном месте", "Everything in one place"),
     },
   ];
 
@@ -54,12 +61,14 @@ export default function TargetAudience({ locale = "ru" }) {
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <motion.div {...fadeUp} className="mx-auto mb-14 max-w-2xl text-center">
           <h2 className="font-serif text-3xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-[2.75rem]">
-            {ru ? "Кому это полезно" : "Kimə faydalıdır"}
+            {L("Kimə faydalıdır", "Кому это полезно", "Who this is for")}
           </h2>
           <p className="mt-4 text-[16px] leading-relaxed tracking-[-0.01em] text-slate-600">
-            {ru
-              ? "Если вы участвуете в госаукционах или помогаете другим — этот сервис для вас."
-              : "Dövlət hərraclarında iştirak edirsinizsə və ya başqalarına kömək edirsinizsə — bu xidmət sizin üçündür."}
+            {L(
+              "Dövlət hərraclarında iştirak edirsinizsə və ya başqalarına kömək edirsinizsə - bu xidmət sizin üçündür.",
+              "Если вы участвуете в госаукционах или помогаете другим - этот сервис для вас.",
+              "If you take part in state auctions or help other people do it, this service is for you."
+            )}
           </p>
         </motion.div>
 

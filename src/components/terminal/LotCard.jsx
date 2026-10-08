@@ -2,7 +2,7 @@
 
 /**
  * =============================================================================
- * LotCard — фото + Vision overlay + метаданные лота
+ * LotCard - фото + Vision overlay + метаданные лота
  * =============================================================================
  */
 
@@ -36,7 +36,11 @@ export default function LotCard({ lot }) {
           alt={lot.title}
           className="absolute inset-0 h-full w-full object-cover"
         />
-        <VisionOverlay defects={lot.defects} />
+        <VisionOverlay
+          defects={lot.defects}
+          locale="ru"
+          interactive={false}
+        />
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"

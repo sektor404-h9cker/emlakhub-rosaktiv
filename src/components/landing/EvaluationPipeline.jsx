@@ -1,12 +1,14 @@
 "use client";
 
 /**
- * EvaluationPipeline — как сервис работает (простым языком)
+ * EvaluationPipeline - как сервис работает (простым языком)
  */
 
 import React, { useRef } from "react";
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useCalmMotion } from "./useCalmMotion";
 import { RefreshCw, ScanEye, FileCheck2, Calculator } from "lucide-react";
+import { say } from "@/lib/i18n/copy";
 
 const stageFade = {
   initial: { opacity: 0, y: 26 },
@@ -16,8 +18,8 @@ const stageFade = {
 };
 
 export default function EvaluationPipeline({ locale = "ru" }) {
-  const ru = locale === "ru";
-  const reduce = useReducedMotion();
+  const L = (az, ru, en) => say(locale, az, ru, en);
+  const reduce = useCalmMotion();
   const railRef = useRef(null);
 
   const { scrollYProgress } = useScroll({
@@ -29,39 +31,47 @@ export default function EvaluationPipeline({ locale = "ru" }) {
   const stages = [
     {
       icon: RefreshCw,
-      tag: ru ? "1 · ЛОТЫ" : "1 · LOTLAR",
-      title: ru ? "Собираем лоты с госаукционов" : "Dövlət hərraclarından lotları toplayırıq",
-      desc: ru
-        ? "Вместо поиска по разным сайтам вы видите лоты в одном месте — авто и недвижимость."
-        : "Müxtəlif saytlarda axtarmaq əvəzinə lotları bir yerdə görürsünüz — avto və daşınmaz əmlak.",
-      meta: ru ? "Меньше хаоса, больше времени на решение" : "Daha az qarışıqlıq, qərara daha çox vaxt",
+      tag: L("1 · LOTLAR", "1 · ЛОТЫ", "1 · LOTS"),
+      title: L("Dövlət hərraclarından lotları toplayırıq", "Собираем лоты с госаукционов", "We gather lots from state auctions"),
+      desc: L(
+        "Müxtəlif saytlarda axtarmaq əvəzinə lotları bir yerdə görürsünüz - avto və daşınmaz əmlak.",
+        "Вместо поиска по разным сайтам вы видите лоты в одном месте - авто и недвижимость.",
+        "Instead of searching several sites, you see the lots in one place — cars and property."
+      ),
+      meta: L("Daha az qarışıqlıq, qərara daha çox vaxt", "Меньше хаоса, больше времени на решение", "Less noise, more time to decide"),
     },
     {
       icon: ScanEye,
-      tag: ru ? "2 · ФОТО" : "2 · FOTO",
-      title: ru ? "Смотрим, сколько может стоить ремонт" : "Təmirin nə qədər ola biləcəyinə baxırıq",
-      desc: ru
-        ? "По фото лота отмечаем повреждения и даём понятную смету — ещё до того, как вы поедете на объект."
-        : "Lot fotolarında zədələri qeyd edirik və aydın smeta veririk — obyektə getməzdən əvvəl.",
-      meta: ru ? "Смета без выезда" : "Getmədən smeta",
+      tag: L("2 · BAZAR", "2 · РЫНОК", "2 · MARKET"),
+      title: L("Lotu elanlarla tutuşdururuq", "Сверяем лот с объявлениями", "We match the lot to listings"),
+      desc: L(
+        "Avto — eyni marka və model. Daşınmaz əmlak — eyni tip və rayon. Yabancı oxşarları qiymətə qatmırıq.",
+        "Авто — та же марка и модель. Недвижимость — тот же тип и район. Чужие аналоги в цену не подмешиваем.",
+        "Cars — the same make and model. Property — the same type and district. Unrelated comps are not mixed into the price."
+      ),
+      meta: "Turbo.az · Bina.az",
     },
     {
       icon: FileCheck2,
-      tag: ru ? "3 · РИСКИ" : "3 · RİSKLƏR",
-      title: ru ? "Ищем скрытые юридические проблемы" : "Gizli hüquqi problemləri axtarırıq",
-      desc: ru
-        ? "Проверяем описание и документы: обременения, доли, опасные формулировки — до внесения денег."
-        : "Təsvir və sənədləri yoxlayırıq: yüklər, paylar, təhlükəli ifadələr — pul qoymadan əvvəl.",
-      meta: ru ? "Меньше сюрпризов после задатка" : "Behdən sonra daha az sürpriz",
+      tag: L("3 · RİSKLƏR", "3 · РИСКИ", "3 · RISKS"),
+      title: L("Gizli hüquqi problemləri axtarırıq", "Ищем скрытые юридические проблемы", "We look for hidden legal problems"),
+      desc: L(
+        "Təsvir və sənədləri yoxlayırıq: yüklər, paylar, təhlükəli ifadələr - pul qoymadan əvvəl.",
+        "Проверяем описание и документы: обременения, доли, опасные формулировки - до внесения денег.",
+        "We check the description and documents: encumbrances, shares, risky wording — before you put money in."
+      ),
+      meta: L("Behdən sonra daha az sürpriz", "Меньше сюрпризов после задатка", "Fewer surprises after the deposit"),
     },
     {
       icon: Calculator,
-      tag: ru ? "4 · ПРИБЫЛЬ" : "4 · QAZANC",
-      title: ru ? "Показываем, сколько останется вам" : "Sizə nə qədər qalacağını göstəririk",
-      desc: ru
-        ? "Ставка + сборы + ремонт + рыночная цена = одна понятная цифра. Решаете по ней, а не «на глаз»."
-        : "Təklif + rüsum + təmir + bazar qiyməti = bir aydın rəqəm. «Gözə görə» yox, bu rəqəmə görə qərar verirsiniz.",
-      meta: ru ? "Одна цифра — одно решение" : "Bir rəqəm — bir qərar",
+      tag: L("4 · QAZANC", "4 · ПРИБЫЛЬ", "4 · PROFIT"),
+      title: L("Sizə nə qədər qalacağını göstəririk", "Показываем, сколько останется вам", "We show what is left for you"),
+      desc: L(
+        "Qazanc sizin təmir rəqəminiz və təsdiqli bazar qiymətindən sonra görünür. Boş təmiri sıfırla əvəz etmirik.",
+        "Прибыль появляется после вашей цифры ремонта и подтверждённой рыночной цены. Пустой ремонт мы не заменяем нулём.",
+        "Profit appears after your repair figure and a confirmed market price. An empty repair field is not replaced with zero."
+      ),
+      meta: L("Bir rəqəm - bir qərar", "Одна цифра - одно решение", "One figure, one decision"),
     },
   ];
 
@@ -73,12 +83,14 @@ export default function EvaluationPipeline({ locale = "ru" }) {
       <div className="relative mx-auto max-w-5xl px-5 sm:px-8">
         <motion.div {...stageFade} className="mb-16 max-w-2xl">
           <h2 className="font-serif text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
-            {ru ? "Как это работает — за 4 шага" : "Necə işləyir — 4 addımda"}
+            {L("Necə işləyir - 4 addımda", "Как это работает - за 4 шага", "How it works — in 4 steps")}
           </h2>
           <p className="mt-4 text-[16px] leading-relaxed text-slate-600">
-            {ru
-              ? "От списка лотов до понятной прибыли — без сложных терминов."
-              : "Lot siyahısından aydın qazanca qədər — mürəkkəb terminlər olmadan."}
+            {L(
+              "Lot siyahısından aydın qazanca qədər - mürəkkəb terminlər olmadan.",
+              "От списка лотов до понятной прибыли - без сложных терминов.",
+              "From the lot list to a clear profit, without heavy jargon."
+            )}
           </p>
         </motion.div>
 

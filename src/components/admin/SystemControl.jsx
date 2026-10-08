@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * SystemControl — kill-switch и шаблоны статусов
+ * SystemControl - kill-switch и шаблоны статусов
  */
 
 import { SYSTEM_TEMPLATES, useSystem } from "@/context/SystemContext";
@@ -43,7 +43,7 @@ export default function SystemControl() {
           {ru ? system.titleRu || "Всё работает" : system.titleAz || "Hamısı işləyir"}
         </div>
         <p className="mt-1 text-[13px] text-[#94a3b8]">
-          {(ru ? system.messageRu : system.messageAz) || "—"}
+          {(ru ? system.messageRu : system.messageAz) || "-"}
         </p>
         <div className="mt-2 font-mono text-[10px] text-[#64748b]">
           status: {system.status} · {new Date(system.updatedAt).toLocaleString()}

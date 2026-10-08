@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * BrandMark — фирменный знак Digital Emlak Hub
+ * BrandMark - фирменный знак Digital Emlak Hub
  * Архитектурный силуэт + золотой узел (hub). Quiet luxury.
  */
 
@@ -102,7 +102,7 @@ export function BrandMark({
 }
 
 /**
- * BrandLockup — знак + словесный знак
+ * BrandLockup - знак + словесный знак
  */
 export default function BrandLockup({
   size = 36,

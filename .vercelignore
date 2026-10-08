@@ -1,0 +1,5 @@
+# Keep local secrets and scrape dumps out of Vercel uploads
+.env
+.env.*
+.tmp
+.vercel

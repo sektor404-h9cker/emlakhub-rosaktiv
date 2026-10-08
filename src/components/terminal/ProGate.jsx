@@ -4,12 +4,13 @@ import { useEffect } from "react";
 import { Crown } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
+import { say } from "@/lib/i18n/copy";
 
 /** Блокирует раздел для Free с красивым CTA */
 export default function ProGate({ feature = "feature", children }) {
   const { isPro, isAdmin, openPaywall } = useAuth();
   const { locale } = useLocale();
-  const ru = locale !== "az";
+  const s = (az, ru, en) => say(locale, az, ru, en);
   const allowed = isPro || isAdmin;
 
   useEffect(() => {
@@ -24,19 +25,21 @@ export default function ProGate({ feature = "feature", children }) {
         <Crown size={26} />
       </div>
       <h2 className="mt-5 text-[22px] font-semibold text-white">
-        {ru ? "Нужен PRO" : "PRO lazımdır"}
+        {s("PRO lazımdır", "Нужен PRO", "PRO is required")}
       </h2>
       <p className="mt-2 text-[14px] leading-relaxed text-[#94a3b8]">
-        {ru
-          ? "На бесплатном тарифе этот раздел закрыт. Откройте до 2 карточек лотов или оформите подписку."
-          : "Pulsuz tarifdə bu bölmə bağlıdır. 2 lot kartı aça bilərsiniz və ya abunə olun."}
+        {s(
+          "Pulsuz tarifdə terminal bağlıdır. 9,90 ₼/ay-dan PRO rəsmiləşdirin.",
+          "На бесплатном тарифе терминал закрыт. Оформите PRO от 9,90 ₼/мес.",
+          "The terminal is closed on the free plan. Start PRO from 9.90 ₼/month."
+        )}
       </p>
       <button
         type="button"
         onClick={() => openPaywall(feature)}
         className="mt-6 rounded-xl bg-[#2563eb] px-5 py-2.5 text-[13px] font-semibold text-white"
       >
-        {ru ? "Оплатить подписку" : "Abunəliyi ödə"}
+        {s("Abunəliyi ödə", "Оплатить подписку", "Pay for the subscription")}
       </button>
     </div>
   );

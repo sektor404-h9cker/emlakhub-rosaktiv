@@ -1,0 +1,341 @@
+// =============================================================================
+// Emlak Hub — схема PostgreSQL (источник правды)
+// =============================================================================
+// Миграции: npx prisma migrate dev
+// Клиент:   npx prisma generate
+// Документация: docs/ARCHITECTURE.md
+// =============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Пользователи: инвесторы + сотрудники админки
+model User {
+  id        String @id @default(cuid())
+  email     String @unique
+  passwordHash String @map("password_hash")
+
+  firstName   String? @map("first_name")
+  lastName    String? @map("last_name")
+  displayName String? @map("display_name")
+  phone       String?
+  company     String?
+
+  /// investor | admin | developer | support | soc
+  role    String  @default("investor")
+  blocked Boolean @default(false)
+  /// Старые JWT умирают, когда число растёт: смена пароля, блок, выход со всех устройств.
+  sessionVersion Int @default(0) @map("session_version")
+
+  /// Подписка PRO (окно активности)
+  subscriptionPlan      String    @default("free") @map("subscription_plan")
+  subscriptionStartsAt  DateTime? @map("subscription_starts_at")
+  subscriptionExpiresAt DateTime? @map("subscription_expires_at")
+
+  jobTitle   String? @map("job_title")
+  department String?
+  avatarId   String? @map("avatar_id")
+  presence   String? @default("online")
+
+  lastIp     String? @map("last_ip")
+  lastGeo    String? @map("last_geo")
+  lastDevice String? @map("last_device")
+
+  payments Payment[]
+  auditLogs AuditLog[] @relation("AuditActor")
+  supportTickets SupportTicket[]
+  legalConsents LegalConsent[]
+  workspace UserWorkspace?
+  scenarios InvestmentScenario[]
+  referralCode ReferralCode?
+  referralsMade Referral[] @relation("Referrer")
+  referredBy Referral? @relation("Referred")
+  referralGrants ReferralGrant[]
+  productEvents ProductEvent[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+/// Журнал оплат — виден пользователю и в админке
+model Payment {
+  id     String @id @default(cuid())
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  amount   Decimal @db.Decimal(10, 2)
+  currency String  @default("AZN")
+  planId   String  @map("plan_id")
+  planDays Int     @map("plan_days")
+
+  /// pending | paid | failed | refunded | cancelled
+  status String @default("pending")
+
+  /// Период PRO после подтверждения
+  activeFrom DateTime? @map("active_from")
+  activeTo   DateTime? @map("active_to")
+
+  providerRef String? @map("provider_ref")
+  note        String?
+
+  confirmedByEmail String?   @map("confirmed_by_email")
+  confirmedAt    DateTime? @map("confirmed_at")
+
+  /// manual until a checked provider is connected. The browser does not choose this.
+  provider    String  @default("manual")
+  refundedAt  DateTime? @map("refunded_at")
+  refundReason String? @map("refund_reason")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([status])
+  @@map("payments")
+}
+
+/// Лоты аукциона (реальные данные; старт с пустой таблицы)
+model Lot {
+  id         String  @id @default(cuid())
+  /// herrac auction id или ручной реестр
+  registryNo String? @unique @map("registry_no")
+  titleAz    String? @map("title_az")
+  titleRu    String? @map("title_ru")
+  titleEn    String? @map("title_en")
+  cityAz     String? @map("city_az")
+  cityRu     String? @map("city_ru")
+  market     String? @default("estate")
+  startPrice Decimal? @map("start_price") @db.Decimal(14, 2)
+  lat        Float?
+  lng        Float?
+  /// Старое поле. Новые лоты его не заполняют. Строки до отказа от score сохраняют число.
+  score      Int?
+  /// draft | published | hidden
+  status     String   @default("draft")
+  payload    Json?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@index([market])
+  @@map("lots")
+}
+
+/// Аудит действий (админка)
+model AuditLog {
+  id     String @id @default(cuid())
+  actorId String? @map("actor_id")
+  actor  User?  @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+  actorEmail String? @map("actor_email")
+  action String
+  level  String @default("info")
+  meta   Json?
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt(sort: Desc)])
+  @@map("audit_logs")
+}
+
+/// Обращение в поддержку. Сообщения инвестора и ответ сотрудника в одной ленте.
+model SupportTicket {
+  id      String @id @default(cuid())
+  userId  String @map("user_id")
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  subject String
+  topic   String @default("other")
+  lotId   String? @map("lot_id")
+
+  /// open — ждёт сотрудника, waiting — ждёт пользователя, closed — закрыт
+  status String @default("open")
+  level  String @default("L1")
+
+  messages SupportMessage[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([userId, updatedAt(sort: Desc)])
+  @@index([status])
+  @@map("support_tickets")
+}
+
+model SupportMessage {
+  id         String @id @default(cuid())
+  ticketId   String @map("ticket_id")
+  ticket     SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  /// user | agent
+  authorRole  String  @map("author_role")
+  authorEmail String? @map("author_email")
+  body        String
+  attachment     String? @db.Text
+  attachmentName String? @map("attachment_name")
+  attachmentType String? @map("attachment_type")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([ticketId, createdAt])
+  @@map("support_messages")
+}
+
+/// Баннер обслуживания, задачи, чат команды, матрица привилегий. Одна строка.
+model PlatformState {
+  id        String   @id @default("main")
+  system    Json
+  ops       Json
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("platform_state")
+}
+
+/// Версия принятых документов. Повторное согласие — когда версия в коде новее сохранённой.
+model LegalConsent {
+  id           String   @id @default(cuid())
+  userId       String   @map("user_id")
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  documentType String   @map("document_type")
+  version      String
+  locale       String   @default("az")
+  acceptedAt   DateTime @default(now()) @map("accepted_at")
+
+  @@index([userId, documentType])
+  @@map("legal_consents")
+}
+
+/// Избранное, сравнение и портфель — отдельно на каждого пользователя.
+model UserWorkspace {
+  userId    String   @id @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  watchlist Json
+  compare   Json
+  deals     Json
+  alerts    Json
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("user_workspaces")
+}
+
+/// Пользовательский расчёт по лоту. Не смешивается с фактами Hərrac.
+model InvestmentScenario {
+  id               String   @id @default(cuid())
+  userId           String   @map("user_id")
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lotId            String   @map("lot_id")
+  inputs           Json
+  maxBid           Decimal? @map("max_bid") @db.Decimal(14, 2)
+  marketReference  Decimal? @map("market_reference") @db.Decimal(14, 2)
+  calculatedAt     DateTime @default(now()) @map("calculated_at")
+  formulaVersion   String   @default("invest-v1") @map("formula_version")
+
+  @@unique([userId, lotId])
+  @@index([userId])
+  @@map("investment_scenarios")
+}
+
+/// Последний прогон синка Hərrac. Одна строка. Не cron и не «live».
+model HerracSyncState {
+  id            String    @id @default("main")
+  lastAttemptAt DateTime? @map("last_attempt_at")
+  lastSuccessAt DateTime? @map("last_success_at")
+  /// Последний прогон, в котором список идентификаторов был сверен целиком.
+  lastFullSyncAt DateTime? @map("last_full_sync_at")
+  /// idle | running | success | partial | failed | blocked_or_restricted | ok
+  status        String    @default("idle")
+  /// Тот же итог, что status после завершения. Нужен монитору отдельно от running.
+  outcome       String?
+  /// available | unavailable | incomplete | restricted | skipped | unknown
+  catalogStatus String?   @map("catalog_status")
+  /// available | unavailable | unknown
+  detailStatus  String?   @map("detail_status")
+  discoveredNew Int       @default(0) @map("discovered_new")
+  received      Int       @default(0)
+  created       Int       @default(0)
+  updated       Int       @default(0)
+  failed        Int       @default(0)
+  error         String?
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  @@map("herrac_sync_state")
+}
+
+/// Публичный код приглашения. Не выводится из email.
+model ReferralCode {
+  userId    String   @id @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  code      String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("referral_codes")
+}
+
+/// Один приглашённый — один пригласивший. История не удаляется.
+model Referral {
+  id              String   @id @default(cuid())
+  referrerId      String   @map("referrer_id")
+  referrer        User     @relation("Referrer", fields: [referrerId], references: [id], onDelete: Cascade)
+  referredId      String   @unique @map("referred_id")
+  referred        User     @relation("Referred", fields: [referredId], references: [id], onDelete: Cascade)
+  /// registered | awaiting_payment | rewarded | cancelled
+  status          String   @default("registered")
+  suspicious      Boolean  @default(false)
+  signals         Json?
+  rewardPaymentId String?  @unique @map("reward_payment_id")
+  grants          ReferralGrant[]
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@index([referrerId, createdAt(sort: Desc)])
+  @@map("referrals")
+}
+
+/// Журнал бонусных дней. Повтор той же оплаты не создаёт вторую строку.
+model ReferralGrant {
+  id              String    @id @default(cuid())
+  referralId      String    @map("referral_id")
+  referral        Referral  @relation(fields: [referralId], references: [id], onDelete: Cascade)
+  userId          String    @map("user_id")
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// referrer | referred
+  role            String
+  days            Int
+  paymentId       String    @map("payment_id")
+  /// granted | reversed
+  status          String    @default("granted")
+  idempotencyKey  String    @unique @map("idempotency_key")
+  expiresBefore   DateTime? @map("expires_before")
+  expiresAfter    DateTime? @map("expires_after")
+  reverseReason   String?   @map("reverse_reason")
+  reversedAt      DateTime? @map("reversed_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  @@index([userId])
+  @@index([paymentId])
+  @@map("referral_grants")
+}
+
+/// Событие продукта. Письмо не отправляется, пока нет почтового провайдера.
+model ProductEvent {
+  id        String   @id @default(cuid())
+  userId    String?  @map("user_id")
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  type      String
+  payload   Json?
+  /// not_sent — запись есть, доставки нет
+  delivery  String   @default("not_sent")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([type])
+  @@map("product_events")
+}

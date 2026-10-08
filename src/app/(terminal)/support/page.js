@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * /support — FAQ + тикеты + эксперт-чат
+ * /support - FAQ + тикеты + эксперт-чат
  */
 
 import SupportCenter from "@/components/terminal/SupportCenter";

@@ -1,134 +1,67 @@
 /**
  * =============================================================================
- * DEMO PANEL DATA — портфель, алерты, документы, академия (демо до Firebase)
+ * PANEL DATA — DEMO_* пустые; DEAL_STAGES / SUPPORT_FAQ / ACADEMY — справочный копирайт
  * =============================================================================
  */
 
-export const DEMO_BALANCE = 248500;
+export const DEMO_BALANCE = 0;
 
-export const DEMO_DEALS = [
-  {
-    id: "D-01",
-    lotId: "AUTO-911",
-    stage: "analysis",
-    bid: 60500,
-    noteAz: "Vision yoxlanır",
-    noteRu: "Идёт Vision-проверка",
-    updatedAt: "2026-09-14",
-  },
-  {
-    id: "D-02",
-    lotId: "EST-NAR-3",
-    stage: "decision",
-    bid: 121000,
-    noteAz: "Hüquqi risk — ekspertə göndərildi",
-    noteRu: "Юрриск — отправлено эксперту",
-    updatedAt: "2026-09-13",
-  },
-  {
-    id: "D-03",
-    lotId: "EST-HOUSE-1",
-    stage: "auction",
-    bid: 245000,
-    noteAz: "Hərrac sabah 11:00",
-    noteRu: "Аукцион завтра 11:00",
-    updatedAt: "2026-09-15",
-  },
-  {
-    id: "D-04",
-    lotId: "AUTO-GLS",
-    stage: "result",
-    bid: 214000,
-    noteAz: "Qalib — təhvil gözlənilir",
-    noteRu: "Выигрыш — ожидание передачи",
-    updatedAt: "2026-09-10",
-  },
-];
+export const DEMO_DEALS = [];
 
 export const DEAL_STAGES = [
   {
     id: "explore",
     az: "Baxıram",
     ru: "Смотрю",
-    hintAz: "Hələ qərar yoxdur — lot izlənilir",
-    hintRu: "Решения нет — просто следите за лотом",
+    en: "Watching",
+    hintAz: "Hələ qərar yoxdur - lot izlənilir",
+    hintRu: "Решения нет - просто следите за лотом",
+    hintEn: "No decision yet — you are watching the lot",
     accent: "#64748b",
   },
   {
     id: "analysis",
     az: "Yoxlayıram",
     ru: "Проверяю",
+    en: "Checking",
     hintAz: "Foto, sənəd və kalkulyator",
     hintRu: "Фото, документы и калькулятор",
+    hintEn: "Photos, documents and the calculator",
     accent: "#38bdf8",
   },
   {
     id: "decision",
     az: "Qərar",
     ru: "Решение",
+    en: "Decision",
     hintAz: "Beh və maksimal stavka hazırdır",
     hintRu: "Задаток и потолок ставки готовы",
+    hintEn: "Deposit and maximum bid are ready",
     accent: "#a78bfa",
   },
   {
     id: "auction",
     az: "Hərrac",
     ru: "Аукцион",
+    en: "Auction",
     hintAz: "Tarix və saat təyin olunub",
     hintRu: "Дата и время назначены",
+    hintEn: "Date and time are set",
     accent: "#f59e0b",
   },
   {
     id: "result",
     az: "Nəticə",
     ru: "Итог",
+    en: "Result",
     hintAz: "Qazandınız və ya keçdiniz",
     hintRu: "Выиграли или прошли мимо",
+    hintEn: "You won or you walked away",
     accent: "#34d399",
   },
 ];
 
-export const DEMO_TICKETS = [
-  {
-    id: "T-1042",
-    topic: "legal",
-    status: "open",
-    lotId: "EST-NAR-3",
-    titleAz: "Yetkinlik payı — necə rəsmiləşdirilir?",
-    titleRu: "Доля несовершеннолетнего — как оформить?",
-    bodyAz: "Nərimanov 3-otaqlıda high risk var. Hərraca qədər qəyyumluq sənədi lazımdırmı?",
-    bodyRu: "В 3-комн. Нариманов high-риск. Нужна ли опека до аукциона?",
-    createdAt: "14 сен",
-    replyAz: "Bəli: notariat + qəyyumluq orqanı. Ekspert paketi sənədlərdədir.",
-    replyRu: "Да: нотариат и орган опеки. Пакет эксперта уже в документах.",
-  },
-  {
-    id: "T-1038",
-    topic: "deposit",
-    status: "waiting",
-    lotId: "EST-HOUSE-1",
-    titleAz: "Beh necə köçürülür?",
-    titleRu: "Как перевести задаток?",
-    bodyAz: "Xəzər evi üçün 10% beh — hansı rekvizit?",
-    bodyRu: "Дом в Хазаре, задаток 10% — какие реквизиты?",
-    createdAt: "13 сен",
-    replyAz: null,
-    replyRu: null,
-  },
-  {
-    id: "T-1021",
-    topic: "access",
-    status: "done",
-    lotId: null,
-    titleAz: "PRO statusu görünmürdü",
-    titleRu: "Не отображался PRO-статус",
-    bodyAz: "Login sonrası badge yox idi.",
-    bodyRu: "После входа не было бейджа.",
-    createdAt: "10 сен",
-    replyAz: "Sessiya yeniləndi — PRO aktivdir.",
-    replyRu: "Сессию обновили — PRO активен.",
-  },
-];
+export const DEMO_TICKETS = [];
 
 export const SUPPORT_FAQ = [
   {
@@ -137,8 +70,8 @@ export const SUPPORT_FAQ = [
     catRu: "С чего начать",
     qAz: "Emlak Hub herrac.gov.az-ı əvəz edir?",
     qRu: "Emlak Hub заменяет herrac.gov.az?",
-    aAz: "Xeyr. Hub lotları göstərir və analiz edir (skor, təmir, risk, marja). Beh, qeydiyyat və təklif — yalnız rəsmi portalda: herrac.gov.az. Son qərar və ödəniş sizindir.",
-    aRu: "Нет. Hub показывает лоты и анализирует их (скор, ремонт, риск, маржа). Задаток, регистрация и ставка — только на официальном портале herrac.gov.az. Финальные действия за вами.",
+    aAz: "Xeyr. Hub lotları, bazar oxşarlarını və kart mətnindəki riskləri göstərir. Təmiri siz yazırsınız. Beh, qeydiyyat və təklif yalnız herrac.gov.az-dadır.",
+    aRu: "Нет. Hub показывает лоты, рыночные аналоги и риски из текста карточки. Ремонт вводите вы. Задаток, регистрация и ставка — только на herrac.gov.az.",
   },
   {
     id: "q1",
@@ -147,16 +80,16 @@ export const SUPPORT_FAQ = [
     qAz: "Terminalda ilk nə etməliyəm?",
     qRu: "С чего начать в терминале?",
     aAz: "Analitik terminalda lotlara baxın. Maraqlı olanı «İzləmə»yə əlavə edin. Müqayisə edin. Qərar verəndən sonra təklifi herrac.gov.az-da verin.",
-    aRu: "Откройте аналитический терминал. Интересный лот — в избранное. Сравните. Когда решите — ставку делайте на herrac.gov.az.",
+    aRu: "Откройте аналитический терминал. Интересный лот - в избранное. Сравните. Когда решите - ставку делайте на herrac.gov.az.",
   },
   {
     id: "q2",
     catAz: "Başlanğıc",
     catRu: "С чего начать",
-    qAz: "Skor nə deməkdir?",
-    qRu: "Что означает скор?",
-    aAz: "0–100 siqnaldır: bazar qiyməti, təmir, hüquqi risk. 60+ — diqqətə dəyər. Skor zəmanət deyil, köməkçidir.",
-    aRu: "Это сигнал 0–100: рынок, ремонт, юрриск. 60+ стоит внимания. Скор — не гарантия, а подсказка.",
+    qAz: "Terminal qiyməti özü uydurur?",
+    qRu: "Терминал сам придумывает цену?",
+    aAz: "Xeyr. Başlanğıc qiymət kartda yoxdursa, sıfır yazılmır. Təmir boşdursa, qazanc hesab olunmur.",
+    aRu: "Нет. Если в карточке нет стартовой цены, мы не пишем ноль. Если ремонт не введён, прибыль не считается.",
   },
   {
     id: "q3",
@@ -164,8 +97,8 @@ export const SUPPORT_FAQ = [
     catRu: "Деньги",
     qAz: "Beh və təklifi harada ödəyirəm?",
     qRu: "Где платить задаток и делать ставку?",
-    aAz: "Yalnız herrac.gov.az-da. Terminaldakı kalkulyator — təxmini hesabdır: nə qədər beh və marja ola bilər. Rəsmi ödəniş və iştirak rəsmi portaldadır.",
-    aRu: "Только на herrac.gov.az. Калькулятор в терминале — ориентир: какой задаток и маржа могут получиться. Официальная оплата и участие — на портале.",
+    aAz: "Yalnız herrac.gov.az-da. Terminaldakı kalkulyator - təxmini hesabdır: nə qədər beh və marja ola bilər. Rəsmi ödəniş və iştirak rəsmi portaldadır.",
+    aRu: "Только на herrac.gov.az. Калькулятор в терминале - ориентир: какой задаток и маржа могут получиться. Официальная оплата и участие - на портале.",
   },
   {
     id: "q4",
@@ -182,17 +115,17 @@ export const SUPPORT_FAQ = [
     catRu: "Риски",
     qAz: "Qırmızı bayraq görsəm nə etməliyəm?",
     qRu: "Что делать, если вижу красный флаг?",
-    aAz: "Tələsik təklif verməyin. Sənədlərə və dəstəyə yazın. High risk — hüquqi yoxlama olmadan herrac-a girməyin.",
-    aRu: "Не торопитесь со ставкой. Откройте документы и поддержку. High-риск — на herrac без проверки не ходите.",
+    aAz: "Tələsik təklif verməyin. Sənədlərə və dəstəyə yazın. High risk - hüquqi yoxlama olmadan herrac-a girməyin.",
+    aRu: "Не торопитесь со ставкой. Откройте документы и поддержку. High-риск - на herrac без проверки не ходите.",
   },
   {
     id: "q6",
     catAz: "Risk",
     catRu: "Риски",
     qAz: "Vision defektləri realdırmı?",
-    qRu: "Vision-дефекты — это точно?",
-    aAz: "AI foto üzərində ehtimaldır. Büdcəyə salın, amma yerində yoxlama əvəzinə keçmir. Şübhə olanda ekspertə foto göndərin.",
-    aRu: "Это оценка по фото. Заложите в бюджет, но она не заменяет осмотр. Если сомневаетесь — отправьте фото эксперту.",
+    qRu: "Vision-дефекты - это точно?",
+    aAz: "Fotoda pas/çat uydurmuruq. Yalnız herrac mətnindəki siqnallar (açar, mühərrik…). Yerində baxış əvəzi deyil.",
+    aRu: "Ржавчину/трещины на фото не выдумываем. Только сигналы из текста herrac (ключи, двигатель…). Это не замена осмотру.",
   },
   {
     id: "q7",
@@ -201,14 +134,14 @@ export const SUPPORT_FAQ = [
     qAz: "Portfel sütunları nə üçündür?",
     qRu: "Зачем колонки в портфеле?",
     aAz: "Bu sizin şəxsi qeyd axınıdır: baxıram → yoxlayıram → qərar → hərrac → nəticə. Rəsmi təklif herrac.gov.az-dadır.",
-    aRu: "Это ваш личный конвейер заметок: смотрю → проверяю → решение → аукцион → итог. Официальная ставка — на herrac.gov.az.",
+    aRu: "Это ваш личный конвейер заметок: смотрю → проверяю → решение → аукцион → итог. Официальная ставка - на herrac.gov.az.",
   },
   {
     id: "q8",
     catAz: "Texniki",
     catRu: "Техническое",
     qAz: "Şifrəni unutsam?",
-    qRu: "Забыл пароль — что делать?",
+    qRu: "Забыл пароль - что делать?",
     aAz: "Tiket açın mövzu «Giriş». Demo üçün: admin@emlakhub.net / EmlakHub2026!",
     aRu: "Откройте тикет с темой «Вход». Для демо: admin@emlakhub.net / EmlakHub2026!",
   },
@@ -219,7 +152,7 @@ export const SUPPORT_FAQ = [
     qAz: "Bildirişlər çoxdursa?",
     qRu: "Слишком много уведомлений?",
     aAz: "Alertləri söndürün və ya profilə keçib e-poçt/push-u bağlayın. Kolokolçukda «Hamısını oxu».",
-    aRu: "Выключите лишние алерты или в профиле отключите почту и пуш. В колокольчике — «Прочитать все».",
+    aRu: "Выключите лишние алерты или в профиле отключите почту и пуш. В колокольчике - «Прочитать все».",
   },
   {
     id: "q10",
@@ -228,207 +161,93 @@ export const SUPPORT_FAQ = [
     qAz: "Səhifədəki mavi izah qutularını necə gizlədim?",
     qRu: "Как убрать синие подсказки на страницах?",
     aAz: "Qutunun sağında «Gizlət». Hamısını profil → «Bölmə izahlarını göstər» ilə bağlamaq olar.",
-    aRu: "В карточке подсказки нажмите «Скрыть». Все сразу — в профиле, переключатель «Показывать подсказки разделов».",
+    aRu: "В карточке подсказки нажмите «Скрыть». Все сразу - в профиле, переключатель «Показывать подсказки разделов».",
   },
 ];
 
-export const DEMO_ALERTS = [
-  {
-    id: "A-01",
-    enabled: true,
-    type: "price",
-    titleAz: "Bakı mənzil < ₼ 120 000",
-    titleRu: "Квартира Баку < ₼ 120 000",
-    detailAz: "Nərimanov / Yasamal · estate",
-    detailRu: "Нариманов / Ясамал · недвижимость",
-  },
-  {
-    id: "A-02",
-    enabled: true,
-    type: "deadline",
-    titleAz: "Hərrac 24 saat ərzində",
-    titleRu: "Аукцион в ближайшие 24 часа",
-    detailAz: "İzlədiyiniz lotlar",
-    detailRu: "Лоты из избранного",
-  },
-  {
-    id: "A-03",
-    enabled: false,
-    type: "score",
-    titleAz: "Fürsət skoru ≥ 60",
-    titleRu: "Скор возможности ≥ 60",
-    detailAz: "Avto və əmlak",
-    detailRu: "Авто и недвижимость",
-  },
-];
+export const DEMO_ALERTS = [];
 
-export const DEMO_NOTIFICATIONS = [
-  {
-    id: "N-01",
-    unread: true,
-    tag: "ALERT",
-    tagRu: "АЛЕРТ",
-    textAz: "Yeni lot: 2-otaqlı Yasamal — skoru 48",
-    textRu: "Новый лот: 2-комн. Ясамал — скор 48",
-    at: "12 мин",
-  },
-  {
-    id: "N-02",
-    unread: true,
-    tag: "LOT",
-    tagRu: "ЛОТ",
-    textAz: "Land Rover — qiymət yeniləndi (−₼ 1 200)",
-    textRu: "Land Rover — цена обновлена (−₼ 1 200)",
-    at: "41 мин",
-  },
-  {
-    id: "N-03",
-    unread: true,
-    tag: "DEAL",
-    tagRu: "СДЕЛКА",
-    textAz: "Porsche 911 — mərhələ: Analiz",
-    textRu: "Porsche 911 — этап: Анализ",
-    at: "2 ч",
-  },
-  {
-    id: "N-04",
-    unread: false,
-    tag: "AI",
-    tagRu: "AI",
-    textAz: "Mercedes GLS — fürsət skoru dəyişdi",
-    textRu: "Mercedes GLS — скоринг возможности обновлён",
-    at: "5 ч",
-  },
-  {
-    id: "N-05",
-    unread: false,
-    tag: "DOC",
-    tagRu: "ДОК",
-    textAz: "Nərimanov 3-otaqlı — kadastr PDF hazırdır",
-    textRu: "Нариманов 3-комн. — кадастр PDF готов",
-    at: "1 д",
-  },
-];
+export const DEMO_NOTIFICATIONS = [];
 
-export const DEMO_DOCUMENTS = [
-  {
-    id: "DOC-01",
-    lotId: "EST-NAR-3",
-    kind: "cadastre",
-    titleAz: "Kadastr çıxarışı",
-    titleRu: "Кадастровая выписка",
-    status: "ready",
-    pages: 4,
-  },
-  {
-    id: "DOC-02",
-    lotId: "EST-NAR-3",
-    kind: "legal",
-    titleAz: "Hüquqi risk memorandum",
-    titleRu: "Юридический меморандум",
-    status: "ready",
-    pages: 6,
-  },
-  {
-    id: "DOC-03",
-    lotId: "AUTO-911",
-    kind: "vision",
-    titleAz: "Vision hesabatı",
-    titleRu: "Vision-отчёт",
-    status: "ready",
-    pages: 2,
-  },
-  {
-    id: "DOC-04",
-    lotId: "AUTO-RR",
-    kind: "customs",
-    titleAz: "Gömrük qeydi",
-    titleRu: "Таможенная запись",
-    status: "pending",
-    pages: 1,
-  },
-  {
-    id: "DOC-05",
-    lotId: "EST-HOUSE-1",
-    kind: "land",
-    titleAz: "Torpaq sənədi",
-    titleRu: "Документ на землю",
-    status: "review",
-    pages: 3,
-  },
-  {
-    id: "DOC-06",
-    lotId: "AUTO-GLS",
-    kind: "ai",
-    titleAz: "AI due diligence summary",
-    titleRu: "AI due diligence summary",
-    status: "ready",
-    pages: 3,
-  },
-];
+export const DEMO_DOCUMENTS = [];
 
 export const ACADEMY_LESSONS = [
   {
     id: "L-01",
     level: "01",
     duration: "8 мин",
-    titleAz: "Terminala giriş: lot kartı və skoru",
-    titleRu: "Вход в терминал: карточка лота и скор",
+    titleAz: "Terminal və herrac: kim nə edir",
+    titleRu: "Терминал и herrac: кто что делает",
+    titleEn: "The terminal and herrac: who does what",
     bodyAz:
-      "Registry №, Vision overlay və opportunity score — qərarın ilk siqnalıdır. 60+ skoru olan lotları izləyin.",
+      "Emlak Hub lotları oxuyur: foto, qiymət, risk, marja, xəritə, turbo/bina comps. Beh və təklif - yalnız herrac.gov.az-da.",
     bodyRu:
-      "Registry №, Vision overlay и opportunity score — первый сигнал решения. Следите за лотами со скором 60+.",
+      "Emlak Hub читает лоты: фото, цена, риск, маржа, карта, comps turbo/bina. Задаток и ставка — только на herrac.gov.az.",
+    bodyEn:
+      "Emlak Hub reads lots: photos, price, risk, margin, map, turbo/bina comps. The deposit and the bid stay on herrac.gov.az.",
   },
   {
     id: "L-02",
     level: "02",
-    duration: "12 мин",
-    titleAz: "Marja kalkulyatoru: stavka və beh",
-    titleRu: "Калькулятор маржи: ставка и задаток",
+    duration: "10 мин",
+    titleAz: "Qiymət və pul",
+    titleRu: "Цена и деньги",
+    titleEn: "Price and money",
     bodyAz:
-      "Bazar − stavka − təmir − komissiya = xalis. Beh 10% — likvidlik bufferini unutmayın.",
+      "Başlanğıc yalnız Hərrac kartındandır. Təmiri investor yazır. Boş sahə sıfır deyil.",
     bodyRu:
-      "Рынок − ставка − ремонт − комиссия = чистая. Задаток 10% — не забывайте буфер ликвидности.",
+      "Старт только из карточки Hərrac. Ремонт вводит инвестор. Пустое поле — не ноль.",
+    bodyEn:
+      "The opening price comes only from the Hərrac card. The investor enters repair. An empty field is not zero.",
   },
   {
     id: "L-03",
     level: "03",
     duration: "10 мин",
-    titleAz: "Hüquqi bayraqlar: high / med / low",
-    titleRu: "Юридические флаги: high / med / low",
+    titleAz: "Comps: eyni marka / eyni tip",
+    titleRu: "Comps: та же марка / тот же тип",
+    titleEn: "Comps: same make / same type",
     bodyAz:
-      "High risk — ekspert çatına; med — sənəd yoxlaması; low — standart due diligence.",
+      "Avto: turbo.az-da yalnız eyni marka+model (məs. Volvo XC90). Ev: bina.az-da oxşar otaq/sahə/rayon. Torpaq/kommersiya üçün mənzil comps yoxdur.",
     bodyRu:
-      "High — в эксперт-чат; med — проверка документов; low — стандартный due diligence.",
+      "Авто: на turbo.az только та же марка+модель (напр. Volvo XC90). Жильё: на bina.az похожие комнаты/площадь/район. Для земли/коммерции квартирные comps не подставляем.",
+    bodyEn:
+      "Cars: turbo.az uses the same make and model (for example Volvo XC90). Homes: bina.az uses similar rooms, area and district. Apartment comps are not used for land or commercial.",
   },
   {
     id: "L-04",
     level: "04",
-    duration: "15 мин",
-    titleAz: "Portfel mərhələləri: kəşfdən nəticəyə",
-    titleRu: "Этапы портфеля: от обзора к итогу",
+    duration: "8 мин",
+    titleAz: "Foto və siqnallar",
+    titleRu: "Фото и сигналы",
+    titleEn: "Photos and signals",
     bodyAz:
-      "İzləmə → analiz → qərar → hərrac → nəticə. Hər mərhələdə sənəd və alert bağlayın.",
+      "Fotoda pas uydurmuruq. Siqnallar herrac qeydindən (açar, mühərrik, saxlanma). Yerində baxış məcburidir.",
     bodyRu:
-      "Watchlist → анализ → решение → аукцион → итог. На каждом этапе привязывайте документ и алерт.",
+      "Ржавчину на фото не выдумываем. Сигналы — из заметок herrac (ключи, двигатель, хранение). Осмотр на месте обязателен.",
+    bodyEn:
+      "We do not invent rust on the photo. Signals come from herrac notes (keys, engine, storage). An on-site inspection is required.",
   },
   {
     id: "L-05",
     level: "05",
-    duration: "9 мин",
-    titleAz: "Müqayisə: 2–3 lot yan-yana",
-    titleRu: "Сравнение: 2–3 лота рядом",
+    duration: "12 мин",
+    titleAz: "İş axını: izləmə → hərrac",
+    titleRu: "Рабочий поток: избранное → аукцион",
+    titleEn: "Workflow: watchlist → auction",
     bodyAz:
-      "Eyni market tipində müqayisə edin. Marja və hüquqi risk — əsas oxlar.",
+      "Terminal → izləmə/müqayisə → portfel mərhələləri → herrac.gov.az-da beh və təklif. Xəritə şəhər üzrə göstərir.",
     bodyRu:
-      "Сравнивайте в одном типе рынка. Оси — маржа и юридический риск.",
+      "Терминал → избранное/сравнение → этапы портфеля → задаток и ставка на herrac.gov.az. Карта показывает лоты по городу.",
+    bodyEn:
+      "Terminal → watchlist/compare → portfolio stages → deposit and bid on herrac.gov.az. The map shows lots by city.",
   },
 ];
 
 export const ACADEMY_CHECKLIST = [
-  { az: "Reyestr № və foto eynidir", ru: "Registry № и фото совпадают" },
-  { az: "Vision defektləri büdcədədir", ru: "Vision-дефекты заложены в бюджет" },
-  { az: "Hüquqi high bayraq yoxdur / ekspertdədir", ru: "Нет high-флага / у эксперта" },
-  { az: "Stavka + beh likvidliyə sığır", ru: "Ставка + задаток влезают в ликвидность" },
-  { az: "Alert və sənədlər bağlıdır", ru: "Алерт и документы привязаны" },
+  { az: "Reyestr № herrac ilə eynidir", ru: "Registry № совпадает с herrac", en: "The registry number matches herrac" },
+  { az: "Comps eyni marka/model və ya tipdir", ru: "Comps — та же марка/модель или тип", en: "Comps are the same make/model or type" },
+  { az: "Marja və beh likvidliyə sığır", ru: "Маржа и задаток влезают в ликвидность", en: "Margin and deposit fit the liquidity" },
+  { az: "Mətn riskləri oxunub (açar, həbs…)", ru: "Текстовые риски прочитаны (ключи, арест…)", en: "Text risks are read (keys, arrest…)" },
+  { az: "Təklif yalnız herrac.gov.az-da", ru: "Ставка только на herrac.gov.az", en: "The bid is only on herrac.gov.az" },
 ];

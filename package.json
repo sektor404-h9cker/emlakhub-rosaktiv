@@ -4,13 +4,26 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && prisma migrate deploy && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "node --import ./tests/register.mjs --test tests/*.test.mjs",
+    "prisma:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:seed": "node prisma/seed.js",
+    "herrac:sync": "node scripts/herrac-sync.js",
+    "turbo:models": "node scripts/refresh-turbo-models.js",
+    "postinstall": "prisma generate"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   },
   "dependencies": {
-    "firebase": "^12.18.0",
+    "@prisma/client": "6.19.0",
+    "bcryptjs": "^3.0.3",
     "framer-motion": "^12.42.2",
+    "jose": "^6.2.12",
     "leaflet": "^1.9.4",
     "lenis": "^1.3.26",
     "lucide-react": "^1.26.0",
@@ -22,6 +35,7 @@
     "@tailwindcss/postcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "16.2.11",
+    "prisma": "6.19.0",
     "tailwindcss": "^4"
   }
 }

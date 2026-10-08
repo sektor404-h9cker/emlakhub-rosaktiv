@@ -2,7 +2,7 @@
 
 /**
  * ============================================================================
- * LandingDealContext — единый кейс лендинга (Авто / Недвижимость)
+ * LandingDealContext - единый кейс лендинга (Авто / Недвижимость)
  * ============================================================================
  * assetClass переключается табами в Hero.
  * marketPrice / repairCost / bid синхронизируются с активным лотом.
@@ -19,7 +19,7 @@ export const DEMO_LOTS = {
     titleShort: { ru: "Автомобили", az: "Avtomobillər" },
     marketPrice: 72400,
     fullDefectTotal: 8400,
-    repairLabel: { ru: "Смета ремонта", az: "Təmir smetası" },
+    repairLabel: { ru: "Пример ремонта", az: "Təmir nümunəsi" },
   },
   estate: {
     id: "HE-2026-1184",
@@ -28,11 +28,20 @@ export const DEMO_LOTS = {
     titleShort: { ru: "Недвижимость", az: "Daşınmaz əmlak" },
     marketPrice: 142000,
     fullDefectTotal: 18500,
-    repairLabel: { ru: "Смета восстановления", az: "Bərpa smetası" },
+    repairLabel: { ru: "Пример восстановления", az: "Bərpa nümunəsi" },
+  },
+  land: {
+    id: "HE-2026-2201",
+    assetClass: "land",
+    title: "Torpaq · Mərdəkan",
+    titleShort: { ru: "Земля", az: "Torpaq" },
+    marketPrice: 85000,
+    fullDefectTotal: 3000,
+    repairLabel: { ru: "Инфра / межевание", az: "İnfra / sərhəd" },
   },
 };
 
-/** @deprecated — совместимость; используйте DEMO_LOTS.auto */
+/** @deprecated - совместимость; используйте DEMO_LOTS.auto */
 export const DEMO_LOT = DEMO_LOTS.auto;
 
 export const BID_PRESETS = {
@@ -84,10 +93,6 @@ export function LandingDealProvider({ children }) {
     [marketPrice]
   );
 
-  const reportDefectsTotal = useCallback((total) => {
-    setRepairCost(Math.max(0, Math.min(80000, Math.round(Number(total) || 0))));
-  }, []);
-
   const setRepairManual = useCallback((next) => {
     setRepairCost(Math.max(0, Math.min(80000, Math.round(Number(next) || 0))));
     setActivePreset(null);
@@ -114,7 +119,6 @@ export function LandingDealProvider({ children }) {
       setMarketPrice,
       setBid,
       setRepairManual,
-      reportDefectsTotal,
       applyPreset,
       demoLot,
     }),
@@ -128,7 +132,6 @@ export function LandingDealProvider({ children }) {
       setMarketPrice,
       setBid,
       setRepairManual,
-      reportDefectsTotal,
       applyPreset,
       demoLot,
     ]

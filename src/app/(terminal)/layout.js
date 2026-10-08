@@ -2,7 +2,7 @@
 
 /**
  * =============================================================================
- * (terminal) LAYOUT — PrivateRoute + system lock + paywall + shell
+ * (terminal) LAYOUT - PrivateRoute + system lock + paywall + shell
  * =============================================================================
  */
 
@@ -15,6 +15,7 @@ import GuidedTour from "@/components/terminal/GuidedTour";
 import PaywallModal from "@/components/terminal/PaywallModal";
 import MaintenanceScreen from "@/components/terminal/MaintenanceScreen";
 import SubscriptionBanner from "@/components/terminal/SubscriptionBanner";
+import FirstSteps from "@/components/terminal/FirstSteps";
 import { TerminalPanelProvider } from "@/context/TerminalPanelContext";
 import { useAuth } from "@/context/AuthContext";
 import { useSystem } from "@/context/SystemContext";
@@ -34,6 +35,7 @@ function TerminalBody({ children, isAdminPath }) {
         mode={isAdminPath ? "admin" : "investor"}
         onOpenNotifications={() => setNotesOpen(true)}
       >
+        {!isAdminPath ? <FirstSteps /> : null}
         {!isAdminPath ? <SubscriptionBanner /> : null}
         {children}
       </TerminalShell>

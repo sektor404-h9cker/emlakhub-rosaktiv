@@ -1,74 +1,83 @@
 "use client";
 
 /**
- * PaywallModal — оплата / продление PRO (демо)
+ * PaywallModal - оплата / продление PRO (демо)
  */
 
 import { createPortal } from "react-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useIsClient } from "@/lib/react/useIsClient";
 import { X, Crown, Check } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import { useSystem } from "@/context/SystemContext";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
-import { PLAN_PRICES, PLANS } from "@/lib/subscription";
+import { PLAN_PRICES } from "@/lib/subscription";
+import { manualPayHint } from "@/lib/payments/manualAz";
+import { say } from "@/lib/i18n/copy";
 
 const REASONS = {
   limit: {
-    az: "Pulsuz plana 2 kart daxildir. Daha çoxu üçün PRO lazımdır.",
-    ru: "На бесплатном тарифе можно открыть 2 карточки. Дальше нужен PRO.",
+    az: "Pulsuz planda lotlar bağlıdır. PRO lazımdır.",
+    ru: "На Free лоты закрыты. Нужен PRO.",
+    en: "Lots are closed on Free. PRO is required.",
   },
   expired: {
-    az: "PRO abunəliyiniz bitib. Yeniləyin — terminal yenidən açılacaq.",
-    ru: "Подписка PRO закончилась. Продлите — терминал снова откроется.",
+    az: "PRO abunəliyiniz bitib. Yeniləyin - terminal yenidən açılacaq.",
+    ru: "Подписка PRO закончилась. Продлите - терминал снова откроется.",
+    en: "Your PRO subscription has ended. Renew it and the terminal opens again.",
   },
   feature: {
     az: "Bu bölmə yalnız PRO-dadır.",
     ru: "Этот раздел доступен только на PRO.",
+    en: "This section is available only on PRO.",
   },
   compare: {
-    az: "Müqayisə — PRO funksiyasıdır.",
-    ru: "Сравнение — функция PRO.",
+    az: "Müqayisə - PRO funksiyasıdır.",
+    ru: "Сравнение - функция PRO.",
+    en: "Compare is a PRO feature.",
   },
   portfolio: {
-    az: "Portfel — PRO funksiyasıdır.",
-    ru: "Портфель — функция PRO.",
+    az: "Portfel - PRO funksiyasıdır.",
+    ru: "Портфель - функция PRO.",
+    en: "Portfolio is a PRO feature.",
   },
   map: {
-    az: "Xəritə — PRO funksiyasıdır.",
-    ru: "Карта — функция PRO.",
+    az: "Xəritə - PRO funksiyasıdır.",
+    ru: "Карта - функция PRO.",
+    en: "The map is a PRO feature.",
   },
 };
 
 export default function PaywallModal() {
   const { locale } = useLocale();
-  const { paywallOpen, paywallReason, closePaywall, activatePro, profile } =
-    useAuth();
-  const { users, upsertUser } = useSystem();
-  const [mounted, setMounted] = useState(false);
+  const {
+    paywallOpen,
+    paywallReason,
+    closePaywall,
+    activatePro,
+    dbConfigured,
+  } = useAuth();
+  const mounted = useIsClient();
   const [plan, setPlan] = useState("month");
-  const ru = locale !== "az";
-
-  useEffect(() => setMounted(true), []);
+  const [busy, setBusy] = useState(false);
+  const [done, setDone] = useState(false);
+  const [error, setError] = useState("");
+  const s = (az, ru, en) => say(locale, az, ru, en);
 
   if (!mounted || !paywallOpen) return null;
 
   const reason = REASONS[paywallReason] || REASONS.feature;
-  const reasonText = ru ? reason.ru : reason.az;
+  const reasonText = s(reason.az, reason.ru, reason.en);
 
-  const onPay = () => {
-    activatePro(plan);
-    const price = PLAN_PRICES[plan] || PLAN_PRICES.month;
-    const row = users.find((u) => u.email === profile?.email);
-    if (row) {
-      upsertUser({
-        ...row,
-        subscription: {
-          plan: PLANS.PRO,
-          expiresAt: Date.now() + price.days * 86400000,
-          source: "demo_payment",
-          updatedAt: Date.now(),
-        },
-      });
+  const onPay = async () => {
+    setBusy(true);
+    setError("");
+    try {
+      const result = await activatePro(plan);
+      if (result?.pending) setDone(true);
+    } catch (err) {
+      setError(err.message || s("Müraciət göndərilmədi.", "Заявку не удалось отправить.", "The request could not be sent."));
+    } finally {
+      setBusy(false);
     }
   };
 
@@ -89,11 +98,16 @@ export default function PaywallModal() {
               PRO
             </div>
             <h2 className="mt-3 text-[22px] font-semibold text-white">
-              {ru ? "Оформить подписку" : "Abunəliyi rəsmiləşdirin"}
+              {s("Abunəliyi rəsmiləşdirin", "Оформить подписку", "Start a subscription")}
             </h2>
             <p className="mt-2 text-[13px] leading-relaxed text-[#94a3b8]">
-              {reasonText}
+              {s(
+                "Tarifi seçin → ödəyin → PRO alın",
+                "Выберите тариф → Оплатите → Получите PRO",
+                "Choose a plan → Pay → Get PRO"
+              )}
             </p>
+            <p className="mt-1 text-[12px] leading-relaxed text-[#64748b]">{reasonText}</p>
           </div>
           <button
             type="button"
@@ -121,10 +135,10 @@ export default function PaywallModal() {
               >
                 <span>
                   <span className="block text-[14px] font-medium text-white">
-                    {ru ? p.labelRu : p.labelAz}
+                    {s(p.labelAz, p.labelRu, p.labelEn)}
                   </span>
                   <span className="text-[11px] text-[#64748b]">
-                    {p.days} {ru ? "дней" : "gün"}
+                    {p.days} {s("gün", "дней", "days")}
                   </span>
                 </span>
                 <span className="font-mono text-[15px] text-white">
@@ -136,18 +150,11 @@ export default function PaywallModal() {
         </div>
 
         <ul className="space-y-1.5 px-5 text-[12px] text-[#94a3b8]">
-          {(ru
-            ? [
-                "Безлимитные карточки лотов",
-                "Карта, сравнение, портфель",
-                "Документы и алерты",
-              ]
-            : [
-                "Limitsiz lot kartları",
-                "Xəritə, müqayisə, portfel",
-                "Sənədlər və alertlər",
-              ]
-          ).map((line) => (
+          {[
+            s("Mövcud lotların analizi və iqtisadiyyat", "Анализ доступных лотов и расчёт экономики", "Analysis of available lots and the economics"),
+            s("Müqayisə, seçilmişlər və portfel", "Сравнение, избранное и портфель", "Compare, favorites and portfolio"),
+            s("Hesabdakı bildiriş siyahısı", "Список уведомлений в аккаунте", "The notification list in the account"),
+          ].map((line) => (
             <li key={line} className="flex items-center gap-2">
               <Check size={14} className="text-emerald-400" />
               {line}
@@ -156,17 +163,37 @@ export default function PaywallModal() {
         </ul>
 
         <div className="p-5 pt-4">
-          <button
-            type="button"
-            onClick={onPay}
-            className="w-full rounded-2xl bg-[#2563eb] py-3.5 text-[14px] font-semibold text-white shadow-[0_16px_40px_-16px_rgba(37,99,235,0.9)] hover:bg-[#1d4ed8]"
-          >
-            {ru ? "Оплатить (демо)" : "Ödə (demo)"}
-          </button>
+          {error ? (
+            <p className="mb-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-center text-[13px] text-amber-100">
+              {error}
+            </p>
+          ) : null}
+          {done && dbConfigured ? (
+            <p className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-center text-[13px] text-emerald-200">
+              {s(
+                "Ödəniş yoxlanış gözləyir. Giriş təsdiqdən sonra açılacaq.",
+                "Оплата ожидает проверки. Доступ откроется после подтверждения.",
+                "Payment is waiting for review. Access opens after confirmation."
+              )}
+            </p>
+          ) : (
+            <button
+              type="button"
+              disabled={busy}
+              onClick={onPay}
+              className="w-full rounded-2xl bg-[#2563eb] py-3.5 text-[14px] font-semibold text-white shadow-[0_16px_40px_-16px_rgba(37,99,235,0.9)] hover:bg-[#1d4ed8] disabled:opacity-60"
+            >
+              {busy
+                ? s("Göndərilir…", "Отправка…", "Sending…")
+                : dbConfigured
+                  ? s("Ödəniş sorğusu göndər", "Отправить заявку на оплату", "Send a payment request")
+                  : s("Ödə (demo)", "Оплатить (демо)", "Pay (demo)")}
+            </button>
+          )}
           <p className="mt-2 text-center text-[11px] text-[#64748b]">
-            {ru
-              ? "Демо-режим: реальный эквайринг подключим позже."
-              : "Demo rejim: real ödəniş sonra qoşulacaq."}
+            {dbConfigured
+              ? manualPayHint(locale)
+              : s("PostgreSQL olmadan demo rejim.", "Демо-режим без PostgreSQL.", "Demo mode without PostgreSQL.")}
           </p>
         </div>
       </div>

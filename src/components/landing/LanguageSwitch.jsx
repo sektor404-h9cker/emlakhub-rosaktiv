@@ -2,8 +2,8 @@
 
 /**
  * LanguageSwitch (AZ / RU)
- * variant="light" — для белого премиум-лендинга
- * variant="dark"  — для графитового терминала
+ * variant="light" - для белого премиум-лендинга
+ * variant="dark"  - для графитового терминала
  */
 
 import { useLocale } from "@/lib/i18n/LocaleProvider";

@@ -9,16 +9,22 @@ export default function sitemap() {
       priority: 1,
     },
     {
-      url: "https://emlakhub.net/login",
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.4,
-    },
-    {
       url: "https://emlakhub.net/register",
       lastModified,
       changeFrequency: "monthly",
-      priority: 0.4,
+      priority: 0.6,
+    },
+    {
+      url: "https://emlakhub.net/legal/partners",
+      lastModified,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    {
+      url: "https://emlakhub.net/legal/terms",
+      lastModified,
+      changeFrequency: "yearly",
+      priority: 0.3,
     },
   ];
 }

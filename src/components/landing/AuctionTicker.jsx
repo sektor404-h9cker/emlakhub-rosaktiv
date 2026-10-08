@@ -1,47 +1,53 @@
 "use client";
 
 /**
- * AuctionTicker — Bloomberg-style live auction marquee
- * Цвет: холодный slate, в тон светлому лендингу
+ * AuctionTicker - Bloomberg-style live auction marquee (маркетинговые примеры)
  */
 
 import React from "react";
-import { Building2, Car, TrendingUp, TrendingDown } from "lucide-react";
+import { Building2, Car, LandPlot, TrendingUp, TrendingDown } from "lucide-react";
+import { say } from "@/lib/i18n/copy";
 
 const HOT_LOTS = [
   { id: "8842", kind: "auto", title: "Toyota Camry · 2018", start: 18400, market: 25000 },
   { id: "8843", kind: "estate", title: "3-otaqlı · Nərimanov", start: 78500, market: 92000 },
   { id: "8844", kind: "auto", title: "Hyundai Tucson · 2020", start: 21200, market: 23800 },
-  { id: "8845", kind: "estate", title: "Kommersiya · Yasamal", start: 145000, market: 168000 },
+  { id: "8845", kind: "commercial", title: "Kommersiya · Yasamal", start: 145000, market: 168000 },
   { id: "8846", kind: "auto", title: "BMW 320i · 2017", start: 14800, market: 13200 },
-  { id: "8847", kind: "estate", title: "Torpaq sahəsi · Mərdəkan", start: 28000, market: 34500 },
+  { id: "8847", kind: "land", title: "Torpaq sahəsi · Mərdəkan", start: 28000, market: 34500 },
   { id: "8848", kind: "auto", title: "Mercedes E200 · 2019", start: 32400, market: 39800 },
   { id: "8849", kind: "estate", title: "1-otaqlı · Nəsimi", start: 52000, market: 58500 },
   { id: "8850", kind: "auto", title: "Kia Sportage · 2021", start: 26900, market: 31200 },
-  { id: "8851", kind: "estate", title: "Anbar sahəsi · Sumqayıt", start: 64000, market: 71500 },
+  { id: "8851", kind: "commercial", title: "Anbar sahəsi · Sumqayıt", start: 64000, market: 71500 },
 ];
 
-function TickerRow({ lot, ru }) {
+function KindGlyph({ kind, ...props }) {
+  const Icon = kind === "auto" ? Car : kind === "land" ? LandPlot : Building2;
+  return <Icon {...props} />;
+}
+
+function TickerRow({ lot, locale }) {
   const margin = ((lot.market - lot.start) / lot.start) * 100;
   const positive = margin >= 0;
-  const Icon = lot.kind === "auto" ? Car : Building2;
   return (
     <div className="inline-flex items-center gap-3 border-r border-slate-200/80 px-6 py-2.5">
       <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-white text-slate-500 ring-1 ring-slate-200/80">
-        <Icon size={12} strokeWidth={1.8} />
+        <KindGlyph kind={lot.kind} size={12} strokeWidth={1.8} />
       </span>
       <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-400">
         LOT #{lot.id}
       </span>
-      <span className="whitespace-nowrap text-[13px] font-medium text-slate-700">{lot.title}</span>
+      <span className="whitespace-nowrap text-[13px] font-medium text-slate-700">
+        {lot.title}
+      </span>
       <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400">
-        {ru ? "СТАРТ" : "BAŞLANĞIC"}
+        {say(locale, "BAŞLANĞIC", "СТАРТ", "START")}
       </span>
       <span className="font-mono-num text-[13px] font-semibold tabular-nums text-slate-700">
         ₼{lot.start.toLocaleString("en-US")}
       </span>
       <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400">
-        {ru ? "РЫНОК" : "BAZAR"}
+        {say(locale, "BAZAR", "РЫНОК", "MARKET")}
       </span>
       <span className="font-mono-num text-[13px] font-semibold tabular-nums text-slate-700">
         ₼{lot.market.toLocaleString("en-US")}
@@ -61,7 +67,6 @@ function TickerRow({ lot, ru }) {
 }
 
 export default function AuctionTicker({ locale = "az" }) {
-  const ru = locale === "ru";
   const lots = [...HOT_LOTS, ...HOT_LOTS];
 
   return (
@@ -76,7 +81,7 @@ export default function AuctionTicker({ locale = "az" }) {
             DEMO
           </span>
           <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.14em]">
-            {ru ? "Примеры лотов" : "Nümunə lotlar"}
+            {say(locale, "Nümunə lotlar", "Примеры лотов", "Sample lots")}
           </span>
         </span>
       </div>
@@ -92,7 +97,7 @@ export default function AuctionTicker({ locale = "az" }) {
         style={{ paddingLeft: "220px" }}
       >
         {lots.map((lot, i) => (
-          <TickerRow key={`${lot.id}-${i}`} lot={lot} ru={ru} />
+          <TickerRow key={`${lot.id}-${i}`} lot={lot} locale={locale} />
         ))}
       </div>
     </div>
