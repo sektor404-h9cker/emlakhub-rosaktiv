@@ -57,10 +57,9 @@ export default function TargetAudience({ locale = "ru" }) {
 
   return (
     <section className="eh-wash-silk relative overflow-hidden py-16 sm:py-24 lg:py-32">
-      <div className="eh-orb absolute -right-10 top-20 h-72 w-72 bg-slate-400/22" aria-hidden />
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <motion.div {...fadeUp} className="mx-auto mb-14 max-w-2xl text-center">
-          <h2 className="font-serif text-3xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-[2.75rem]">
+          <h2 className="font-serif text-3xl font-semibold tracking-[-0.03em] text-[#f5f8fb] sm:text-[2.75rem]">
             {L("Kimə faydalıdır", "Кому это полезно", "Who this is for")}
           </h2>
           <p className="mt-4 text-[16px] leading-relaxed tracking-[-0.01em] text-slate-600">
@@ -81,7 +80,7 @@ export default function TargetAudience({ locale = "ru" }) {
               className="group"
             >
               <div className="eh-card h-full border-slate-200/80 bg-white p-7">
-                <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-900 text-white shadow-[0_12px_28px_-12px_rgba(20,20,20,0.5)] transition-transform duration-500 group-hover:scale-105">
+                <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-[#f3efe6] transition-transform duration-500 group-hover:scale-105">
                   <p.icon size={18} strokeWidth={1.8} />
                 </div>
                 <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-400">

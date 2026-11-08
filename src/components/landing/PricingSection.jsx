@@ -60,7 +60,7 @@ export default function PricingSection() {
   return (
     <section
       id="pricing"
-      className="relative border-t border-black/[0.06] bg-[#faf9f7] px-4 py-24 sm:px-6"
+      className="relative border-t border-white/10 bg-[#070b10] px-4 py-16 text-[#eef3f8] sm:px-6 sm:py-20"
     >
       <div className="mx-auto max-w-5xl">
         <motion.div
@@ -70,13 +70,13 @@ export default function PricingSection() {
           transition={{ duration: 0.5 }}
           className="text-center"
         >
-          <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-[#8b7355]">
+          <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-[#c4b39a]">
             {c.eyebrow}
           </p>
-          <h2 className="mt-3 font-serif text-[clamp(2rem,5vw,3rem)] leading-tight text-[#1a1510]">
+          <h2 className="mt-3 font-serif text-[clamp(2rem,5vw,3rem)] leading-tight text-[#f7f4ee]">
             {c.title}
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-[#5c5348]">
+          <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-[#c5d0db]">
             {c.sub}
           </p>
         </motion.div>
@@ -100,8 +100,8 @@ export default function PricingSection() {
                 className={[
                   "relative flex flex-col rounded-2xl border p-6",
                   highlight
-                    ? "border-[#1a1510] bg-[#1a1510] text-white shadow-[0_24px_60px_-24px_rgba(26,21,16,0.45)]"
-                    : "border-black/[0.08] bg-white text-[#1a1510]",
+                    ? "border-[#e7edf3]/70 bg-[#121820] text-[#f7f4ee] shadow-[0_24px_60px_-28px_rgba(231,237,243,0.35)]"
+                    : "border-white/10 bg-[#10161e] text-[#eef3f8]",
                 ].join(" ")}
               >
                 {highlight ? (
@@ -126,7 +126,7 @@ export default function PricingSection() {
                     <li key={f} className="flex items-start gap-2">
                       <Check
                         size={14}
-                        className={highlight ? "text-emerald-300" : "text-emerald-600"}
+                        className="text-[#b7e4c7]"
                       />
                       {f}
                     </li>
@@ -140,11 +140,11 @@ export default function PricingSection() {
         <div className="mt-10 flex flex-col items-center gap-3">
           <Link
             href="/login"
-            className="inline-flex items-center gap-2 rounded-full bg-[#1a1510] px-8 py-3.5 text-[14px] font-semibold text-white transition hover:bg-[#2d241c]"
+            className="eh-cta eh-cta-solid px-8 py-3.5 text-[14px] font-semibold"
           >
             {c.cta}
           </Link>
-          <p className="text-[12px] text-[#8b8074]">{c.note}</p>
+          <p className="text-[12px] text-[#8ea0b4]">{c.note}</p>
         </div>
       </div>
     </section>

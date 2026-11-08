@@ -4,12 +4,13 @@
  * ============================================================================
  * InteractiveSandbox - светлая «тихая роскошь»
  * ============================================================================
- * Авто: Porsche · Недвижимость: квартира (жилой интерьер)
- * Рамки - тонкие, тёплые; без чёрного «терминала»
+ * Hero-магнит: инвестор сразу видит «скан» лота и три цифры —
+ * рынок / ремонт / после ремонта. Это демо-иллюстрация, не CV-анализ фото.
+ * Рамки - тонкие, тёплые; без чёрного «терминала».
  * ============================================================================
  */
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCalmMotion } from "./useCalmMotion";
 import { RotateCcw } from "lucide-react";
@@ -24,8 +25,12 @@ const ASSETS = {
     objectPosition: "center center",
     objectFit: "cover",
     stageBg: "#1a1f28",
-    scanLabel: { ru: "Пример кадра", az: "Nümunə kadr", en: "Sample frame" },
-    doneLabel: { ru: "Не анализ фото", az: "Foto analizi deyil", en: "Not a photo analysis" },
+    scanLabel: { ru: "Осмотр кузова", az: "Kuzov yoxlaması", en: "Body inspection" },
+    doneLabel: {
+      ru: "Оценка готова",
+      az: "Qiymətləndirmə hazırdır",
+      en: "Valuation ready",
+    },
     defects: [
       {
         id: "bumper",
@@ -62,8 +67,12 @@ const ASSETS = {
       "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=2200&auto=format&fit=crop",
     alt: "Квартира",
     objectPosition: "center center",
-    scanLabel: { ru: "Пример кадра", az: "Nümunə kadr", en: "Sample frame" },
-    doneLabel: { ru: "Не анализ фото", az: "Foto analizi deyil", en: "Not a photo analysis" },
+    scanLabel: { ru: "Осмотр квартиры", az: "Mənzil yoxlaması", en: "Apartment inspection" },
+    doneLabel: {
+      ru: "Оценка готова",
+      az: "Qiymətləndirmə hazırdır",
+      en: "Valuation ready",
+    },
     defects: [
       {
         id: "floor",
@@ -101,11 +110,8 @@ const SETTLE_MS = 350;
 
 export default function InteractiveSandbox({ locale = "ru" }) {
   const reduce = useCalmMotion();
-  const {
-    assetClass,
-    setAssetClass,
-    demoLot,
-  } = useLandingDeal();
+  const { assetClass, setAssetClass, marketPrice, reportDefectsTotal, demoLot } =
+    useLandingDeal();
 
   const asset = ASSETS[assetClass] || ASSETS.auto;
   const defects = asset.defects;
@@ -119,6 +125,17 @@ export default function InteractiveSandbox({ locale = "ru" }) {
   const [phase, setPhase] = useState("idle");
   const [scanX, setScanX] = useState(0);
   const [revealed, setRevealed] = useState(0);
+
+  const visible = useMemo(() => defects.slice(0, revealed), [defects, revealed]);
+  const defectsTotal = useMemo(
+    () => visible.reduce((a, d) => a + d.cost, 0),
+    [visible]
+  );
+  const realValue = marketPrice - defectsTotal;
+
+  useEffect(() => {
+    reportDefectsTotal(defectsTotal);
+  }, [defectsTotal, reportDefectsTotal]);
 
   const runScan = (list) => {
     cancelAnimationFrame(rafRef.current);
@@ -187,7 +204,7 @@ export default function InteractiveSandbox({ locale = "ru" }) {
 
   return (
     <div ref={rootRef} className="relative w-full max-w-full">
-      {/* Табы */}
+      {/* Табы Авто / Недвижимость */}
       <div className="mb-4 flex rounded-full border border-slate-200/90 bg-white/95 p-1 shadow-[0_10px_40px_-18px_rgba(20,20,20,0.18)] backdrop-blur-sm">
         {(["auto", "estate"]).map((key) => {
           const active = assetClass === key;
@@ -218,7 +235,12 @@ export default function InteractiveSandbox({ locale = "ru" }) {
         <div className="flex items-center justify-between gap-3 border-b border-slate-100 bg-gradient-to-b from-white to-slate-50/80 px-4 py-3.5 sm:px-5">
           <div className="min-w-0">
             <div className="truncate font-mono text-[9px] uppercase tracking-[0.18em] text-slate-400 sm:text-[10px]">
-              {say(locale, "Lot yoxlaması · təklifdən əvvəl", "Проверка лота · до ставки", "Lot check · before you bid")}
+              {say(
+                locale,
+                "Lot yoxlaması · təklifdən əvvəl",
+                "Проверка лота · до ставки",
+                "Lot check · before you bid"
+              )}
             </div>
             <div className="mt-0.5 truncate text-[13px] font-semibold tracking-tight text-slate-900 sm:text-[14px]">
               {demoLot.title}
@@ -257,7 +279,6 @@ export default function InteractiveSandbox({ locale = "ru" }) {
             />
           </AnimatePresence>
 
-          {/* Край кадра */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0"
@@ -300,7 +321,7 @@ export default function InteractiveSandbox({ locale = "ru" }) {
             )}
           </AnimatePresence>
 
-          {/* Рамки дефектов - тонкие, светлые */}
+          {/* Рамки дефектов + стоимость на лейбле */}
           {defects.map((d, i) => {
             const on = i < revealed;
             const labelAbove = d.y > 32;
@@ -327,7 +348,6 @@ export default function InteractiveSandbox({ locale = "ru" }) {
                     background: "rgba(255,255,255,0.08)",
                   }}
                 />
-                {/* Углы - editorial look */}
                 <span className="absolute -left-px -top-px h-2.5 w-2.5 border-l-2 border-t-2 border-[#c4a46b]" />
                 <span className="absolute -right-px -top-px h-2.5 w-2.5 border-r-2 border-t-2 border-[#c4a46b]" />
                 <span className="absolute -bottom-px -left-px h-2.5 w-2.5 border-b-2 border-l-2 border-[#c4a46b]" />
@@ -335,7 +355,7 @@ export default function InteractiveSandbox({ locale = "ru" }) {
 
                 <div
                   className={[
-                    "absolute z-10 max-w-[160px] truncate rounded-full px-2.5 py-1 text-[10px] font-medium tracking-tight text-slate-900 shadow-md sm:text-[11px]",
+                    "absolute z-10 max-w-[180px] truncate rounded-full px-2.5 py-1 text-[10px] font-medium tracking-tight text-slate-900 shadow-md sm:text-[11px]",
                     labelAbove ? "-top-8 left-0" : "left-0 top-full mt-1.5",
                   ].join(" ")}
                   style={{
@@ -344,6 +364,9 @@ export default function InteractiveSandbox({ locale = "ru" }) {
                   }}
                 >
                   {say(locale, d.label.az, d.label.ru, d.label.en)}
+                  <span className="ml-1.5 font-mono tabular-nums text-slate-500">
+                    −{d.cost.toLocaleString("en-US")}
+                  </span>
                 </div>
               </motion.div>
             );
@@ -365,16 +388,71 @@ export default function InteractiveSandbox({ locale = "ru" }) {
           </div>
         </div>
 
-        {/* Формула - светлая */}
-        <p className="border-t border-slate-100 bg-white px-4 py-3 text-center text-[12px] leading-relaxed text-slate-500">
-          {say(
-            locale,
-            "Şəkil nümunədir. Servis foto üzrə zədə və təmir smetası hesab etmir.",
-            "Пример картинки. Повреждения по фото и смету ремонта сервис не считает.",
-            "A sample picture. The service does not estimate damage or repair from the photo."
-          )}
-        </p>
+        {/* Три цифры - магнит конверсии: рынок → ремонт → итог */}
+        <div className="grid grid-cols-3 divide-x divide-slate-100 border-t border-slate-100 bg-white">
+          <ValueCell
+            label={say(locale, "Bazar qiyməti", "Рыночная цена", "Market price")}
+            value={marketPrice}
+            tone="muted"
+          />
+          <ValueCell
+            label={
+              assetClass === "auto"
+                ? say(locale, "Təmir", "Ремонт", "Repair")
+                : say(locale, "Bərpa", "Восстановление", "Restoration")
+            }
+            value={-defectsTotal}
+            tone="warn"
+          />
+          <ValueCell
+            label={say(locale, "Təmirdən sonra", "После ремонта", "After repair")}
+            value={realValue}
+            tone="accent"
+          />
+        </div>
       </div>
+
+      <p className="mt-3 text-center text-[11px] tracking-wide text-slate-400">
+        {`${marketPrice.toLocaleString("en-US")} − ${defectsTotal.toLocaleString("en-US")} = ${realValue.toLocaleString("en-US")} ₼`}
+      </p>
+      <p className="mt-1.5 text-center text-[11px] leading-relaxed text-slate-400">
+        {say(
+          locale,
+          "Şəkil nümunədir. Servis foto üzrə zədə və təmir smetası hesab etmir.",
+          "Пример картинки. Повреждения по фото и смету ремонта сервис не считает.",
+          "A sample picture. The service does not estimate damage or repair from the photo."
+        )}
+      </p>
+    </div>
+  );
+}
+
+function ValueCell({ label, value, tone }) {
+  const color =
+    tone === "warn"
+      ? "text-amber-800"
+      : tone === "accent"
+        ? "text-slate-900"
+        : "text-slate-700";
+
+  return (
+    <div
+      className={[
+        "min-w-0 px-3 py-4 sm:px-4",
+        tone === "accent" ? "bg-slate-50/80" : "",
+      ].join(" ")}
+    >
+      <div className="truncate text-[9px] font-medium uppercase tracking-[0.14em] text-slate-400 sm:text-[10px]">
+        {label}
+      </div>
+      <motion.div
+        key={value}
+        initial={{ opacity: 0.5, y: 3 }}
+        animate={{ opacity: 1, y: 0 }}
+        className={`font-mono-num mt-1 text-[15px] font-semibold tabular-nums sm:text-[18px] ${color}`}
+      >
+        {value < 0 ? "−" : ""}₼ {Math.abs(value).toLocaleString("en-US")}
+      </motion.div>
     </div>
   );
 }

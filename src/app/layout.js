@@ -31,7 +31,7 @@ export const metadata = {
     template: "%s · Digital Emlak Hub",
   },
   description:
-    "Digital Emlak Hub — независимый аналитический сервис: от государственного лота к обоснованному инвестиционному решению. Авто и недвижимость с торгов Азербайджана. RosTorg Hub для России готовится отдельно.",
+    "Digital Emlak Hub — независимый аналитический сервис: от государственного лота к обоснованному инвестиционному решению. Авто и недвижимость с торгов Азербайджана. RosAktiv Hub для России готовится отдельно.",
   applicationName: "Digital Emlak Hub",
   authors: [{ name: "Camal Huseynov", url: SITE }],
   creator: "Camal Huseynov",
@@ -46,7 +46,7 @@ export const metadata = {
     "B2B терминал аукционов",
     "unit economics лота",
     "due diligence аукцион",
-    "RosTorg Hub",
+    "RosAktiv Hub",
     "Camal Huseynov",
   ],
   openGraph: {
@@ -57,7 +57,7 @@ export const metadata = {
     siteName: "Digital Emlak Hub",
     title: "Digital Emlak Hub — от государственного лота к решению",
     description:
-      "Сравните цену лота с рынком, учтите расходы и увидьте возможный результат до ставки. Независимый сервис, не государственный портал. RosTorg Hub — будущий продукт для России.",
+      "Сравните цену лота с рынком, учтите расходы и увидьте возможный результат до ставки. Независимый сервис, не государственный портал. RosAktiv Hub — будущий продукт для России.",
     images: [
       {
         url: OG_IMAGE,
@@ -71,7 +71,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Digital Emlak Hub - B2B-терминал госаукционов",
     description:
-      "Маржа и риски до ставки. Азербайджан в работе · RosTorg Hub для России - скоро.",
+      "Маржа и риски до ставки. Азербайджан в работе · RosAktiv Hub для России - скоро.",
     images: [OG_IMAGE],
   },
   robots: {

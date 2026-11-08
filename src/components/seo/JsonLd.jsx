@@ -12,7 +12,7 @@ const data = {
         url: "https://emlakhub.net/landing/porsche-hero.jpg",
       },
       description:
-        "Closed B2B analytics terminal for professional investors in government auctions in Azerbaijan. RosTorg Hub for Russia is in development.",
+        "Closed B2B analytics terminal for professional investors in government auctions in Azerbaijan. RosAktiv Hub for Russia is in development.",
       foundingDate: "2026",
       areaServed: [
         { "@type": "Country", name: "Azerbaijan" },

@@ -18,8 +18,8 @@ import { say } from "@/lib/i18n/copy";
 const FEE_PCT = 0.05;
 
 const SLIDER_TONES = {
-  slate: { fill: "#1e293b", thumb: "#0f172a" },
-  sand: { fill: "#a8926a", thumb: "#8a7349" },
+  slate: { fill: "#e7edf3", thumb: "#f5f8fb" },
+  sand: { fill: "#c4b39a", thumb: "#e3d5bd" },
 };
 
 const PRESET_META = {
@@ -57,15 +57,15 @@ function Slider({ label, value, min, max, step, onChange, tone = "slate", hint }
   return (
     <div>
       <div className="mb-2.5 flex items-baseline justify-between gap-3">
-        <span className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-slate-500">
+        <span className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-[#c5d0db]">
           {label}
           {hint}
         </span>
-        <span className="font-mono-num text-[15px] font-semibold tabular-nums text-slate-900">
+        <span className="font-mono-num text-[15px] font-semibold tabular-nums text-[#f5f8fb]">
           {value.toLocaleString("en-US")} ₼
         </span>
       </div>
-      <div className="relative h-[3px] rounded-full bg-slate-200">
+      <div className="relative h-[3px] rounded-full bg-white/15">
         <div
           className="absolute inset-y-0 left-0 rounded-full"
           style={{ width: `${pct}%`, backgroundColor: colors.fill }}
@@ -82,7 +82,7 @@ function Slider({ label, value, min, max, step, onChange, tone = "slate", hint }
         />
         <span
           aria-hidden
-          className="absolute -top-1.5 h-3.5 w-3.5 rounded-full border-2 border-white shadow"
+          className="absolute -top-1.5 h-3.5 w-3.5 rounded-full border-2 border-[#070b10] shadow"
           style={{ left: `calc(${pct}% - 7px)`, backgroundColor: colors.thumb }}
         />
       </div>
@@ -101,14 +101,14 @@ function FeesTip({ locale }) {
         onMouseLeave={() => setOpen(false)}
         onFocus={() => setOpen(true)}
         onBlur={() => setOpen(false)}
-        className="text-slate-400 hover:text-slate-700"
+        className="text-[#8ea0b4] transition-colors hover:text-[#f5f8fb]"
       >
         <HelpCircle size={13} />
       </button>
       {open && (
         <span
           role="tooltip"
-          className="absolute bottom-full left-1/2 z-20 mb-2 w-52 -translate-x-1/2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-[11px] font-normal normal-case tracking-normal text-slate-600 shadow-lg"
+          className="absolute bottom-full left-1/2 z-20 mb-2 w-52 -translate-x-1/2 rounded-lg border border-white/10 bg-[#121820] px-3 py-2 text-[11px] font-normal normal-case tracking-normal text-[#d3dce6] shadow-lg"
         >
           {say(
             locale,
@@ -153,8 +153,8 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
   const healthy = profit >= 0;
 
   return (
-    <div className="eh-card-static overflow-hidden rounded-[1.35rem] border-slate-200/80">
-      <div className="flex flex-col gap-4 border-b border-slate-200 bg-[#141414] px-5 py-5 sm:flex-row sm:items-end sm:justify-between sm:px-8 sm:py-6">
+    <div className="overflow-hidden rounded-[1.35rem] border border-white/10 bg-[#10161e]">
+      <div className="flex flex-col gap-4 border-b border-white/10 bg-[#0c1016] px-5 py-5 sm:flex-row sm:items-end sm:justify-between sm:px-8 sm:py-6">
         <div>
           <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
             {L("Nümunə · təklifdən əvvəl", "Пример · до ставки", "Example · before you bid")}
@@ -195,9 +195,9 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
 
       <div className="grid lg:grid-cols-2">
         {/* Controls */}
-        <div className="space-y-7 border-b border-slate-200 p-5 sm:p-8 lg:border-b-0 lg:border-r">
+        <div className="space-y-7 border-b border-white/10 p-5 sm:p-8 lg:border-b-0 lg:border-r">
           <div>
-            <div className="mb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-slate-400">
+            <div className="mb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-[#8ea0b4]">
               {L("Təklif nə qədər olsun", "Какой размер ставки", "How large should the bid be")}
             </div>
             <div className="grid grid-cols-3 gap-2">
@@ -210,10 +210,10 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
                     type="button"
                     onClick={() => applyPreset(id)}
                     className={[
-                      "eh-btn rounded-xl border px-2.5 py-2.5 text-left",
+                      "rounded-xl border px-2.5 py-2.5 text-left transition duration-300 ease-out",
                       active
-                        ? "border-slate-900 bg-slate-900 text-white shadow-[0_12px_28px_-12px_rgba(20,20,20,0.5)]"
-                        : "border-slate-200 bg-slate-50/80 text-slate-700 hover:border-slate-300 hover:bg-white hover:shadow-[0_14px_36px_-18px_rgba(20,20,20,0.18)]",
+                        ? "border-[#f3efe6] bg-[#f3efe6] text-[#161410]"
+                        : "border-white/12 bg-white/[0.03] text-[#eef3f8] hover:-translate-y-px hover:border-white/30",
                     ].join(" ")}
                   >
                     <div className="text-[12px] font-semibold tracking-tight">
@@ -221,7 +221,7 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
                     </div>
                     <div
                       className={`mt-0.5 text-[10px] ${
-                        active ? "text-white/55" : "text-slate-400"
+                        active ? "text-[#161410]/60" : "text-[#8ea0b4]"
                       }`}
                     >
                       {say(locale, meta.hintAz, meta.hintRu, meta.hintEn)}
@@ -260,8 +260,8 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
         </div>
 
         {/* Cascade */}
-        <div className="bg-slate-50/60 p-5 sm:p-8">
-          <div className="mb-5 font-mono text-[10px] uppercase tracking-[0.16em] text-slate-400">
+        <div className="bg-white/[0.02] p-5 sm:p-8">
+          <div className="mb-5 font-mono text-[10px] uppercase tracking-[0.16em] text-[#8ea0b4]">
             {L("Necə hesablanır", "Как считается", "How it is calculated")}
           </div>
 
@@ -298,14 +298,14 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
             accent
           />
 
-          <div className="mt-6 border-t border-slate-300 pt-5">
+          <div className="mt-6 border-t border-white/10 pt-5">
             <div className="flex items-baseline justify-between gap-3">
-              <span className="text-[12px] font-medium uppercase tracking-[0.14em] text-slate-600">
+              <span className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#c5d0db]">
                 {L("Xalis qazanc", "Чистая прибыль", "Net profit")}
               </span>
               <span
                 className={`font-mono-num text-[22px] font-semibold tabular-nums ${
-                  healthy ? "text-slate-900" : "text-amber-800"
+                  healthy ? "text-[#f3e6cc]" : "text-[#e7b8a0]"
                 }`}
               >
                 {profit >= 0 ? "+" : "−"}
@@ -316,7 +316,7 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
 
           {/* Visual weight bar */}
           <div className="mt-6">
-            <div className="flex h-1.5 overflow-hidden rounded-full bg-slate-200">
+            <div className="flex h-1.5 overflow-hidden rounded-full bg-white/10">
               <div
                 className="bg-slate-800"
                 style={{ width: `${Math.max(0, (bid / marketPrice) * 100)}%` }}
@@ -338,7 +338,7 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
                 }}
               />
             </div>
-            <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[9px] uppercase tracking-[0.12em] text-slate-400">
+            <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[9px] uppercase tracking-[0.12em] text-[#8ea0b4]">
               <span>{L("Təklif", "Ставка", "Bid")}</span>
               <span>{L("Rüsum", "Сборы", "Fees")}</span>
               <span>{repairLabel}</span>
@@ -346,7 +346,7 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
             </div>
           </div>
 
-          <p className="mt-6 text-[12px] leading-relaxed text-slate-500">
+          <p className="mt-6 text-[12px] leading-relaxed text-[#c5d0db]">
             {L(
               "Tədris nümunəsi. Buradakı təmir rəqəmi fotodan gəlmir və lot smetası deyil.",
               "Учебный пример. Цифра ремонта здесь не взята из фото и не является сметой лота.",
@@ -361,17 +361,17 @@ export default function UnitEconomicsSandbox({ locale = "ru" }) {
 
 function CascadeLine({ label, value, sign, dim, accent }) {
   return (
-    <div className="flex items-center justify-between border-b border-slate-200/80 py-3 last:border-0">
+    <div className="flex items-center justify-between border-b border-white/10 py-3 last:border-0">
       <span
         className={`text-[13px] ${
-          accent ? "text-amber-900/80" : dim ? "text-slate-500" : "text-slate-800"
+          accent ? "text-[#e3d5bd]" : dim ? "text-[#8ea0b4]" : "text-[#eef3f8]"
         }`}
       >
         {label}
       </span>
       <span
         className={`font-mono-num text-[14px] font-semibold tabular-nums ${
-          accent ? "text-amber-900/90" : "text-slate-800"
+          accent ? "text-[#e3d5bd]" : "text-[#f5f8fb]"
         }`}
       >
         {sign}

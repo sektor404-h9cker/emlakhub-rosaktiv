@@ -10,7 +10,7 @@
  * 3. Subhead: как именно - аукционы, риски, прибыль до сделки.
  * 4. Pillars: 3 коротких доказательства ценности (без карточек-шума).
  * 5. CTA: единственный магнит → закрытый дашборд.
- * 6. Dual-brand: Digital Emlak / RosTorg - международный статус.
+ * 6. Dual-brand: Digital Emlak / RosAktiv - международный статус.
  *
  * Визуал Quiet Luxury × SpaceX:
  * - Full-bleed атмосфера (сетка + градиент midnight), не inset-карточка.

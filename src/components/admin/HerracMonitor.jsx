@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { apiGet, apiPost } from "@/lib/api/client";
 import { say } from "@/lib/i18n/copy";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
@@ -38,18 +38,23 @@ export default function HerracMonitor() {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [watching, setWatching] = useState(false);
+  const startedRef = useRef(0);
 
   const load = useCallback(async () => {
     const next = await apiGet("/api/admin/herrac/sync");
     setData(next);
     setError("");
+    return next;
   }, []);
 
   useEffect(() => {
     let alive = true;
     apiGet("/api/admin/herrac/sync")
       .then((next) => {
-        if (alive) setData(next);
+        if (!alive) return;
+        setData(next);
+        if (next?.sync?.status === "running") setWatching(true);
       })
       .catch((e) => {
         if (alive) setError(e.message || "error");
@@ -59,16 +64,40 @@ export default function HerracMonitor() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!watching) return undefined;
+    const timer = setInterval(() => {
+      load()
+        .then((next) => {
+          const attempt = next?.sync?.lastAttemptAt
+            ? new Date(next.sync.lastAttemptAt).getTime()
+            : 0;
+          if (next?.sync?.status === "running") return;
+          if (attempt >= startedRef.current - 2000) {
+            setWatching(false);
+            setBusy(false);
+          }
+        })
+        .catch((e) => setError(e.message || "error"));
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [watching, load]);
+
   async function run() {
     setBusy(true);
     setError("");
+    startedRef.current = Date.now();
     try {
       await apiPost("/api/admin/herrac/sync", { forceDiscovery: true });
+      setWatching(true);
       await load();
     } catch (e) {
-      setError(e.message || "error");
-    } finally {
       setBusy(false);
+      setError(
+        e.status === 409
+          ? s("Yoxlama artıq gedir", "Проверка уже идёт", "A check is already running")
+          : e.message || "error"
+      );
     }
   }
 
@@ -118,12 +147,21 @@ export default function HerracMonitor() {
 
       <button
         type="button"
-        disabled={busy}
+        disabled={busy || watching}
         onClick={run}
         className="mt-6 rounded-full bg-white px-4 py-2 text-[13px] font-medium text-[#0b0d12] disabled:opacity-50"
       >
-        {busy ? s("Yoxlanılır", "Проверяем", "Checking") : s("İndi yoxla", "Проверить сейчас", "Check now")}
+        {busy || watching
+          ? s("Siyahı yoxlanılır", "Проверяем список", "Checking the list")
+          : s("Yeni lotları yoxla", "Проверить новые лоты", "Check for new lots")}
       </button>
+      <p className="mt-3 max-w-2xl text-[13px] leading-relaxed text-[#a8a29e]">
+        {s(
+          "Düymə açıq siyahını indicə yoxlayır və yeni və ya dəyişmiş lotları yazır. Bu bir neçə dəqiqə çəkir. Səhifəni bağlamaq yoxlamanı dayandırmır.",
+          "Кнопка сразу сверяет открытый список и записывает новые и изменившиеся лоты. Это занимает несколько минут. Закрыть страницу проверку не останавливает.",
+          "The button checks the public list now and saves new or changed lots. It takes several minutes. Closing this page does not stop the check."
+        )}
+      </p>
       {sync?.catalogStatus === "unavailable" ? (
         <p className="mt-4 max-w-2xl text-[14px] text-[#fcd34d]">
           {s(

@@ -15,7 +15,7 @@ import { isDatabaseConfigured } from "@/lib/db/config";
 import prisma from "@/lib/db/prisma";
 import { getSessionFromCookies } from "@/lib/auth/session";
 import { isAdminRole } from "@/lib/auth/guards";
-import { syncHerracLots } from "@/lib/herrac/sync";
+import { endSync, syncHerracLots, tryBeginSync } from "@/lib/herrac/sync";
 import { assertCurrentConsent } from "@/lib/legal/consent";
 import {
   markSyncFinished,
@@ -64,34 +64,70 @@ export async function POST(request) {
     return NextResponse.json({ error: "Sync already running" }, { status: 409 });
   }
 
-  try {
-    const report = await syncHerracLots({
-      forceDiscovery: Boolean(body.forceDiscovery),
-      seedIds: Array.isArray(body.seedIds) ? body.seedIds.map(String) : [],
-      maxDetails:
-        body.maxDetails != null ? Number(body.maxDetails) : undefined,
-      categoryIds: Array.isArray(body.categoryIds)
-        ? body.categoryIds.map(String)
-        : undefined,
-      actorEmail: auth.email,
-    });
-    const sync = await markSyncFinished(report.counts, null);
-    return NextResponse.json({ ok: true, via: auth.via, report, sync });
-  } catch (e) {
-    if (e?.code === "SYNC_IN_PROGRESS") {
-      return NextResponse.json({ error: "Sync already running" }, { status: 409 });
-    }
-    console.error("[herrac/sync]", e);
+  const opts = {
+    forceDiscovery: Boolean(body.forceDiscovery),
+    seedIds: Array.isArray(body.seedIds) ? body.seedIds.map(String) : [],
+    maxDetails: body.maxDetails != null ? Number(body.maxDetails) : undefined,
+    categoryIds: Array.isArray(body.categoryIds)
+      ? body.categoryIds.map(String)
+      : undefined,
+    actorEmail: auth.email,
+  };
+
+  if (body.wait === true) {
     try {
-      await markSyncFinished({ received: 0, created: 0, updated: 0, failed: 1 }, e);
-    } catch (statusErr) {
-      console.error("[herrac/sync status]", statusErr);
+      const report = await syncHerracLots(opts);
+      const sync = await markSyncFinished(report.counts, null);
+      return NextResponse.json({ ok: true, via: auth.via, report, sync });
+    } catch (e) {
+      return finishSyncError(e);
     }
-    return NextResponse.json(
-      { error: "Hərrac временно недоступен. Попробуйте позже." },
-      { status: 503 }
-    );
   }
+
+  if (!tryBeginSync()) {
+    return NextResponse.json({ error: "Sync already running" }, { status: 409 });
+  }
+
+  const run = syncHerracLots({ ...opts, alreadyLocked: true })
+    .then(async (report) => {
+      await markSyncFinished(report.counts, null);
+    })
+    .catch(async (e) => {
+      console.error("[herrac/sync]", e);
+      try {
+        await markSyncFinished(
+          { received: 0, created: 0, updated: 0, failed: 1, outcome: "failed" },
+          e
+        );
+      } catch (statusErr) {
+        console.error("[herrac/sync status]", statusErr);
+      }
+    })
+    .finally(() => {
+      endSync();
+    });
+  void run;
+
+  return NextResponse.json(
+    { ok: true, started: true, via: auth.via },
+    { status: 202 }
+  );
+}
+
+async function finishSyncError(e) {
+  if (e?.code === "SYNC_IN_PROGRESS") {
+    return NextResponse.json({ error: "Sync already running" }, { status: 409 });
+  }
+  console.error("[herrac/sync]", e);
+  try {
+    await markSyncFinished({ received: 0, created: 0, updated: 0, failed: 1 }, e);
+  } catch (statusErr) {
+    console.error("[herrac/sync status]", statusErr);
+  }
+  return NextResponse.json(
+    { error: "Hərrac временно недоступен. Попробуйте позже." },
+    { status: 503 }
+  );
 }
 
 export async function GET(request) {

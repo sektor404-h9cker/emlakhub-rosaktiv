@@ -126,11 +126,15 @@ export default function LotsManager() {
     try {
       const data = await syncHerracApi({ forceDiscovery: true });
       if (data.sync) setSyncState(data.sync);
-      const r = data.report || {};
-      setSyncMsg(
-        `Herrac: discovery ${r.discovery?.ok ? "ok" : "fail"} (${r.discovery?.found || 0}), upsert ${r.details?.upserted || 0}, err ${r.details?.errors?.length || 0}`
-      );
-      await reload();
+      if (data.started) {
+        setSyncMsg("Проверка списка запущена. Новые лоты появятся в терминале, когда она закончится. Ход — в Hərrac Monitor.");
+      } else {
+        const r = data.report || {};
+        setSyncMsg(
+          `Herrac: discovery ${r.discovery?.ok ? "ok" : "fail"} (${r.discovery?.found || 0}), upsert ${r.details?.upserted || 0}, err ${r.details?.errors?.length || 0}`
+        );
+        await reload();
+      }
     } catch (ex) {
       setErr(ex.message || "Sync failed");
     } finally {
@@ -166,7 +170,7 @@ export default function LotsManager() {
             onClick={onHerracSync}
             className="rounded-xl border border-[#60a5fa]/35 bg-[#60a5fa]/10 px-3 py-2 text-[12px] text-[#93c5fd] disabled:opacity-40"
           >
-            {syncBusy ? "Herrac sync…" : "Синк herrac.gov.az"}
+            {syncBusy ? "Проверяем список…" : "Проверить новые лоты"}
           </button>
           <button
             type="button"

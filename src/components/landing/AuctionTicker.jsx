@@ -30,32 +30,32 @@ function TickerRow({ lot, locale }) {
   const margin = ((lot.market - lot.start) / lot.start) * 100;
   const positive = margin >= 0;
   return (
-    <div className="inline-flex items-center gap-3 border-r border-slate-200/80 px-6 py-2.5">
-      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-white text-slate-500 ring-1 ring-slate-200/80">
+    <div className="inline-flex items-center gap-3 border-r border-white/10 px-6 py-2.5">
+      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-white/8 text-[#c5d0db] ring-1 ring-white/10">
         <KindGlyph kind={lot.kind} size={12} strokeWidth={1.8} />
       </span>
-      <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-400">
+      <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#8ea0b4]">
         LOT #{lot.id}
       </span>
-      <span className="whitespace-nowrap text-[13px] font-medium text-slate-700">
+      <span className="whitespace-nowrap text-[13px] font-medium text-[#eef3f8]">
         {lot.title}
       </span>
-      <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400">
+      <span className="text-[10px] font-medium uppercase tracking-wider text-[#8ea0b4]">
         {say(locale, "BAŞLANĞIC", "СТАРТ", "START")}
       </span>
-      <span className="font-mono-num text-[13px] font-semibold tabular-nums text-slate-700">
+      <span className="font-mono-num text-[13px] font-semibold tabular-nums text-[#eef3f8]">
         ₼{lot.start.toLocaleString("en-US")}
       </span>
-      <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400">
+      <span className="text-[10px] font-medium uppercase tracking-wider text-[#8ea0b4]">
         {say(locale, "BAZAR", "РЫНОК", "MARKET")}
       </span>
-      <span className="font-mono-num text-[13px] font-semibold tabular-nums text-slate-700">
+      <span className="font-mono-num text-[13px] font-semibold tabular-nums text-[#eef3f8]">
         ₼{lot.market.toLocaleString("en-US")}
       </span>
       <span
         className={[
           "inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-mono-num text-[11px] font-semibold tabular-nums",
-          positive ? "bg-emerald-50 text-emerald-700" : "bg-rose-50 text-rose-700",
+          positive ? "bg-[#143024] text-[#b7e4c7]" : "bg-[#3a1c22] text-[#f3c0c0]",
         ].join(" ")}
       >
         {positive ? <TrendingUp size={11} /> : <TrendingDown size={11} />}
@@ -70,14 +70,14 @@ export default function AuctionTicker({ locale = "az" }) {
   const lots = [...HOT_LOTS, ...HOT_LOTS];
 
   return (
-    <div className="relative w-full overflow-hidden border-y border-slate-200/80 bg-[#eef1f5]">
+    <div className="relative w-full overflow-hidden border-y border-white/10 bg-[#070b10]">
       <div
         className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-slate-300/70 to-transparent"
         aria-hidden
       />
-      <div className="absolute bottom-0 left-0 top-0 z-10 flex items-center bg-gradient-to-r from-[#eef1f5] via-[#eef1f5] to-transparent pl-4 pr-6 sm:pl-5">
-        <span className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-3 py-1.5 text-white">
-          <span className="font-mono text-[9px] font-medium uppercase tracking-[0.16em] text-slate-400">
+      <div className="absolute bottom-0 left-0 top-0 z-10 flex items-center bg-gradient-to-r from-[#070b10] via-[#070b10] to-transparent pl-4 pr-6 sm:pl-5">
+        <span className="inline-flex items-center gap-2 rounded-full bg-[#e7edf3] px-3 py-1.5 text-[#0c1218]">
+          <span className="font-mono text-[9px] font-medium uppercase tracking-[0.16em] text-[#6d5b40]">
             DEMO
           </span>
           <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.14em]">
@@ -89,7 +89,7 @@ export default function AuctionTicker({ locale = "az" }) {
       <div
         aria-hidden
         className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-20 sm:w-28"
-        style={{ background: "linear-gradient(to left, #eef1f5, transparent)" }}
+        style={{ background: "linear-gradient(to left, #070b10, transparent)" }}
       />
 
       <div

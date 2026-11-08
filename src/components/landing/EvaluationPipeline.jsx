@@ -77,12 +77,10 @@ export default function EvaluationPipeline({ locale = "ru" }) {
 
   return (
     <section id="platform" className="eh-wash-pearl relative overflow-hidden py-16 sm:py-24 lg:py-32">
-      <div className="eh-orb absolute right-[10%] top-16 h-64 w-64 bg-slate-400/18" aria-hidden />
-      <div className="eh-orb absolute left-[5%] bottom-10 h-56 w-56 bg-slate-400/15" aria-hidden />
-      <div className="pointer-events-none absolute inset-0 bg-grid-premium texture-fade opacity-60" aria-hidden />
+      <div className="pointer-events-none absolute inset-0 opacity-40" aria-hidden style={{ backgroundImage: "linear-gradient(rgba(232,238,244,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(232,238,244,0.04) 1px, transparent 1px)", backgroundSize: "72px 72px", maskImage: "radial-gradient(ellipse 70% 60% at 50% 30%, #000 10%, transparent 75%)" }} />
       <div className="relative mx-auto max-w-5xl px-5 sm:px-8">
         <motion.div {...stageFade} className="mb-16 max-w-2xl">
-          <h2 className="font-serif text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
+          <h2 className="font-serif text-3xl font-semibold tracking-tight text-[#f7f4ee] sm:text-4xl">
             {L("Necə işləyir - 4 addımda", "Как это работает - за 4 шага", "How it works — in 4 steps")}
           </h2>
           <p className="mt-4 text-[16px] leading-relaxed text-slate-600">
@@ -97,12 +95,12 @@ export default function EvaluationPipeline({ locale = "ru" }) {
         <div ref={railRef} className="relative">
           <div
             aria-hidden
-            className="absolute bottom-8 left-[19px] top-8 w-px bg-slate-200 sm:left-[23px]"
+            className="absolute bottom-8 left-[19px] top-8 w-px bg-white/12 sm:left-[23px]"
           />
           {!reduce && (
             <motion.div
               aria-hidden
-              className="absolute left-[19px] top-8 w-px origin-top bg-slate-900 sm:left-[23px]"
+              className="absolute left-[19px] top-8 w-px origin-top bg-[#c4b39a] sm:left-[23px]"
               style={{ height: fillHeight }}
             />
           )}
@@ -115,20 +113,20 @@ export default function EvaluationPipeline({ locale = "ru" }) {
                 transition={{ ...stageFade.transition, delay: i * 0.06 }}
                 className="relative grid gap-5 sm:grid-cols-[48px_1fr] sm:gap-8"
               >
-                <div className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-800 shadow-sm sm:h-12 sm:w-12">
+                <div className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-[#121820] text-[#f3efe6] shadow-[0_8px_24px_-16px_rgba(0,0,0,0.8)] sm:h-12 sm:w-12">
                   <s.icon size={18} strokeWidth={1.8} />
                 </div>
-                <div className="eh-card border-slate-200/80 bg-white p-6 sm:p-8">
+                <div className="rounded-[1.25rem] border border-white/10 bg-[#10161e] p-6 transition duration-500 hover:-translate-y-0.5 hover:border-white/20 sm:p-8">
                   <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400">
                     {s.tag}
                   </div>
-                  <h3 className="mt-2 font-serif text-xl font-semibold tracking-[-0.02em] text-slate-900 sm:text-[1.65rem]">
+                  <h3 className="mt-2 font-serif text-xl font-semibold tracking-[-0.02em] text-[#f7f4ee] sm:text-[1.65rem]">
                     {s.title}
                   </h3>
-                  <p className="mt-3 text-[14px] leading-relaxed tracking-[-0.01em] text-slate-600 sm:text-[15px]">
+                  <p className="mt-3 text-[14px] leading-relaxed tracking-[-0.01em] text-[#c5d0db] sm:text-[15px]">
                     {s.desc}
                   </p>
-                  <p className="mt-4 text-[12px] font-medium text-slate-800">{s.meta}</p>
+                  <p className="mt-4 text-[12px] font-medium text-[#e7edf3]">{s.meta}</p>
                 </div>
               </motion.div>
             ))}

@@ -3,7 +3,7 @@
  * СЛОВАРИ ПЛАТФОРМЫ (AZ / RU)
  * ============================================================================
  * Почему два языка сразу в hero:
- * - Digital Emlak Hub = Азербайджан, RosTorg Hub = русскоязычный рынок.
+ * - Digital Emlak Hub = Азербайджан, RosAktiv Hub = русскоязычный рынок.
  * - Переключатель на первом экране снимает когнитивный барьер «это не для меня»
  *   и повышает доверие международной аудитории (B2B-конверсия).
  *
@@ -30,7 +30,7 @@ export const DICTIONARY = {
     cta: "Sistemə daxil ol",
     ctaHint: "Bağlı investor terminalı",
     dualBrand:
-      "Azərbaycanda - Digital Emlak Hub. Rusiya üçün - RosTorg Hub.",
+      "Azərbaycanda - Digital Emlak Hub. Rusiya üçün - RosAktiv Hub.",
     status: "Institusional terminal · Canlı bazar analitikası",
   },
   ru: {
@@ -50,7 +50,7 @@ export const DICTIONARY = {
     cta: "Войти в систему",
     ctaHint: "Закрытый терминал инвестора",
     dualBrand:
-      "В Азербайджане - Digital Emlak Hub. Для России - RosTorg Hub.",
+      "В Азербайджане - Digital Emlak Hub. Для России - RosAktiv Hub.",
     status: "Enterprise terminal · Live market intelligence",
   },
   en: {
@@ -70,7 +70,7 @@ export const DICTIONARY = {
     cta: "Enter the system",
     ctaHint: "Private investor terminal",
     dualBrand:
-      "In Azerbaijan — Digital Emlak Hub. For Russia — RosTorg Hub.",
+      "In Azerbaijan — Digital Emlak Hub. For Russia — RosAktiv Hub.",
     status: "Enterprise terminal · Live market intelligence",
   },
 };

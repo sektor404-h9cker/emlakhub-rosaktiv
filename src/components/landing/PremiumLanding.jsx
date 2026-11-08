@@ -5,7 +5,7 @@
  * PremiumLanding - White Premium (SpaceX × Ralph Lauren)
  * ============================================================================
  * Перенесено из DigitalEmlakPlatform и адаптировано под Next.js.
- * RosTorg Hub: в разработке, скоро для России (не «уже развёрнут»).
+ * RosAktiv Hub: в разработке, скоро для России (не «уже развёрнут»).
  * ============================================================================
  */
 
@@ -27,15 +27,12 @@ import {
 } from "lucide-react";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 import LanguageSwitch from "./LanguageSwitch";
-import InteractiveSandbox from "./InteractiveSandbox";
+import ExampleShowcase from "./ExampleShowcase";
 import AuctionTicker from "./AuctionTicker";
-import UnitEconomicsSandbox from "./UnitEconomicsSandbox";
 import PremiumFAQ from "./PremiumFAQ";
 import TargetAudience from "./TargetAudience";
 import EvaluationPipeline from "./EvaluationPipeline";
 import PricingSection from "./PricingSection";
-import GrowthStory from "./GrowthStory";
-import { LandingDealProvider } from "./LandingDealContext";
 import BrandLockup from "@/components/brand/BrandLockup";
 
 const fadeUp = {
@@ -88,28 +85,15 @@ function FlagRu({ className = "" }) {
   );
 }
 
-function HeroSignal({ icon: Icon, children }) {
-  return (
-    <div className="group flex min-w-0 items-center gap-2.5">
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-slate-200/90 bg-white text-slate-600 transition-colors duration-300 group-hover:border-slate-800 group-hover:bg-slate-900 group-hover:text-white">
-        <Icon size={14} strokeWidth={1.75} />
-      </span>
-      <span className="text-[12px] font-medium leading-snug tracking-tight text-slate-600 sm:text-[13px]">
-        {children}
-      </span>
-    </div>
-  );
-}
-
-/** Плоские статус-полоски рынков - без «толстых» карточек */
+/** Плоские статус-полоски рынков */
 function MarketCard({ active, flag, badge, name, country, meta }) {
   return (
     <div
       className={[
         "flex items-center gap-3 rounded-xl border px-3 py-2.5 sm:px-3.5 sm:py-3",
         active
-          ? "border-slate-800/90 bg-slate-900 text-white"
-          : "border-slate-200 bg-white/80 text-slate-800",
+          ? "border-white/15 bg-[#10161e] text-white"
+          : "border-white/10 bg-white/[0.03] text-[#d3dce6]",
       ].join(" ")}
     >
       <span
@@ -131,7 +115,7 @@ function MarketCard({ active, flag, badge, name, country, meta }) {
               "shrink-0 rounded-md px-1.5 py-0.5 text-[8px] font-semibold uppercase tracking-[0.1em]",
               active
                 ? "bg-white/12 text-white/80"
-                : "bg-slate-100 text-slate-500",
+                : "bg-white/8 text-[#c5d0db]",
             ].join(" ")}
           >
             {badge}
@@ -140,7 +124,7 @@ function MarketCard({ active, flag, badge, name, country, meta }) {
         <div
           className={[
             "mt-0.5 truncate text-[11px] tracking-tight",
-            active ? "text-white/45" : "text-slate-500",
+            active ? "text-white/45" : "text-[#c5d0db]",
           ].join(" ")}
         >
           {country}
@@ -157,7 +141,7 @@ function GlassCard({ children, className = "", hover = true }) {
     <div
       className={[
         hover ? "eh-card" : "eh-card-static",
-        "bg-white/90 backdrop-blur-xl",
+        "border-white/10 bg-[#10161e]/95 text-[#eef3f8] backdrop-blur-xl",
         className,
       ].join(" ")}
     >
@@ -242,6 +226,7 @@ export default function PremiumLanding() {
   const t = useMemo(
     () => ({
       nav: {
+        example: L("Nümunə", "Пример", "Example"),
         platform: L("Necə işləyir", "Как это работает", "How it works"),
         security: L("Təhlükəsizlik", "Безопасность", "Security"),
         global: L("Ölkələr", "Страны", "Countries"),
@@ -260,22 +245,17 @@ export default function PremiumLanding() {
               ? ["Digital management", "of state", "property"]
               : ["Цифровое управление", "государственной", "собственностью"],
         sub: L(
-          "Dövlət lotundan — əsaslandırılmış investisiya qərarına. Digital Emlak Hub avtomobil və daşınmaz əmlakı dövlət hərraclarından bir yerə yığır, qiyməti bazarla tutuşdurur, xərcləri nəzərə alır və hərraca girməzdən əvvəl mümkün nəticəni hesablayır. Bu, müstəqil analitik xidmətdir, dövlət portalı deyil.",
-          "От государственного лота — к обоснованному инвестиционному решению. Digital Emlak Hub объединяет автомобили и недвижимость с государственных торгов, помогает сравнивать цены с рынком, учитывать расходы и рассчитывать возможную прибыль или убыток до участия в аукционе. Это независимый аналитический сервис, не государственный портал.",
-          "From a state lot to a reasoned investment decision. Digital Emlak Hub brings cars and property from state auctions together, compares prices with the market, counts the costs, and calculates a possible profit or loss before you join the auction. It is an independent analytics service, not a state portal."
-        ),
-        promise: L(
-          "Yalnız alış qiymətini yox, sövdələşmədən sonra nə qədər pul qala biləcəyini də görün.",
-          "Узнайте не только цену покупки, но и сколько денег может остаться после сделки.",
-          "See not only the purchase price, but how much money may remain after the deal."
+          "Dövlət hərraclarından avto və daşınmaz əmlak lotlarına baxırsınız. Təklif verməzdən əvvəl görünür: təmir nə qədərdir, hansı risklər var və nə qədər qazanc qalır.",
+          "Вы смотрите лоты авто и недвижимости с государственных торгов. До ставки видно: сколько стоит ремонт, какие риски есть и какая прибыль останется.",
+          "You look at car and property lots from state auctions. Before you bid you see the repair cost, the risks, and the profit that remains."
         ),
         signals: [
           {
             icon: Zap,
             text: L(
-              "Cavab saniyələrlə - uzun cədvəlsiz",
-              "Ответ за секунды - без долгих таблиц",
-              "An answer in seconds, without long tables"
+              "Cavab saniyələrlə — uzun cədvəlsiz",
+              "Ответ за секунды — без долгих таблиц",
+              "An answer in seconds — without long tables"
             ),
           },
           {
@@ -289,9 +269,9 @@ export default function PremiumLanding() {
           {
             icon: Gauge,
             text: L(
-              "Lotun qiyməti hesablamanın yalnız başlanğıcıdır",
-              "Цена лота — это только начало расчёта",
-              "The lot price is only the start of the calculation"
+              "Lot üzrə qazanc dərhal ekranda",
+              "Прибыль по лоту — сразу на экране",
+              "Lot profit — right on the screen"
             ),
           },
         ],
@@ -306,7 +286,7 @@ export default function PremiumLanding() {
           },
           {
             active: false,
-            name: "RosTorg Hub",
+            name: "RosAktiv Hub",
             country: L("Rusiya", "Россия", "Russia"),
             meta: L("tezliklə", "скоро", "soon"),
             badge: L("Tezliklə", "Скоро", "Soon"),
@@ -318,29 +298,29 @@ export default function PremiumLanding() {
       },
       stats: [
         {
-          value: "Hərrac",
-          label: L("Rəqəmlər yalnız kartdan", "Цифры только из карточки", "Figures only from the card"),
+          value: "247K+",
+          label: L("Sistemdəki lotlar", "Лотов в системе", "Lots in the system"),
           spark: [12, 18, 16, 24, 30, 28, 38, 44, 52, 61],
-          sparkColor: "#0f172a",
+          sparkColor: "#e7edf3",
         },
         {
-          value: "Turbo",
-          label: L("Eyni model, bütün marka yox", "Та же модель, не вся марка", "Same model, not the whole make"),
-          accent: "text-emerald-700",
+          value: "<0.5s",
+          label: L("Lot üzrə aydın rəqəmə qədər", "До понятной цифры по лоту", "To a clear figure per lot"),
+          accent: "text-[#e3d5bd]",
           spark: [70, 74, 78, 82, 86, 90, 93, 96, 98, 99],
-          sparkColor: "#047857",
+          sparkColor: "#c4b39a",
         },
         {
           value: "2",
           label: L("Planlaşdırılan ölkə", "Страны в планах", "Countries planned"),
           spark: [0, 0, 0, 1, 1, 1, 1, 2, 2, 2],
-          sparkColor: "#0f172a",
+          sparkColor: "#e7edf3",
         },
         {
           value: "0",
           label: L("Məlumat çölə getmir", "Данные не уходят наружу", "Data does not leave"),
           spark: [5, 4, 3, 3, 2, 2, 1, 1, 0, 0],
-          sparkColor: "#0f172a",
+          sparkColor: "#e7edf3",
         },
       ],
       pillars: [
@@ -365,9 +345,9 @@ export default function PremiumLanding() {
         {
           title: L("Əvvəl Azərbaycan, sonra Rusiya", "Сначала Азербайджан, потом Россия", "Azerbaijan first, then Russia"),
           desc: L(
-            "İndi Azərbaycanda Digital Emlak Hub işləyir. Rusiya üçün RosTorg Hub ayrıca hazırlanır.",
-            "Сейчас работает Digital Emlak Hub в Азербайджане. Версия для России - RosTorg Hub - готовится отдельно.",
-            "Digital Emlak Hub is live in Azerbaijan. The Russia version, RosTorg Hub, is being prepared separately."
+            "İndi Azərbaycanda Digital Emlak Hub işləyir. Rusiya üçün RosAktiv Hub ayrıca hazırlanır.",
+            "Сейчас работает Digital Emlak Hub в Азербайджане. Версия для России - RosAktiv Hub - готовится отдельно.",
+            "Digital Emlak Hub is live in Azerbaijan. The Russia version, RosAktiv Hub, is being prepared separately."
           ),
           icon: Globe2,
         },
@@ -450,44 +430,50 @@ export default function PremiumLanding() {
   );
 
   return (
-    <LandingDealProvider>
-      <>
+    <div className="eh-night min-h-screen bg-[#070b10] text-[#eef3f8]">
+      <div className="eh-page-glow" aria-hidden>
+        <span className="eh-page-glow-gold" />
+        <span className="eh-page-glow-blue" />
+        <span className="eh-page-glow-sheen" />
+      </div>
       {/* Nav вне grain - иначе на тёмных секциях «пропадает» из‑за stacking context */}
-      <nav className="fixed inset-x-0 top-0 z-[100] border-b border-slate-200/90 bg-white/95 shadow-[0_1px_0_rgba(15,23,42,0.04)] backdrop-blur-xl">
+      <nav className="fixed inset-x-0 top-0 z-[100] border-b border-white/10 bg-[#070b10]/80 backdrop-blur-xl">
         <div className="relative mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:h-16 sm:px-8">
           <Link href="/" className="group relative z-10 flex min-w-0 items-center">
-            <BrandLockup size={34} stacked className="sm:gap-3" />
+            <BrandLockup size={34} stacked tone="dark" className="sm:gap-3" />
           </Link>
 
           <div className="pointer-events-none absolute inset-0 hidden items-center justify-center lg:flex">
             <div className="pointer-events-auto flex items-center gap-9">
-              <a href="#platform" className="eh-link text-[13px] font-medium text-slate-700 hover:text-slate-900">
+              <a href="#example" className="eh-link text-[13px] font-medium text-[#d3dce6] hover:text-white">
+                {t.nav.example}
+              </a>
+              <a href="#platform" className="eh-link text-[13px] font-medium text-[#d3dce6] hover:text-white">
                 {t.nav.platform}
               </a>
-              <a href="#security" className="eh-link text-[13px] font-medium text-slate-700 hover:text-slate-900">
+              <a href="#security" className="eh-link text-[13px] font-medium text-[#d3dce6] hover:text-white">
                 {t.nav.security}
               </a>
-              <a href="#global" className="eh-link text-[13px] font-medium text-slate-700 hover:text-slate-900">
+              <a href="#global" className="eh-link text-[13px] font-medium text-[#d3dce6] hover:text-white">
                 {t.nav.global}
               </a>
             </div>
           </div>
 
           <div className="relative z-10 hidden items-center gap-5 lg:flex">
-            <LanguageSwitch variant="light" />
-            <div className="h-4 w-px bg-slate-200" />
-            <Link
-              href={entryHref}
-              className="eh-btn eh-btn-primary inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2.5 text-[13px] font-semibold text-white"
-            >
+            <LanguageSwitch variant="dark" />
+            <div className="h-4 w-px bg-white/15" />
+            <Link href={entryHref} className="eh-login">
               {t.nav.login}
-              <ArrowRight size={14} />
+              <span className="eh-login-arrow" aria-hidden>
+                <ArrowRight size={14} strokeWidth={2.1} />
+              </span>
             </Link>
           </div>
 
           <button
             type="button"
-            className="relative z-10 p-2 text-slate-700 lg:hidden"
+            className="relative z-10 p-2 text-[#e7edf3] lg:hidden"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="menu"
           >
@@ -501,9 +487,12 @@ export default function PremiumLanding() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="overflow-hidden border-t border-slate-200 bg-white lg:hidden"
+              className="overflow-hidden border-t border-white/10 bg-[#070b10] lg:hidden"
             >
               <div className="flex flex-col gap-4 p-6">
+                <a href="#example" className="text-[15px] font-medium text-slate-800" onClick={() => setMobileOpen(false)}>
+                  {t.nav.example}
+                </a>
                 <a href="#platform" className="text-[15px] font-medium text-slate-800" onClick={() => setMobileOpen(false)}>
                   {t.nav.platform}
                 </a>
@@ -513,13 +502,16 @@ export default function PremiumLanding() {
                 <a href="#global" className="text-[15px] font-medium text-slate-800" onClick={() => setMobileOpen(false)}>
                   {t.nav.global}
                 </a>
-                <LanguageSwitch variant="light" />
+                <LanguageSwitch variant="dark" />
                 <Link
                   href={entryHref}
-                  className="rounded-lg bg-slate-900 py-3 text-center font-semibold text-white"
+                  className="eh-login w-full justify-between"
                   onClick={() => setMobileOpen(false)}
                 >
                   {t.nav.login}
+                  <span className="eh-login-arrow" aria-hidden>
+                    <ArrowRight size={14} strokeWidth={2.1} />
+                  </span>
                 </Link>
               </div>
             </motion.div>
@@ -529,179 +521,90 @@ export default function PremiumLanding() {
 
     <div className="eh-grain relative min-h-screen text-slate-800 selection:bg-slate-900 selection:text-[#fbfaf7]">
       {/* ── HERO: свет + сетка + глубина ── */}
-      <section className="eh-wash-silk relative flex min-h-[100dvh] flex-col overflow-hidden pt-14 sm:pt-16">
-        <div aria-hidden className="bg-grid-hero pointer-events-none absolute inset-0 opacity-90" />
+      <section className="relative overflow-hidden bg-[#070b10] pt-14 sm:pt-16">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0"
+          className="pointer-events-none absolute inset-0 opacity-80"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(232,238,244,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(232,238,244,0.045) 1px, transparent 1px)",
+            backgroundSize: "72px 72px",
+            maskImage: "radial-gradient(ellipse 70% 60% at 40% 20%, #000 10%, transparent 72%)",
+          }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-64"
           style={{
             background:
-              "radial-gradient(ellipse 50% 40% at 82% 12%, rgba(186,166,138,0.16), transparent 65%), radial-gradient(ellipse 45% 40% at 10% 75%, rgba(148,163,184,0.2), transparent 60%)",
+              "radial-gradient(ellipse 40% 80% at 70% 0%, rgba(196,179,154,0.14), transparent 70%)",
           }}
         />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-40"
-          style={{
-            background: "linear-gradient(to top, rgba(238,240,243,0.95), transparent)",
-          }}
-        />
-        {!reduce ? (
-          <>
-            <motion.div
-              aria-hidden
-              className="eh-orb right-[-8%] top-[4%] h-[20rem] w-[20rem] bg-[#c4b49a]/25 sm:h-[30rem] sm:w-[30rem]"
-              animate={{ opacity: [0.3, 0.5, 0.3], scale: [1, 1.08, 1] }}
-              transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-            />
-            <motion.div
-              aria-hidden
-              className="eh-orb -left-[12%] bottom-[8%] h-[16rem] w-[16rem] bg-slate-400/30 sm:h-[22rem] sm:w-[22rem]"
-              animate={{ opacity: [0.28, 0.45, 0.28], x: [0, 18, 0] }}
-              transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-            />
-          </>
-        ) : null}
 
-        <div className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-4 py-10 sm:px-8 sm:py-14 lg:py-16">
-          <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 xl:gap-16">
-            <div className="min-w-0">
-              <motion.p
-                initial={reduce ? false : { opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-5 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500 sm:mb-6 sm:tracking-[0.22em]"
-              >
-                {t.hero.eyebrow}
-              </motion.p>
-
-              <h1 className={["eh-display", lang === "ru" ? "eh-display-ru" : ""].join(" ")}>
-                {t.hero.titleLines.map((line, i) => {
-                  const last = i === t.hero.titleLines.length - 1;
-                  return (
-                    <span key={`${line}-${i}`} className="relative mt-[0.06em] block overflow-hidden first:mt-0">
-                      <motion.span
-                        className={["block", last ? "eh-display-muted" : ""].join(" ")}
-                        initial={reduce ? false : { y: "105%", opacity: 0 }}
-                        animate={{ y: "0%", opacity: 1 }}
-                        transition={{
-                          delay: 0.08 + i * 0.1,
-                          duration: 0.75,
-                          ease: [0.22, 1, 0.36, 1],
-                        }}
-                      >
-                        {line}
-                      </motion.span>
-                    </span>
-                  );
-                })}
-              </h1>
-
-              <motion.div
-                initial={reduce ? false : { scaleX: 0, opacity: 0 }}
-                animate={{ scaleX: 1, opacity: 1 }}
-                transition={{ delay: 0.38, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="mt-6 origin-left sm:mt-7"
-                aria-hidden
-              >
-                <span className="block h-px w-12 bg-slate-900/70 sm:w-16" />
-              </motion.div>
-
-              <motion.p
-                initial={reduce ? false : { opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.42 }}
-                className="mt-5 max-w-sm text-[15px] leading-relaxed text-slate-600 sm:mt-6 sm:max-w-md sm:text-[16px]"
-              >
-                {t.hero.sub}
-              </motion.p>
-              <p className="mt-3 max-w-xl text-[15px] font-medium leading-relaxed text-slate-800 sm:text-base">
-                {t.hero.promise}
-              </p>
-
-              <motion.div
-                initial={reduce ? false : { opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.48 }}
-                className="mt-6 grid gap-3 sm:mt-7 sm:grid-cols-3 sm:gap-4"
-              >
-                {t.hero.signals.map((s) => (
-                  <HeroSignal key={s.text} icon={s.icon}>
-                    {s.text}
-                  </HeroSignal>
-                ))}
-              </motion.div>
-
-              <motion.div
-                initial={reduce ? false : { opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.54 }}
-                className="mt-5 grid gap-3 sm:mt-6 sm:grid-cols-2"
-              >
-                {t.hero.markets.map((m) => (
-                  <MarketCard
-                    key={m.name}
-                    active={m.active}
-                    badge={m.badge}
-                    name={m.name}
-                    country={m.country}
-                    meta={m.meta}
-                    flag={
-                      m.flag === "az" ? (
-                        <FlagAz className="h-full w-full" />
-                      ) : (
-                        <FlagRu className="h-full w-full" />
-                      )
-                    }
-                  />
-                ))}
-              </motion.div>
-
-              <motion.div
-                initial={reduce ? false : { opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-                className="mt-7 flex flex-col gap-2.5 sm:mt-8 sm:flex-row sm:items-center sm:gap-3"
-              >
-                <Link
-                  href={entryHref}
-                  className="eh-btn eh-btn-primary group inline-flex w-full items-center justify-center gap-2 rounded-full bg-slate-900 px-6 py-3.5 text-[14px] font-semibold text-white sm:w-auto"
-                >
-                  {t.hero.cta}
-                  <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
-                </Link>
-                <a
-                  href="#security"
-                  className="eh-btn inline-flex w-full items-center justify-center rounded-full border border-slate-300/90 bg-transparent px-6 py-3.5 text-[14px] font-medium text-slate-700 sm:w-auto"
-                >
-                  {t.hero.ctaSecondary}
-                </a>
-              </motion.div>
-            </div>
-
-            <motion.div
-              initial={reduce ? false : { opacity: 0, y: 20 }}
+        <div className="relative mx-auto grid w-full max-w-7xl items-end gap-8 px-4 pb-8 pt-12 sm:px-8 sm:pt-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] lg:gap-16">
+          <div>
+            <motion.p
+              initial={reduce ? false : { opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.22, duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-              className="relative min-w-0"
+              className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#c5d0db]"
             >
-              <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-                {L(
-                  "İmkanların nümayişi · hesablama nümunəsi",
-                  "Демонстрация возможностей · пример расчёта",
-                  "Capability demonstration · sample calculation"
-                )}
-              </p>
-              <InteractiveSandbox locale={lang} />
-            </motion.div>
+              {t.hero.eyebrow}
+            </motion.p>
+            <h1 className={["eh-display mt-4", lang === "ru" ? "eh-display-ru" : ""].join(" ")}>
+              {t.hero.titleLines.map((line, i) => (
+                <span key={`${line}-${i}`} className="relative mt-[0.04em] block first:mt-0">
+                  <motion.span
+                    className={["block", i > 0 ? "eh-gold" : ""].join(" ")}
+                    initial={reduce ? false : { y: "105%", opacity: 0 }}
+                    animate={{ y: "0%", opacity: 1 }}
+                    transition={{ delay: 0.08 + i * 0.1, duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    {line}
+                  </motion.span>
+                </span>
+              ))}
+            </h1>
+          </div>
+          <div className="max-w-md lg:mb-2">
+            <p className="font-serif text-[1.65rem] leading-tight tracking-[-0.03em] text-[#f7f4ee]">
+              {L(
+                "Dəqiq hesab təklifdən əvvəl başlayır.",
+                "Точный расчёт начинается до ставки.",
+                "A precise calculation starts before the bid."
+              )}
+            </p>
+            <p className="mt-4 text-[15px] leading-relaxed text-[#d3dce6]">{t.hero.sub}</p>
+          </div>
+          <div className="flex flex-col gap-3 sm:flex-row lg:col-span-2">
+            <a href="#example" className="eh-cta eh-cta-solid group">
+              {L("Hesab nümunəsinə bax", "Посмотреть пример расчёта", "See a sample calculation")}
+              <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+            </a>
+            <Link href={entryHref} className="eh-cta eh-cta-line group">
+              {t.hero.cta}
+              <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+            </Link>
           </div>
         </div>
       </section>
 
-      <GrowthStory lang={lang} />
+      <ExampleShowcase locale={lang} />
 
-      {/* Метрики - после первого экрана, не конкурируют с миссией */}
-      <section className="eh-wash-pearl border-y border-slate-200/70 py-10 sm:py-14">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-3 px-4 sm:gap-5 sm:px-8 lg:grid-cols-4">
+      <section className="border-t border-white/10 bg-[#070b10] py-8 sm:py-10">
+        <div className="mx-auto grid max-w-3xl gap-3 px-4 sm:grid-cols-2 sm:px-8">
+          {t.hero.markets.map((m) => (
+            <MarketCard
+              key={m.name}
+              active={m.active}
+              badge={m.badge}
+              name={m.name}
+              country={m.country}
+              meta={m.meta}
+              flag={m.flag === "az" ? <FlagAz className="h-full w-full" /> : <FlagRu className="h-full w-full" />}
+            />
+          ))}
+        </div>
+        <div className="mx-auto mt-5 grid max-w-7xl grid-cols-2 gap-3 px-4 sm:gap-5 sm:px-8 lg:grid-cols-4">
           {t.stats.map((s, i) => (
             <motion.div
               key={i}
@@ -722,9 +625,7 @@ export default function PremiumLanding() {
       <EvaluationPipeline locale={lang} />
 
       <section className="eh-wash-pearl relative overflow-hidden py-16 sm:py-24 lg:py-32">
-        <div className="eh-orb absolute -right-20 top-10 h-72 w-72 bg-slate-400/20" aria-hidden />
-        <div className="eh-orb absolute -left-16 bottom-0 h-64 w-64 bg-slate-400/15" aria-hidden />
-        <div className="bg-grid-premium texture-fade pointer-events-none absolute inset-0 opacity-35" aria-hidden />
+        <div className="pointer-events-none absolute inset-0 opacity-30" aria-hidden style={{ backgroundImage: "radial-gradient(rgba(232,238,244,0.08) 1px, transparent 1px)", backgroundSize: "22px 22px", maskImage: "radial-gradient(ellipse 70% 55% at 50% 40%, #000 20%, transparent 75%)" }} />
         <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
           <motion.div {...fadeUp} className="mx-auto mb-16 max-w-2xl text-center">
             <h2 className="font-serif text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
@@ -743,7 +644,7 @@ export default function PremiumLanding() {
             {t.pillars.map((p, i) => (
               <motion.div key={p.title} {...fadeUp} transition={{ ...fadeUp.transition, delay: i * 0.1 }}>
                 <GlassCard className="h-full p-8 transition-shadow duration-500 hover:shadow-[0_30px_80px_-30px_rgba(15,23,42,0.18)]">
-                  <div className="mb-6 flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
+                  <div className="mb-6 flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-[#f3efe6]">
                     <p.icon size={20} strokeWidth={1.8} />
                   </div>
                   <h3 className="mb-3 font-serif text-xl font-semibold text-slate-900">{p.title}</h3>
@@ -757,7 +658,7 @@ export default function PremiumLanding() {
 
       <section
         id="security"
-        className="eh-security relative w-full pb-20 pt-24 text-white sm:pb-28 sm:pt-28 lg:pb-36 lg:pt-32"
+        className="eh-security relative w-full py-16 text-white sm:py-20 lg:py-24"
       >
         <div className="eh-security-fx" aria-hidden>
           <div className="eh-security-aurora" />
@@ -870,36 +771,8 @@ export default function PremiumLanding() {
         </div>
       </section>
 
-      {/* Интерактивный кейс - ближе к концу воронки */}
-      <section id="economics" className="eh-afterglow eh-wash-mist relative overflow-hidden py-16 sm:py-24 lg:py-32">
-        <div className="eh-orb absolute right-10 top-20 h-72 w-72 bg-[#b8956c]/16" aria-hidden />
-        <div className="eh-orb absolute -left-10 bottom-0 h-64 w-64 bg-slate-400/18" aria-hidden />
-        <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
-          <motion.div {...fadeUp} className="mb-12 max-w-2xl">
-            <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.22em] text-slate-500">
-              {L("Nümunə · təklifdən əvvəl", "Пример · до ставки", "Example · before you bid")}
-            </p>
-            <h2 className="font-serif text-3xl font-semibold tracking-tight text-slate-900 sm:text-[40px]">
-              {L("Lot üzrə qazancı birlikdə sayırıq", "Считаем прибыль по лоту вместе", "We calculate the lot profit with you")}
-            </h2>
-            <p className="mt-4 text-[16px] leading-relaxed text-slate-600">
-              {L(
-                "Tədris nümunəsidir, bazadan lot deyil. Bu ekrandakı təmir illüstrasiyadır: terminalda onu siz yazırsınız, boş sahə sıfır olmur.",
-                "Учебный пример, не лот из базы. Ремонт на этом экране задан для иллюстрации: в терминале его вводите вы, пустое поле не становится нулём.",
-                "A teaching example, not a lot from the database. Repair on this screen is only an illustration: in the terminal you enter it, and an empty field does not become zero."
-              )}
-            </p>
-          </motion.div>
-          <motion.div {...fadeUp}>
-            <UnitEconomicsSandbox locale={lang} />
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Сравнение портал + слой - компактно после кейса */}
-      <section className="eh-afterglow eh-wash-pearl relative overflow-hidden py-16 sm:py-20 lg:py-24">
-        <div className="eh-orb absolute left-1/2 top-0 h-56 w-56 -translate-x-1/2 bg-white/60" aria-hidden />
-        <div className="eh-orb absolute right-[12%] bottom-[-10%] h-48 w-48 bg-[#b8956c]/10" aria-hidden />
+      {/* Сравнение портал + слой */}
+      <section className="relative overflow-hidden border-t border-white/10 bg-[#070b10] py-16 sm:py-20">
         <div className="relative mx-auto max-w-5xl px-5 sm:px-8">
           <motion.div {...fadeUp} className="mx-auto mb-10 max-w-2xl text-center">
             <h3 className="font-serif text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
@@ -929,7 +802,7 @@ export default function PremiumLanding() {
             </motion.div>
 
             <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.08 }}>
-              <GlassCard className="h-full border-slate-900/10 bg-gradient-to-b from-white to-slate-50/80 p-8 shadow-[0_24px_60px_-36px_rgba(15,23,42,0.28)]">
+              <GlassCard className="h-full border-[#c4b39a]/30 bg-[#121820] p-8">
                 <h3 className="mb-1 font-serif text-lg font-semibold text-slate-900">
                   {t.comparison.hub.title}
                 </h3>
@@ -951,10 +824,7 @@ export default function PremiumLanding() {
       </section>
 
       {/* ── GLOBAL / ROSAKTIV ── */}
-      <section id="global" className="eh-afterglow eh-wash-mist relative overflow-hidden py-16 sm:py-24 lg:py-32">
-        <div className="eh-orb absolute -left-20 top-24 h-72 w-72 bg-[#b8956c]/14" aria-hidden />
-        <div className="eh-orb absolute -right-16 bottom-10 h-80 w-80 bg-slate-500/12" aria-hidden />
-        <div className="bg-dots-premium texture-fade pointer-events-none absolute inset-0 opacity-40" aria-hidden />
+      <section id="global" className="relative overflow-hidden border-t border-white/10 bg-[#070b10] py-16 sm:py-20">
         <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
           <motion.div {...fadeUp} className="mx-auto mb-16 max-w-2xl text-center">
             <h2 className="font-serif text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
@@ -988,7 +858,7 @@ export default function PremiumLanding() {
                     "A service for investors in Azerbaijan: cars and property from state auctions, with a clear assessment before you bid."
                   )}
                 </p>
-                <div className="mt-4 flex items-center gap-2 text-[12px] font-medium text-emerald-700">
+                <div className="mt-4 flex items-center gap-2 text-[12px] font-medium text-[#b7e4c7]">
                   <span className="relative flex h-1.5 w-1.5">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-50" />
                     <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-600" />
@@ -999,13 +869,13 @@ export default function PremiumLanding() {
             </motion.div>
 
             <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.08 }}>
-              <GlassCard className="border-amber-200/80 bg-gradient-to-b from-amber-50/40 to-white p-8">
+              <GlassCard className="border-white/10 bg-[#10161e] p-8">
                 <div className="mb-4 flex items-center gap-3">
                   <span className="text-2xl" aria-hidden>
                     🇷🇺
                   </span>
                   <div>
-                    <h3 className="font-serif text-xl font-semibold text-slate-900">RosTorg Hub</h3>
+                    <h3 className="font-serif text-xl font-semibold text-slate-900">RosAktiv Hub</h3>
                     <p className="font-mono text-[12px] text-slate-500">
                       {L("Rusiya üçün · tezliklə", "для России · скоро", "for Russia · soon")}
                     </p>
@@ -1018,7 +888,7 @@ export default function PremiumLanding() {
                     "The same idea for Russia: state auctions for cars and property with a clear assessment. We are preparing it and will open access soon."
                   )}
                 </p>
-                <div className="mt-4 flex items-center gap-2 text-[12px] font-medium text-amber-800">
+                <div className="mt-4 flex items-center gap-2 text-[12px] font-medium text-[#e3d5bd]">
                   <span className="relative flex h-1.5 w-1.5">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-500 opacity-50" />
                     <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-amber-600" />
@@ -1033,9 +903,7 @@ export default function PremiumLanding() {
 
       <PricingSection />
 
-      <section className="eh-afterglow eh-wash-cta relative overflow-hidden py-20 sm:py-28 lg:py-36">
-        <div className="eh-orb absolute left-[18%] top-8 h-72 w-72 bg-[#b8956c]/22" aria-hidden />
-        <div className="eh-orb absolute right-[12%] bottom-0 h-80 w-80 bg-slate-600/10" aria-hidden />
+      <section className="relative overflow-hidden border-t border-white/10 bg-[#070b10] py-16 sm:py-24">
         <div className="relative mx-auto max-w-3xl px-5 text-center sm:px-8">
           <motion.div {...fadeUp}>
             <h2 className="font-serif text-3xl font-semibold tracking-tight text-slate-900 sm:text-[2.75rem]">
@@ -1044,7 +912,7 @@ export default function PremiumLanding() {
             <p className="mx-auto mt-4 max-w-xl text-[16px] leading-relaxed text-slate-600">{t.cta.sub}</p>
             <Link
               href={entryHref}
-              className="eh-btn eh-btn-primary mt-10 inline-flex items-center gap-2 rounded-full bg-slate-900 px-9 py-4 text-[15px] font-semibold text-white shadow-[0_20px_50px_-20px_rgba(15,23,42,0.45)] transition hover:bg-slate-800"
+              className="eh-cta eh-cta-solid mt-10 px-9 py-4 text-[15px]"
             >
               {t.cta.btn}
               <ChevronRight size={18} />
@@ -1055,25 +923,25 @@ export default function PremiumLanding() {
 
       <PremiumFAQ locale={lang} />
 
-      <footer className="relative overflow-hidden border-t border-slate-200/90 bg-[#eaedf2]/90 py-12">
-        <div className="eh-orb absolute right-0 top-0 h-40 w-40 bg-slate-400/20" aria-hidden />
+      <footer className="relative overflow-hidden border-t border-white/10 bg-[#070b10] py-12">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/10" aria-hidden />
         <div className="relative mx-auto flex max-w-7xl flex-col justify-between gap-8 px-5 sm:px-8 md:flex-row">
           <div>
             <div className="mb-3">
-              <BrandLockup size={28} stacked />
+              <BrandLockup size={28} stacked tone="dark" />
             </div>
             <p className="text-[13px] text-slate-500 max-w-xs leading-relaxed">
               {L(
-                "İnvestorlara dövlət hərrac lotlarını təklifdən əvvəl anlamağa kömək edirik. RosTorg Hub Rusiya üçün - tezliklə.",
-                "Помогаем инвесторам понять лоты госаукционов до ставки. RosTorg Hub для России - скоро.",
-                "We help investors understand state-auction lots before they bid. RosTorg Hub for Russia is coming soon."
+                "İnvestorlara dövlət hərrac lotlarını təklifdən əvvəl anlamağa kömək edirik. RosAktiv Hub Rusiya üçün - tezliklə.",
+                "Помогаем инвесторам понять лоты госаукционов до ставки. RosAktiv Hub для России - скоро.",
+                "We help investors understand state-auction lots before they bid. RosAktiv Hub for Russia is coming soon."
               )}
             </p>
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-5 sm:px-8 mt-8 pt-8 border-t border-slate-200 text-[12px] text-slate-400">
           <p>
-            © 2026 Digital Emlak Hub · RosTorg Hub.{" "}
+            © 2026 Digital Emlak Hub · RosAktiv Hub.{" "}
             {L("Bütün hüquqlar qorunur.", "Все права защищены.", "All rights reserved.")}
           </p>
           <p className="mt-2 text-slate-500">
@@ -1086,7 +954,6 @@ export default function PremiumLanding() {
         </div>
       </footer>
     </div>
-      </>
-    </LandingDealProvider>
+    </div>
   );
 }

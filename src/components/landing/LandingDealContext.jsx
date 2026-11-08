@@ -15,7 +15,7 @@ export const DEMO_LOTS = {
   auto: {
     id: "HE-2026-0911",
     assetClass: "auto",
-    title: "Porsche 911 Carrera",
+    title: "G-Class",
     titleShort: { ru: "Автомобили", az: "Avtomobillər" },
     marketPrice: 72400,
     fullDefectTotal: 8400,
@@ -53,11 +53,12 @@ export const BID_PRESETS = {
 const LandingDealContext = createContext(null);
 
 export function LandingDealProvider({ children }) {
-  const [assetClass, setAssetClassState] = useState("auto");
+  const [assetClass, setAssetClassState] = useState("estate");
   const demoLot = DEMO_LOTS[assetClass];
 
   const [marketPrice, setMarketPriceState] = useState(demoLot.marketPrice);
-  const [repairCost, setRepairCost] = useState(demoLot.fullDefectTotal);
+  /** Старт с 0: сумма ремонта растёт вместе со «сканом» в InteractiveSandbox */
+  const [repairCost, setRepairCost] = useState(0);
   const [bid, setBidState] = useState(
     Math.round(demoLot.marketPrice * BID_PRESETS.optimal.bidRatio)
   );
@@ -72,7 +73,7 @@ export function LandingDealProvider({ children }) {
     if (!lot) return;
     setAssetClassState(next);
     setMarketPriceState(lot.marketPrice);
-    setRepairCost(lot.fullDefectTotal);
+    setRepairCost(0);
     setBidState(Math.round(lot.marketPrice * BID_PRESETS.optimal.bidRatio));
     setActivePreset("optimal");
   }, []);
@@ -92,6 +93,11 @@ export function LandingDealProvider({ children }) {
     },
     [marketPrice]
   );
+
+  /** Синхронизация с геро-сканом: калькулятор ниже видит ту же сумму ремонта */
+  const reportDefectsTotal = useCallback((total) => {
+    setRepairCost(Math.max(0, Math.min(80000, Math.round(Number(total) || 0))));
+  }, []);
 
   const setRepairManual = useCallback((next) => {
     setRepairCost(Math.max(0, Math.min(80000, Math.round(Number(next) || 0))));
@@ -119,6 +125,7 @@ export function LandingDealProvider({ children }) {
       setMarketPrice,
       setBid,
       setRepairManual,
+      reportDefectsTotal,
       applyPreset,
       demoLot,
     }),
@@ -132,6 +139,7 @@ export function LandingDealProvider({ children }) {
       setMarketPrice,
       setBid,
       setRepairManual,
+      reportDefectsTotal,
       applyPreset,
       demoLot,
     ]

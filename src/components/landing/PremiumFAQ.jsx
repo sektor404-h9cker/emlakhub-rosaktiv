@@ -11,21 +11,21 @@ import { say } from "@/lib/i18n/copy";
 
 function FAQItem({ q, a, open, onToggle }) {
   return (
-    <div className="border-b border-slate-200">
+    <div className="border-b border-white/10">
       <button
         type="button"
         onClick={onToggle}
         className="group flex w-full items-start justify-between gap-6 py-6 text-left"
       >
-        <span className="font-serif text-[18px] font-semibold leading-snug tracking-tight text-slate-900 sm:text-[20px]">
+        <span className="font-serif text-[18px] font-semibold leading-snug tracking-tight text-[#f5f8fb] sm:text-[20px]">
           {q}
         </span>
         <span
           className={[
             "mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full transition-all duration-300",
             open
-              ? "rotate-45 bg-slate-900 text-white"
-              : "bg-slate-100 text-slate-600 group-hover:bg-slate-200",
+              ? "rotate-45 bg-[#e7edf3] text-[#0c1218]"
+              : "border border-white/15 bg-transparent text-[#e7edf3] group-hover:border-white/40",
           ].join(" ")}
         >
           <Plus size={14} strokeWidth={2.4} />
@@ -68,7 +68,7 @@ const FAQ_AZ = [
   },
   {
     q: "Rusiyada da var?",
-    a: "Azərbaycanda Digital Emlak Hub artıq işləyir. Rusiya üçün RosTorg Hub hazırlanır və tezliklə açılacaq.",
+    a: "Azərbaycanda Digital Emlak Hub artıq işləyir. Rusiya üçün RosAktiv Hub hazırlanır və tezliklə açılacaq.",
   },
   {
     q: "Qazandığım lotdan komissiya götürürsünüz?",
@@ -99,7 +99,7 @@ const FAQ_RU = [
   },
   {
     q: "Есть ли версия для России?",
-    a: "В Азербайджане Digital Emlak Hub уже работает. Для России готовим RosTorg Hub - скоро откроем.",
+    a: "В Азербайджане Digital Emlak Hub уже работает. Для России готовим RosAktiv Hub - скоро откроем.",
   },
   {
     q: "Берёте комиссию с выигранных лотов?",
@@ -130,7 +130,7 @@ const FAQ_EN = [
   },
   {
     q: "Is there a version for Russia?",
-    a: "Digital Emlak Hub is already live in Azerbaijan. RosTorg Hub for Russia is being prepared and will open soon.",
+    a: "Digital Emlak Hub is already live in Azerbaijan. RosAktiv Hub for Russia is being prepared and will open soon.",
   },
   {
     q: "Do you take a commission on lots I win?",
@@ -147,11 +147,10 @@ export default function PremiumFAQ({ locale = "az" }) {
   const items = locale === "az" ? FAQ_AZ : locale === "en" ? FAQ_EN : FAQ_RU;
 
   return (
-    <section className="eh-afterglow eh-wash-pearl relative overflow-hidden border-t border-slate-200/70 py-16 sm:py-24 lg:py-32">
-      <div className="eh-orb absolute left-[30%] top-0 h-56 w-56 bg-[#b8956c]/10" aria-hidden />
+    <section className="relative overflow-hidden border-t border-white/10 bg-[#070b10] py-16 sm:py-20">
       <div className="relative mx-auto max-w-3xl px-5 sm:px-8">
         <div className="mb-14 text-center">
-          <h2 className="font-serif text-3xl font-semibold leading-tight tracking-tight text-slate-900 sm:text-[42px]">
+          <h2 className="font-serif text-3xl font-semibold leading-tight tracking-tight text-[#f7f4ee] sm:text-[42px]">
             {say(locale, "Tez-tez verilən suallar", "Частые вопросы", "Common questions")}
           </h2>
           <p className="mt-4 text-[15px] text-slate-500">
@@ -164,7 +163,7 @@ export default function PremiumFAQ({ locale = "az" }) {
           </p>
         </div>
 
-        <div className="border-t border-slate-200">
+        <div className="border-t border-white/10">
           {items.map((it, i) => (
             <FAQItem
               key={i}
