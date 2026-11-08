@@ -1,7 +1,6 @@
 /**
- * Vercel build. Migrations stay in `npm run build` for CI and local Postgres.
- * The production Prisma Postgres password is rejected, and Prisma reports that
- * as P1001, so a migrate step here stops the site from deploying.
+ * Vercel build. Applies the schema to the connected Postgres, then builds the app.
+ * Local and CI still use `npm run build`.
  */
 import { spawnSync } from "node:child_process";
 
@@ -11,4 +10,5 @@ function run(command, args) {
 }
 
 run("npx", ["prisma", "generate"]);
+run("npx", ["prisma", "migrate", "deploy"]);
 run("npx", ["next", "build"]);

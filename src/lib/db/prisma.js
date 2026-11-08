@@ -24,10 +24,13 @@ if (cached && !isCurrentClient(cached)) {
   globalForPrisma.prisma = undefined;
 }
 
+const databaseUrl = process.env.DATABASE_URL_POOLED || process.env.DATABASE_URL;
+
 /** @type {PrismaClient} */
 export const prisma = isCurrentClient(globalForPrisma.prisma)
   ? globalForPrisma.prisma
   : new PrismaClient({
+      datasources: databaseUrl ? { db: { url: databaseUrl } } : undefined,
       log:
         process.env.NODE_ENV === "development"
           ? ["error", "warn"]
